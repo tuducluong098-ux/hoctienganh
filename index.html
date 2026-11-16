@@ -546,10 +546,30 @@
                 Khung: {{ q.formula }}
               </div>
 
-              <div class="space-y-2">
-                <div v-for="(sample, smpIdx) in q.samples" :key="smpIdx" class="p-3.5 bg-white rounded-xl border border-slate-200 text-sm md:text-base text-slate-800 leading-relaxed">
-                  <div class="text-[10px] font-bold text-slate-400 uppercase mb-0.5">Mẫu {{ smpIdx + 1 }}:</div>
-                  {{ sample }}
+              <div class="space-y-3">
+                <div 
+                  v-for="(sample, smpIdx) in q.samples" 
+                  :key="smpIdx" 
+                  :class="smpIdx === 2 ? 'p-4 bg-gradient-to-r from-emerald-50/90 to-teal-50/90 rounded-2xl border-2 border-emerald-300 text-emerald-950 shadow-xs' : 'p-3.5 bg-white rounded-2xl border border-slate-200 text-slate-800'"
+                  class="text-sm md:text-base leading-relaxed transition">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <div class="flex items-center gap-1.5">
+                      <span 
+                        :class="smpIdx === 2 ? 'bg-emerald-600 text-white font-black' : 'bg-slate-100 text-slate-600 font-bold'"
+                        class="text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-md">
+                        {{ smpIdx === 2 ? '⭐ MẪU 3: NGẮN GỌN & DỄ NHỚ NHẤT (ĐỀ XUẤT ĐI THI)' : ('MẪU ' + (smpIdx + 1)) }}
+                      </span>
+                    </div>
+                    <button 
+                      @click="speakText(sample)" 
+                      :class="smpIdx === 2 ? 'text-emerald-700 hover:text-emerald-900 bg-white/80' : 'text-slate-400 hover:text-indigo-600 bg-slate-50'"
+                      class="px-2 py-0.5 rounded text-xs font-semibold flex items-center gap-1 transition">
+                      <span>🔊 Nghe riêng mẫu này</span>
+                    </button>
+                  </div>
+                  <div :class="smpIdx === 2 ? 'font-semibold text-slate-900' : 'font-normal text-slate-800'">
+                    {{ sample }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1571,7 +1591,8 @@
             formula: "My favorite type of movie is [type] because [reason]...",
             samples: [
               "My favorite type of movie is horror because it is thrilling and exciting. It offers me an escape from my daily life.",
-              "My favorite type of movie is romance because it is comforting. I always feel hopeful about love and life after watching romantic movies."
+              "My favorite type of movie is romance because it is comforting. I always feel hopeful about love and life after watching romantic movies.",
+              "My favorite type of movie is comedy because it is very funny and relaxing. Watching comedies helps me reduce stress after a busy day."
             ]
           },
           {
@@ -1581,7 +1602,8 @@
             formula: "My favorite place to buy clothing is [place] because [reason]...",
             samples: [
               "My favorite place to buy clothing is a shopping mall because it has a variety of shops, so I can shop for clothes from many different brands.",
-              "My favorite place to buy clothing is a local concept store because the goods are carefully chosen and I can also participate in workshops or visit beautiful cafés."
+              "My favorite place to buy clothing is a local concept store because the goods are carefully chosen and I can also participate in workshops or visit beautiful cafés.",
+              "My favorite place to buy clothing is online stores because it is very convenient and cheap. I can easily order clothes from home and save a lot of time."
             ]
           },
           {
@@ -1591,7 +1613,8 @@
             formula: "My favorite restaurant is [name] in [location]... This is because [service/food]... Also, [unique point]...",
             samples: [
               "My favorite restaurant is Pizza 4P’s in District 1, Ho Chi Minh City. This is because it has great service. The waiters and waitresses are always kind and friendly to me whenever I come to the restaurant. Also, the food here is delicious. There is a wide variety of dishes and new ones are introduced every month. I never get bored when I’m in this restaurant.",
-              "My favorite restaurant is KFC in Ho Chi Minh City. This is because this brand has many branches. I can always find a KFC store wherever I am in the city. In my opinion, this is really convenient. Also, the food is affordable and served quickly. I never have to wait too long or pay too much for any dishes, so KFC is a great choice when I need a quick and cheap meal."
+              "My favorite restaurant is KFC in Ho Chi Minh City. This is because this brand has many branches. I can always find a KFC store wherever I am in the city. In my opinion, this is really convenient. Also, the food is affordable and served quickly. I never have to wait too long or pay too much for any dishes, so KFC is a great choice when I need a quick and cheap meal.",
+              "My favorite restaurant is Lotteria near my house. First, the fried chicken here is very delicious and crispy. Second, the price is really affordable for students. Finally, the staff are always friendly and polite, so I eat there every weekend."
             ]
           },
           {
@@ -1601,7 +1624,8 @@
             formula: "I often [ride motorbike / take bus] because [reason]...",
             samples: [
               "I often ride my motorbike because it is the most convenient mode of transportation in my city. I can avoid traffic jams and it is also easier to find parking with a motorbike.",
-              "I often take the bus because it is the cheapest mode of transportation in my city. I can go almost anywhere without having to spend over 10,000 VND."
+              "I often take the bus because it is the cheapest mode of transportation in my city. I can go almost anywhere without having to spend over 10,000 VND.",
+              "I often ride my motorbike because it is very fast and flexible. It helps me avoid traffic jams and arrive at school on time."
             ]
           },
           {
@@ -1611,7 +1635,8 @@
             formula: "It often takes me [time] to go to work every day because [reason]...",
             samples: [
               "It often takes me 30 minutes to go to work every day because my house is really far from my workplace and I usually get stuck in traffic as well.",
-              "It often takes me 5 minutes to go to work every day because my house is not far from where I work, so I don’t need to spend a lot of time travelling."
+              "It often takes me 5 minutes to go to work every day because my house is not far from where I work, so I don’t need to spend a lot of time travelling.",
+              "It often takes me about 15 minutes to go to work every day because my house is quite close to my workplace and the traffic is usually smooth."
             ]
           },
           {
@@ -1621,7 +1646,8 @@
             formula: "The best method of public transportation in my city is [bus/water bus]... This is because... This is why I think that...",
             samples: [
               "The best method of public transportation in my city is a bus. This is because there are many frequent and direct bus routes around Ho Chi Minh City. Bus stations are also located in all districts, so you can probably travel anywhere by bus. This is why I think that buses are the best mode of transportation to travel with convenience and flexibility.",
-              "The best method of public transportation in my city is a water bus. This is because it offers a great way to experience the city from a different perspective along the Saigon River. Passengers can enjoy fresh air and stunning views while avoiding traffic jams. This is why I think that water buses are the best mode of transportation to enjoy the beauty of Saigon in a relaxing setting."
+              "The best method of public transportation in my city is a water bus. This is because it offers a great way to experience the city from a different perspective along the Saigon River. Passengers can enjoy fresh air and stunning views while avoiding traffic jams. This is why I think that water buses are the best mode of transportation to enjoy the beauty of Saigon in a relaxing setting.",
+              "The best method of public transportation in my city is the bus. This is because bus fares are very cheap and all buses have cool air-conditioning. It is safe and convenient in hot weather. This is why I think buses are the best public transportation."
             ]
           }
         ];
