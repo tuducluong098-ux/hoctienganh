@@ -248,6 +248,61 @@
                   </div>
                 </div>
 
+                <!-- Quick Voice Recorder for Practice -->
+                <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-4 space-y-3">
+                  <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl">🎙️</span>
+                      <div>
+                        <div class="text-xs font-bold text-indigo-950 uppercase flex items-center gap-1.5">
+                          Tự Ghi Âm Giọng Nói & Nghe Lại
+                          <span v-if="isPracticeRecording" class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white animate-pulse">
+                            ● ĐANG THU ÂM ({{ practiceRecordSeconds }}s)
+                          </span>
+                        </div>
+                        <div class="text-[11px] text-indigo-700">Ghi lại giọng đọc của em rồi bật nghe đối chiếu với giọng bản xứ chuẩn.</div>
+                      </div>
+                    </div>
+                    <!-- Record Controls -->
+                    <div class="flex items-center gap-2">
+                      <button 
+                        v-if="!isPracticeRecording" 
+                        @click="startPracticeRecording"
+                        class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                        <span>🔴 Bắt Đầu Ghi Âm</span>
+                      </button>
+                      <button 
+                        v-else 
+                        @click="stopPracticeRecording"
+                        class="px-3.5 py-1.5 bg-rose-700 hover:bg-rose-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-sm transition animate-pulse">
+                        <span>⏹️ Dừng Ghi Âm</span>
+                      </button>
+                      <button 
+                        v-if="practiceAudioUrl" 
+                        @click="resetPracticeRecording"
+                        class="px-2.5 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold">
+                        Thu lại
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Audio Player Result -->
+                  <div v-if="practiceAudioUrl" class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-indigo-100 shadow-inner">
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                      <span class="text-xs font-bold text-slate-700 whitespace-nowrap">Bản thu của bạn:</span>
+                      <audio :src="practiceAudioUrl" controls class="h-8 max-w-full"></audio>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <a :href="practiceAudioUrl" download="bai_doc_speaking.webm" class="text-xs text-indigo-600 hover:underline font-bold flex items-center gap-1">
+                        ⬇️ Tải file thu âm
+                      </a>
+                      <button @click="speakText(currentPassage.text)" class="text-xs text-emerald-700 hover:underline font-bold flex items-center gap-1">
+                        🔊 Nghe mẫu đối chiếu
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Vocabulary with IPA Grid -->
                 <div>
                   <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
@@ -930,60 +985,284 @@
       <!-- TAB 3: MOCK TEST (PHÒNG THI THỬ) -->
       <!-- =============================================================== -->
       <section v-if="activeTab === 'mock'" class="space-y-6">
-        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 shadow-md">
-          <div class="max-w-2xl">
-            <span class="bg-indigo-500/30 text-indigo-300 text-xs px-2.5 py-1 rounded-full font-bold border border-indigo-400/20">ETS SIMULATOR</span>
-            <h2 class="text-2xl font-black mt-2">Phòng Thi Thử Bấm Giờ Y Hệt Thi Thật</h2>
-            <p class="text-sm text-slate-300 mt-1">Luyện tinh thần thép và áp lực thời gian. Hãy chuẩn bị mic và không gian yên tĩnh trước khi bấm bắt đầu.</p>
+
+        <!-- 3.1: DASHBOARD SELECTION (When no mock is active and not finished) -->
+        <div v-if="!mockSpeakingActive && !mockSpeakingFinished" class="space-y-6">
+          <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 shadow-md">
+            <div class="max-w-2xl">
+              <span class="bg-indigo-500/30 text-indigo-300 text-xs px-2.5 py-1 rounded-full font-bold border border-indigo-400/20">ETS SIMULATOR</span>
+              <h2 class="text-2xl font-black mt-2">Phòng Thi Thử Bấm Giờ Y Hệt Thi Thật</h2>
+              <p class="text-sm text-slate-300 mt-1">Luyện tinh thần thép và phản xạ thời gian. Hệ thống có <strong>TỰ ĐỘNG THU ÂM</strong> giọng nói trong lúc thi để sau đó nghe lại so sánh với bài mẫu chuẩn.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Speaking Mock Test Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-2xl">🎙️</span>
+                  <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">11 Câu hỏi • Tự Ghi Âm Từng Câu</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mt-2">Đề Thi Thử TOEIC Speaking Thực Chiến</h3>
+                <p class="text-xs text-slate-500 mt-1">Tự động bấm giờ chuẩn ETS. Khi đến thời gian nói, máy tự ghi âm giọng của em để nghe lại.</p>
+                <ul class="text-xs text-slate-600 mt-3 space-y-2">
+                  <li class="flex items-center gap-2">✓ <strong>Câu 1-2:</strong> Đọc to văn bản (45s chuẩn bị / 45s đọc & ghi âm)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Câu 3-4:</strong> Mô tả 2 tranh (45s chuẩn bị / 30s nói & ghi âm)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Câu 5-7:</strong> Trả lời phỏng vấn (3s / 15-30s nói & ghi âm)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Câu 8-10:</strong> Đọc lịch trình & trả lời điện thoại (15-30s)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Câu 11:</strong> Bày tỏ quan điểm (45s chuẩn bị / 60s nói & ghi âm)</li>
+                </ul>
+              </div>
+              <button 
+                @click="startSpeakingMockExam"
+                class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-sm transition flex items-center justify-center gap-2">
+                <span>🔴</span> Bắt Đầu Thi Thử Speaking (Có Tự Ghi Âm) ➔
+              </button>
+            </div>
+
+            <!-- Writing Mock Test Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-2xl">✍️</span>
+                  <span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-bold">Thời gian: 60 phút</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mt-2">Đề Thi Thử TOEIC Writing</h3>
+                <p class="text-xs text-slate-500 mt-1">Luyện giải trọn vẹn 3 phần viết với đồng hồ đếm ngược và kiểm tra tiêu chí.</p>
+                <ul class="text-xs text-slate-600 mt-3 space-y-2">
+                  <li class="flex items-center gap-2">✓ <strong>Part 1 (Q1-5):</strong> Viết 5 câu theo 5 tranh (8 phút)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Part 2 (Q6-7):</strong> Trả lời 2 email tình huống (20 phút)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Part 3 (Q8):</strong> Viết 1 bài luận &ge; 300 từ (30 phút)</li>
+                  <li class="flex items-center gap-2">✓ <strong>Thang điểm:</strong> 28 Điểm (Mục tiêu: Đạt &ge; 16.8 Band 3)</li>
+                </ul>
+              </div>
+              <button 
+                @click="startWritingMockExam"
+                class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-sm shadow-sm transition">
+                Bắt Đầu Thi Thử Writing (60 phút) ➔
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Speaking Mock Test Card -->
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-2xl">🎙️</span>
-                <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">Thời gian: ~20 phút</span>
+        <!-- 3.2: LIVE SPEAKING MOCK EXAM SIMULATOR SCREEN -->
+        <div v-if="mockSpeakingActive" class="space-y-4 animate-fadeIn">
+          <!-- Exam Header -->
+          <div class="bg-slate-900 text-white rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-lg border border-slate-700">
+            <div class="flex items-center gap-3">
+              <span class="bg-indigo-600 px-3 py-1 rounded-xl font-extrabold text-sm tracking-wide">
+                CÂU {{ mockStep + 1 }} / 11
+              </span>
+              <div>
+                <h3 class="font-bold text-sm md:text-base text-white">{{ currentMockQ.partName }}</h3>
+                <span class="text-xs text-slate-400">{{ currentMockQ.title }}</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-800 mt-2">Đề Thi Thử TOEIC Speaking</h3>
-              <ul class="text-xs text-slate-600 mt-3 space-y-2">
-                <li class="flex items-center gap-2">✓ <strong>Câu 1-2:</strong> Đọc to văn bản (45s chuẩn bị / 45s đọc)</li>
-                <li class="flex items-center gap-2">✓ <strong>Câu 3-4:</strong> Mô tả 2 bức tranh (45s chuẩn bị / 30s nói)</li>
-                <li class="flex items-center gap-2">✓ <strong>Câu 5-7:</strong> Trả lời 3 câu hỏi phỏng vấn (15s - 30s)</li>
-                <li class="flex items-center gap-2">✓ <strong>Câu 8-10:</strong> Đọc lịch trình & trả lời điện thoại</li>
-                <li class="flex items-center gap-2">✓ <strong>Câu 11:</strong> Bày tỏ quan điểm (45s chuẩn bị / 60s nói)</li>
-              </ul>
             </div>
-            <button 
-              @click="openMockModal('speaking')"
-              class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-sm transition">
-              Bắt Đầu Thi Thử Speaking ➔
-            </button>
+
+            <div class="flex items-center gap-2">
+              <button 
+                @click="stopSpeakingMockExam"
+                class="px-3 py-1.5 bg-slate-800 hover:bg-rose-900/50 text-rose-300 hover:text-white rounded-lg text-xs font-semibold border border-rose-800/40 transition">
+                Thoát Phòng Thi
+              </button>
+            </div>
           </div>
 
-          <!-- Writing Mock Test Card -->
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
-            <div>
-              <div class="flex items-center justify-between">
-                <span class="text-2xl">✍️</span>
-                <span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-bold">Thời gian: 60 phút</span>
+          <!-- Phase Countdown & Recording Status Banner -->
+          <div 
+            :class="mockPhase === 'prep' ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-rose-50 border-rose-300 text-rose-900 animate-pulse-subtle'"
+            class="rounded-2xl p-5 border-2 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <div class="flex items-center gap-4">
+              <div 
+                :class="mockPhase === 'prep' ? 'bg-amber-500 text-white' : 'bg-rose-600 text-white animate-pulse'"
+                class="w-16 h-16 rounded-2xl flex flex-col items-center justify-center font-black text-2xl shadow-inner flex-shrink-0">
+                <span>{{ mockTimer }}</span>
+                <span class="text-[9px] uppercase tracking-wider -mt-1">Giây</span>
               </div>
-              <h3 class="text-lg font-bold text-slate-800 mt-2">Đề Thi Thử TOEIC Writing</h3>
-              <ul class="text-xs text-slate-600 mt-3 space-y-2">
-                <li class="flex items-center gap-2">✓ <strong>Part 1 (Q1-5):</strong> Viết 5 câu theo 5 tranh (8 phút)</li>
-                <li class="flex items-center gap-2">✓ <strong>Part 2 (Q6-7):</strong> Trả lời 2 email tình huống (20 phút)</li>
-                <li class="flex items-center gap-2">✓ <strong>Part 3 (Q8):</strong> Viết 1 bài luận &ge; 300 từ (30 phút)</li>
-                <li class="flex items-center gap-2">✓ <strong>Thang điểm:</strong> 28 Điểm (Mục tiêu: Đạt &ge; 16.8 Band 3)</li>
-              </ul>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span v-if="mockPhase === 'prep'" class="inline-block w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  <span v-else class="inline-block w-2.5 h-2.5 rounded-full bg-rose-600 animate-ping"></span>
+                  <h4 class="font-extrabold text-base md:text-lg">
+                    {{ mockPhase === 'prep' ? '⏳ THỜI GIAN CHUẨN BỊ (PREPARATION)' : '🔴 ĐANG TỰ ĐỘNG THU ÂM (RESPONSE TIME)' }}
+                  </h4>
+                </div>
+                <p class="text-xs md:text-sm mt-0.5" :class="mockPhase === 'prep' ? 'text-amber-800' : 'text-rose-800 font-medium'">
+                  {{ mockPhase === 'prep' ? 'Hãy đọc lướt văn bản, quan sát tranh hoặc chuẩn bị ý tưởng trong đầu.' : 'Micro đang thu âm! Hãy nói to, rõ ràng và tự tin vào micro.' }}
+                </p>
+              </div>
             </div>
+
+            <!-- Action buttons per phase -->
+            <div>
+              <button 
+                v-if="mockPhase === 'prep'"
+                @click="skipPrepAndSpeak"
+                class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5 whitespace-nowrap">
+                <span>⚡ Bỏ qua chuẩn bị, Nói ngay</span>
+              </button>
+              <button 
+                v-else
+                @click="submitCurrentMockQuestion"
+                class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-1.5 whitespace-nowrap">
+                <span>✓ Đã nói xong, qua câu tiếp theo ➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Question Content Card -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <!-- Directions -->
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Yêu cầu: {{ currentMockQ.direction }}
+            </div>
+
+            <!-- Part 1: Read aloud text -->
+            <div v-if="currentMockQ.text" class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-slate-800 text-base md:text-lg leading-relaxed font-normal">
+              {{ currentMockQ.text }}
+            </div>
+
+            <!-- Part 2: Describe picture -->
+            <div v-if="currentMockQ.keywords" class="space-y-4">
+              <div class="p-4 bg-indigo-50/60 rounded-xl border border-indigo-200">
+                <div class="text-xs font-bold text-indigo-900 mb-2">🔑 5 Từ khóa gợi ý mô tả:</div>
+                <div class="flex flex-wrap gap-2">
+                  <span v-for="kw in currentMockQ.keywords" :key="kw" class="bg-white text-indigo-700 font-semibold text-xs px-3 py-1 rounded-md border border-indigo-200">
+                    {{ kw }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Part 3: Audio question -->
+            <div v-if="currentMockQ.prompt && !currentMockQ.docType" class="p-5 bg-purple-50/60 rounded-xl border border-purple-200 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-purple-700 uppercase">Câu hỏi phỏng vấn:</span>
+                <button @click="speakText(currentMockQ.prompt)" class="text-xs text-indigo-600 font-bold flex items-center gap-1">
+                  <span>🔊</span> Nghe lại câu hỏi
+                </button>
+              </div>
+              <h4 class="text-base md:text-lg font-bold text-slate-900">{{ currentMockQ.prompt }}</h4>
+            </div>
+
+            <!-- Part 4: Schedule Document + Question -->
+            <div v-if="currentMockQ.docType" class="space-y-4">
+              <div class="bg-amber-50/50 border-2 border-dashed border-amber-300 rounded-xl p-4 text-xs md:text-sm">
+                <div class="text-center font-bold uppercase mb-2">The Ad Academy - Small-Business Advertising Seminar (June 30)</div>
+                <div class="space-y-1 text-slate-700 text-xs">
+                  <div><strong>8:00 A.M.</strong> Defining Market Size | <strong>8:45 A.M.</strong> Defining Business Image | <strong>10:00 A.M.</strong> Types of Advertising</div>
+                  <div><strong>1:00 – 3:00 P.M.</strong> Workshops: Wholesale Products, Retail Goods, Services. Price: $70 per person.</div>
+                </div>
+              </div>
+              <div class="p-3.5 bg-indigo-50 rounded-xl border border-indigo-200">
+                <div class="text-xs font-bold text-indigo-900 mb-1">Người gọi hỏi:</div>
+                <div class="font-bold text-slate-900 text-sm md:text-base">{{ currentMockQ.prompt }}</div>
+              </div>
+            </div>
+
+            <!-- Part 5: Opinion Prompt -->
+            <div v-if="currentMockQ.num === 11" class="p-5 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-200 space-y-2">
+              <span class="text-xs font-bold text-purple-700 uppercase">Chủ đề thảo luận quan điểm (60 giây):</span>
+              <h4 class="text-lg md:text-xl font-extrabold text-slate-900">{{ currentMockQ.prompt }}</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.3: SPEAKING MOCK EXAM RESULT SCREEN (With all recorded audios!) -->
+        <div v-if="mockSpeakingFinished" class="space-y-6 animate-fadeIn">
+          <!-- Summary Banner -->
+          <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 text-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <span class="bg-white/20 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">🎉 XUẤT SẮC HOÀN THÀNH</span>
+              <h2 class="text-2xl font-black mt-1">Kết Quả Bài Thi Thử Speaking (11 Câu)</h2>
+              <p class="text-xs md:text-sm text-emerald-100 mt-1">Em đã ghi âm trọn vẹn 11 câu hỏi! Hãy bấm nghe lại giọng đọc của mình và đối chiếu với bài mẫu chuẩn ETS bên dưới nhé.</p>
+            </div>
+            <div class="flex gap-2">
+              <button 
+                @click="resetMockExam" 
+                class="px-4 py-2.5 bg-white text-emerald-800 font-bold rounded-xl text-xs hover:bg-emerald-50 shadow-sm transition">
+                Thi Thử Lần Nữa
+              </button>
+            </div>
+          </div>
+
+          <!-- Review List of all 11 questions -->
+          <div class="space-y-4">
+            <div 
+              v-for="(mq, mIdx) in mockSpeakingQuestions" 
+              :key="mq.num"
+              class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-3">
+              
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="bg-indigo-100 text-indigo-700 font-bold text-xs px-2.5 py-1 rounded-lg">Câu {{ mq.num }}</span>
+                  <span class="text-xs text-slate-500 font-semibold">{{ mq.partName }}</span>
+                  <span class="font-bold text-slate-800 text-sm">- {{ mq.title }}</span>
+                </div>
+                <!-- Status badge -->
+                <span 
+                  v-if="mockRecordings[mIdx]" 
+                  class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  ✓ Đã lưu file ghi âm
+                </span>
+                <span 
+                  v-else 
+                  class="bg-slate-100 text-slate-500 text-xs px-2.5 py-0.5 rounded-full">
+                  Chưa thu âm
+                </span>
+              </div>
+
+              <!-- Question & Audio Comparison Grid -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-1">
+                <!-- User's Recorded Audio -->
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                  <div class="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <span>🎙️ Giọng đọc của em:</span>
+                    <a 
+                      v-if="mockRecordings[mIdx]" 
+                      :href="mockRecordings[mIdx]" 
+                      :download="'speaking_cau_' + mq.num + '.webm'" 
+                      class="text-[11px] text-indigo-600 hover:underline font-bold">
+                      ⬇️ Tải file thu âm
+                    </a>
+                  </div>
+                  <div v-if="mockRecordings[mIdx]">
+                    <audio :src="mockRecordings[mIdx]" controls class="w-full h-9"></audio>
+                  </div>
+                  <div v-else class="text-xs text-slate-400 italic">
+                    (Không có file ghi âm cho câu này)
+                  </div>
+                </div>
+
+                <!-- Model Answer & Native Audio -->
+                <div class="p-3.5 bg-indigo-50/50 rounded-xl border border-indigo-200 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-indigo-950">✨ Bài mẫu chuẩn ETS (Slide):</span>
+                    <button 
+                      @click="speakText(mq.text || mq.sampleAnswer || mq.prompt)"
+                      class="text-xs text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1">
+                      <span>🔊</span> Nghe mẫu US
+                    </button>
+                  </div>
+                  <p class="text-xs md:text-sm text-slate-800 leading-relaxed font-normal">
+                    {{ mq.text || mq.sampleAnswer }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-center">
             <button 
-              @click="openMockModal('writing')"
-              class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-sm shadow-sm transition">
-              Bắt Đầu Thi Thử Writing ➔
+              @click="resetMockExam"
+              class="px-6 py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-bold shadow-md transition">
+              Quay Về Danh Sách Thi Thử
             </button>
           </div>
         </div>
+
       </section>
 
       <!-- =============================================================== -->
@@ -1069,6 +1348,51 @@
                 <strong>Kết luận:</strong> <br/>
                 <code>In conclusion, I believe that [A] is more preferable than [B] because...</code>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPDATE GUIDE SECTION -->
+        <div class="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-2xl p-6 shadow-md space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🛠️</span>
+              <div>
+                <h4 class="font-bold text-base text-white">Cách Cập Nhật & Thêm Đề Mới Sau Này</h4>
+                <p class="text-xs text-indigo-200">Rất đơn giản, không cần kiến thức lập trình phức tạp!</p>
+              </div>
+            </div>
+            <span class="bg-indigo-500/30 text-indigo-300 text-xs px-2.5 py-1 rounded-full font-bold border border-indigo-400/20">Dành Cho Bạn & Người Yêu</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 bg-white/5 rounded-xl border border-white/10 space-y-2">
+              <div class="font-bold text-yellow-300 flex items-center gap-1.5 text-sm">
+                <span>🤖</span> Cách 1: Nhờ AI cập nhật (Nhanh & Nhẹ Nhất)
+              </div>
+              <p class="text-slate-300 leading-relaxed">
+                Mỗi khi có đề thi mới, tài liệu mới từ thầy cô hoặc trường:
+              </p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li>Chụp màn hình hoặc gửi file PDF vào cửa sổ chat với AI.</li>
+                <li>Nói: <em>"Cập nhật các câu hỏi này vào web repo hoctienganh giúp tôi"</em>.</li>
+                <li>AI sẽ tự động đọc, trích xuất từ vựng IPA, bài mẫu và đẩy thẳng lên GitHub. Sau 1 phút người yêu mở web là có ngay bài mới!</li>
+              </ul>
+            </div>
+
+            <div class="p-4 bg-white/5 rounded-xl border border-white/10 space-y-2">
+              <div class="font-bold text-emerald-300 flex items-center gap-1.5 text-sm">
+                <span>✏️</span> Cách 2: Tự sửa trên GitHub Web (Mất 1 phút)
+              </div>
+              <p class="text-slate-300 leading-relaxed">
+                Bạn có thể mở trực tiếp repo bằng điện thoại hoặc máy tính:
+              </p>
+              <ul class="list-disc ml-4 space-y-1 text-slate-300">
+                <li>Vào link: <code class="text-indigo-300">github.com/tuducluong098-ux/hoctienganh</code></li>
+                <li>Bấm vào file <code class="text-indigo-300">index.html</code> $\rightarrow$ Bấm hình cây bút ✏️ để chỉnh sửa.</li>
+                <li>Kéo xuống phần dữ liệu (bắt đầu bằng <code class="text-yellow-300">// DATA: ...</code>), copy 1 câu cũ ra và thay chữ mới vào.</li>
+                <li>Bấm nút xanh lá <strong>Commit changes</strong>. Web sẽ tự cập nhật sau 30 giây!</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -1233,6 +1557,73 @@
             userEssayText.value = '';
             localStorage.removeItem('essay_draft');
           }
+        };
+
+        // PRACTICE VOICE RECORDER
+        const practiceAudioUrl = ref(null);
+        const isPracticeRecording = ref(false);
+        const practiceRecordSeconds = ref(0);
+        let practiceMediaRecorder = null;
+        let practiceAudioChunks = [];
+        let practiceTimerInterval = null;
+        let practiceStream = null;
+
+        const startPracticeRecording = async () => {
+          try {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+              alert("Trình duyệt không hỗ trợ ghi âm trực tiếp. Hãy dùng Chrome, Edge hoặc Safari.");
+              return;
+            }
+            practiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            practiceAudioChunks = [];
+            
+            let options = {};
+            if (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) {
+              options = { mimeType: 'audio/webm' };
+            } else if (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/mp4')) {
+              options = { mimeType: 'audio/mp4' };
+            }
+            
+            practiceMediaRecorder = new MediaRecorder(practiceStream, options);
+            practiceMediaRecorder.ondataavailable = (e) => {
+              if (e.data && e.data.size > 0) practiceAudioChunks.push(e.data);
+            };
+            practiceMediaRecorder.onstop = () => {
+              const mime = practiceMediaRecorder.mimeType || 'audio/webm';
+              const blob = new Blob(practiceAudioChunks, { type: mime });
+              if (practiceAudioUrl.value) URL.revokeObjectURL(practiceAudioUrl.value);
+              practiceAudioUrl.value = URL.createObjectURL(blob);
+              if (practiceStream) {
+                practiceStream.getTracks().forEach(t => t.stop());
+                practiceStream = null;
+              }
+            };
+
+            practiceMediaRecorder.start();
+            isPracticeRecording.value = true;
+            practiceRecordSeconds.value = 0;
+            clearInterval(practiceTimerInterval);
+            practiceTimerInterval = setInterval(() => {
+              practiceRecordSeconds.value++;
+            }, 1000);
+          } catch(err) {
+            alert("Vui lòng cấp quyền Microphone trên trình duyệt để ghi âm giọng nói nhé!");
+          }
+        };
+
+        const stopPracticeRecording = () => {
+          if (practiceMediaRecorder && practiceMediaRecorder.state !== 'inactive') {
+            practiceMediaRecorder.stop();
+          }
+          isPracticeRecording.value = false;
+          clearInterval(practiceTimerInterval);
+        };
+
+        const resetPracticeRecording = () => {
+          stopPracticeRecording();
+          if (practiceAudioUrl.value) URL.revokeObjectURL(practiceAudioUrl.value);
+          practiceAudioUrl.value = null;
+          practiceRecordSeconds.value = 0;
         };
 
         // Text-to-Speech (Native Web Speech API)
@@ -1791,26 +2182,269 @@
         const essayAgreementText = essayAgreementParas.join(' ');
         const essayDisagreementText = essayDisagreementParas.join(' ');
 
-        // Mock test modal
-        const showMockModal = ref(false);
-        const mockType = ref('speaking');
+        // MOCK TEST SIMULATOR & AUDIO RECORDING LOGIC
+        const mockSpeakingActive = ref(false);
+        const mockSpeakingFinished = ref(false);
+        const mockStep = ref(0);
+        const mockPhase = ref('prep'); // 'prep' | 'speak'
+        const mockTimer = ref(45);
+        const mockRecordings = ref(new Array(11).fill(null));
+        let mockTimerInterval = null;
+        let mockStream = null;
+        let mockMediaRecorder = null;
+        let mockAudioChunks = [];
 
-        const openMockModal = (type) => {
-          mockType.value = type;
-          showMockModal.value = true;
+        const mockSpeakingQuestions = [
+          {
+            num: 1,
+            partName: "Part 1: Read a text aloud",
+            prepTime: 45,
+            speakTime: 45,
+            title: "Faraway Spa and Resort",
+            direction: "Đọc to rõ ràng đoạn văn sau trong 45 giây.",
+            text: "Good day, everyone, and welcome to the Faraway Spa and Resort. We'd like to call your attention to a few important items. Make sure you register at the front desk and pick up your room keys and introductory packets. Next, you will receive a complimentary certificate for dinner at our gourmet restaurant. Dinner will be served at 6 p.m. and 8 p.m. In your room, you will find a robe, towels, and a gift basket of products, such as bath soaps and lotions. Please feel free to contact us if you have forgotten to bring any personal items with you. We hope you find your stay at Faraway Spa and Resort relaxing and enjoyable.",
+            sampleAnswer: "Good day, everyone, and welcome to the Faraway Spa and Resort. We'd like to call your attention to a few important items. Make sure you register at the front desk and pick up your room keys and introductory packets. Next, you will receive a complimentary certificate for dinner at our gourmet restaurant..."
+          },
+          {
+            num: 2,
+            partName: "Part 1: Read a text aloud",
+            prepTime: 45,
+            speakTime: 45,
+            title: "Holden High School Graduation",
+            direction: "Đọc to rõ ràng đoạn văn sau trong 45 giây.",
+            text: "When I was approached about speaking at this Holden High School graduation ceremony, I thought about what advice I could share with you. As a diplomat for over 40 years, I worked on foreign policy, trade deals, and important negotiations. However, the advice I have to share has little to do with politics and everything to do with communication.",
+            sampleAnswer: "When I was approached about speaking at this Holden High School graduation ceremony, I thought about what advice I could share with you. As a diplomat for over 40 years, I worked on foreign policy, trade deals, and important negotiations..."
+          },
+          {
+            num: 3,
+            partName: "Part 2: Describe a picture",
+            prepTime: 45,
+            speakTime: 30,
+            title: "Classroom Biology Lesson",
+            direction: "Mô tả bức tranh chi tiết bằng 5-7 câu.",
+            keywords: ["a classroom", "students and a teacher", "biology", "desks, chairs, pens", "focused / pay attention"],
+            sampleAnswer: "This picture is taken in a classroom. There are some students in the picture, they seem to be in primary school. There is also a teacher. The students seem to be studying biology. In the room, there are a lot of desks and chairs. The students seem to be focused and interested in the lesson."
+          },
+          {
+            num: 4,
+            partName: "Part 2: Describe a picture",
+            prepTime: 45,
+            speakTime: 30,
+            title: "Bookstore Shoppers",
+            direction: "Mô tả bức tranh chi tiết bằng 5-7 câu.",
+            keywords: ["inside a bookstore", "shoppers", "books on the shelves", "coats and jackets", "relaxed / have a good time"],
+            sampleAnswer: "This picture is taken inside a bookstore. There are several shoppers in the picture, they seem to be shopping for books. There are many books on the shelves. The shoppers are wearing coats and jackets. The weather may be cold. The shoppers look relaxed and they are having a good time."
+          },
+          {
+            num: 5,
+            partName: "Part 3: Respond to questions",
+            prepTime: 3,
+            speakTime: 15,
+            title: "Favorite Type of Movie",
+            direction: "Trả lời ngắn gọn trong 1-2 câu (15 giây).",
+            prompt: "What's your favorite type of movie and why do you like it?",
+            sampleAnswer: "My favorite type of movie is horror because it is thrilling and exciting. It offers me an escape from my daily life."
+          },
+          {
+            num: 6,
+            partName: "Part 3: Respond to questions",
+            prepTime: 3,
+            speakTime: 15,
+            title: "Place to Buy Clothing",
+            direction: "Trả lời ngắn gọn trong 1-2 câu (15 giây).",
+            prompt: "What's your favorite place to buy clothing?",
+            sampleAnswer: "My favorite place to buy clothing is a shopping mall because it has a variety of shops, so I can shop for clothes from many different brands."
+          },
+          {
+            num: 7,
+            partName: "Part 3: Respond to questions",
+            prepTime: 3,
+            speakTime: 30,
+            title: "Favorite Restaurant",
+            direction: "Miêu tả chi tiết với 3 ý (Địa điểm, Phục vụ, Đồ ăn) trong 30 giây.",
+            prompt: "Describe your favorite restaurant.",
+            sampleAnswer: "My favorite restaurant is Pizza 4P's in District 1, Ho Chi Minh City. This is because it has great service. The waiters and waitresses are always kind and friendly. Also, the food here is delicious with a wide variety of dishes."
+          },
+          {
+            num: 8,
+            partName: "Part 4: Respond using information provided",
+            prepTime: 45,
+            speakTime: 15,
+            title: "Small-Business Seminar: Cost",
+            direction: "Đọc lịch trình và trả lời câu hỏi của người gọi trong 15 giây.",
+            docType: "ad_seminar",
+            prompt: "Could you tell me how much it costs to attend?",
+            sampleAnswer: "Yes, of course. It costs 70 dollars per person to attend the small-business advertising seminar."
+          },
+          {
+            num: 9,
+            partName: "Part 4: Respond using information provided",
+            prepTime: 3,
+            speakTime: 15,
+            title: "Small-Business Seminar: Workshops",
+            direction: "Đính chính thông tin cho người gọi trong 15 giây.",
+            docType: "ad_seminar",
+            prompt: "There are more than ten workshops to choose from, right?",
+            sampleAnswer: "No, there aren't. Actually, there are only 3 workshops to choose from, including Wholesale Products, Retail Goods, and Services."
+          },
+          {
+            num: 10,
+            partName: "Part 4: Respond using information provided",
+            prepTime: 3,
+            speakTime: 30,
+            title: "Small-Business Seminar: Morning Topics",
+            direction: "Liệt kê đầy đủ các chủ đề buổi sáng trong 30 giây.",
+            docType: "ad_seminar",
+            prompt: "Could you please tell me what topics are going to be discussed in the morning?",
+            sampleAnswer: "Yes, certainly! The topics that are going to be discussed in the morning are: Defining the Size of Your Market at 8:00 A.M., Defining Your Business Image at 8:45 A.M., and Types of Advertising at 10:00 A.M."
+          },
+          {
+            num: 11,
+            partName: "Part 5: Express an opinion",
+            prepTime: 45,
+            speakTime: 60,
+            title: "Big City vs Small Town",
+            direction: "Trình bày bài nói 60 giây gồm 4 phần: Mở bài - 2 Lý do kèm ví dụ - Kết luận.",
+            prompt: "Would you rather live in a big city or a small town? Why?",
+            sampleAnswer: "Personally, I would rather live in a big city. The reason I feel this way is that it can allow me to develop my career. Big cities usually have many international companies, so I can find a job that gives me valuable experience more easily. For example, working in a multinational company helps improve communication skills. Moreover, living in a big city is more enjoyable with many things to do. Therefore, I think living in a big city is more preferable."
+          }
+        ];
+
+        const currentMockQ = computed(() => mockSpeakingQuestions[mockStep.value] || mockSpeakingQuestions[0]);
+
+        const startSpeakingMockExam = async () => {
+          try {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+              mockStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            }
+          } catch(err) {
+            console.warn("Chưa cấp quyền mic:", err);
+          }
+          mockStep.value = 0;
+          mockRecordings.value = new Array(11).fill(null);
+          mockSpeakingFinished.value = false;
+          mockSpeakingActive.value = true;
+          startMockPrepPhase(mockSpeakingQuestions[0].prepTime);
         };
 
-        const startActualMock = () => {
-          showMockModal.value = false;
-          if (mockType.value === 'speaking') {
-            activeTab.value = 'speaking';
-            currentSpeakingSub.value = 'q12';
-            startPrepTimer(45, 'Phần thi Speaking bắt đầu: 45s chuẩn bị câu 1!');
-          } else {
-            activeTab.value = 'writing';
-            currentWritingSub.value = 'w1';
-            alert("Bắt đầu phần thi Writing: 8 phút làm 5 câu Part 1!");
+        const startMockPrepPhase = (seconds) => {
+          mockPhase.value = 'prep';
+          mockTimer.value = seconds;
+          clearInterval(mockTimerInterval);
+          
+          const q = mockSpeakingQuestions[mockStep.value];
+          if (q.prompt && !q.docType) {
+            speakText(q.prompt);
           }
+
+          mockTimerInterval = setInterval(() => {
+            if (mockTimer.value > 1) {
+              mockTimer.value--;
+            } else {
+              clearInterval(mockTimerInterval);
+              startMockSpeakPhase();
+            }
+          }, 1000);
+        };
+
+        const skipPrepAndSpeak = () => {
+          clearInterval(mockTimerInterval);
+          startMockSpeakPhase();
+        };
+
+        const startMockSpeakPhase = () => {
+          mockPhase.value = 'speak';
+          const q = mockSpeakingQuestions[mockStep.value];
+          mockTimer.value = q.speakTime;
+
+          // Start MediaRecorder if stream available
+          mockAudioChunks = [];
+          if (mockStream) {
+            try {
+              let options = {};
+              if (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/webm')) {
+                options = { mimeType: 'audio/webm' };
+              } else if (window.MediaRecorder && MediaRecorder.isTypeSupported('audio/mp4')) {
+                options = { mimeType: 'audio/mp4' };
+              }
+              mockMediaRecorder = new MediaRecorder(mockStream, options);
+              mockMediaRecorder.ondataavailable = (e) => {
+                if (e.data && e.data.size > 0) mockAudioChunks.push(e.data);
+              };
+              mockMediaRecorder.start();
+            } catch(e) {}
+          }
+
+          clearInterval(mockTimerInterval);
+          mockTimerInterval = setInterval(() => {
+            if (mockTimer.value > 1) {
+              mockTimer.value--;
+            } else {
+              clearInterval(mockTimerInterval);
+              submitCurrentMockQuestion();
+            }
+          }, 1000);
+        };
+
+        const submitCurrentMockQuestion = () => {
+          clearInterval(mockTimerInterval);
+          
+          // Stop recording and save blob
+          if (mockMediaRecorder && mockMediaRecorder.state !== 'inactive') {
+            mockMediaRecorder.onstop = () => {
+              const mime = mockMediaRecorder.mimeType || 'audio/webm';
+              const blob = new Blob(mockAudioChunks, { type: mime });
+              mockRecordings.value[mockStep.value] = URL.createObjectURL(blob);
+              proceedToNextQuestion();
+            };
+            mockMediaRecorder.stop();
+          } else {
+            proceedToNextQuestion();
+          }
+        };
+
+        const proceedToNextQuestion = () => {
+          if (mockStep.value < 10) {
+            mockStep.value++;
+            startMockPrepPhase(mockSpeakingQuestions[mockStep.value].prepTime);
+          } else {
+            // Finished!
+            mockSpeakingActive.value = false;
+            mockSpeakingFinished.value = true;
+            if (mockStream) {
+              mockStream.getTracks().forEach(t => t.stop());
+              mockStream = null;
+            }
+            if (typeof confetti === 'function') {
+              confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+            }
+          }
+        };
+
+        const stopSpeakingMockExam = () => {
+          if (confirm("Em có muốn dừng bài thi thử không?")) {
+            clearInterval(mockTimerInterval);
+            if (mockMediaRecorder && mockMediaRecorder.state !== 'inactive') {
+              mockMediaRecorder.stop();
+            }
+            if (mockStream) {
+              mockStream.getTracks().forEach(t => t.stop());
+              mockStream = null;
+            }
+            mockSpeakingActive.value = false;
+          }
+        };
+
+        const resetMockExam = () => {
+          mockSpeakingActive.value = false;
+          mockSpeakingFinished.value = false;
+          mockStep.value = 0;
+        };
+
+        const startWritingMockExam = () => {
+          activeTab.value = 'writing';
+          currentWritingSub.value = 'w1';
+          alert("Bắt đầu thi thử Writing 60 phút: Hãy làm 5 câu Part 1 trong 8 phút đầu tiên nhé!");
         };
 
         // Save essay draft on change
@@ -1869,15 +2503,31 @@
           speakWord,
           stopSpeech,
           isSpeaking,
+          practiceAudioUrl,
+          isPracticeRecording,
+          practiceRecordSeconds,
+          startPracticeRecording,
+          stopPracticeRecording,
+          resetPracticeRecording,
+          mockSpeakingActive,
+          mockSpeakingFinished,
+          mockStep,
+          mockPhase,
+          mockTimer,
+          mockRecordings,
+          mockSpeakingQuestions,
+          currentMockQ,
+          startSpeakingMockExam,
+          skipPrepAndSpeak,
+          submitCurrentMockQuestion,
+          stopSpeakingMockExam,
+          resetMockExam,
+          startWritingMockExam,
           toggleComplete,
           isCompleted,
           completedCount,
           totalExercises,
-          progressPercent,
-          showMockModal,
-          mockType,
-          openMockModal,
-          startActualMock
+          progressPercent
         };
       }
     }).mount('#app');
