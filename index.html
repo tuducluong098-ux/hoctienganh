@@ -45,6 +45,7 @@
   </script>
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    [v-cloak] { display: none; }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
@@ -57,7 +58,7 @@
   </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
-  <div id="app" class="flex-1 flex flex-col">
+  <div id="app" v-cloak class="flex-1 flex flex-col">
 
     <!-- TOP MOTIVATION BANNER -->
     <header class="bg-gradient-to-r from-rose-500 via-pink-500 to-indigo-600 text-white shadow-md sticky top-0 z-50">
@@ -197,7 +198,7 @@
                       <span>🔊</span> Nghe Cả Đoạn (US)
                     </button>
                     <button 
-                      v-if="speechSynthesis.speaking" 
+                      v-if="isSpeaking" 
                       @click="stopSpeech"
                       class="px-2.5 py-2 bg-rose-100 text-rose-700 rounded-xl text-xs font-bold">
                       Dừng
@@ -1235,6 +1236,8 @@
         };
 
         // Text-to-Speech (Native Web Speech API)
+        const isSpeaking = ref(false);
+
         const speakText = (text, rate = 0.95) => {
           if (!('speechSynthesis' in window)) {
             alert("Trình duyệt không hỗ trợ phát âm giọng nói.");
@@ -1248,6 +1251,11 @@
           const voices = window.speechSynthesis.getVoices();
           const usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Zira')));
           if (usVoice) utterance.voice = usVoice;
+
+          isSpeaking.value = true;
+          utterance.onend = () => { isSpeaking.value = false; };
+          utterance.onerror = () => { isSpeaking.value = false; };
+
           window.speechSynthesis.speak(utterance);
         };
 
@@ -1257,6 +1265,7 @@
 
         const stopSpeech = () => {
           window.speechSynthesis.cancel();
+          isSpeaking.value = false;
         };
 
         // Subpart Tabs
@@ -1859,6 +1868,7 @@
           speakText,
           speakWord,
           stopSpeech,
+          isSpeaking,
           toggleComplete,
           isCompleted,
           completedCount,
