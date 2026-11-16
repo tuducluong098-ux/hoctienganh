@@ -31,7 +31,7 @@ Duyệt qua **toàn bộ 100% không sót bất kỳ trang slide nào** từ 2 b
   - *Trang 1 - 2*: Bìa bài học & Bảng cấu trúc đề thi 11 câu hỏi.
   - *Trang 3*: Đoạn văn mẫu khởi động (Question Sample - Summer Festival).
   - *Trang 4*: Tiêu chí & Yêu cầu chi tiết về Phát âm (Ending sounds /s/, /z/, /t/, /d/) và Ngữ điệu liệt kê (A ↗, B ↗, and C ↘).
-  - *Trang 5 - 14*: Đầy đủ 5 bài đọc to chính thức (*Faraway Spa, Holden High School, Keynote Speaker Dr. Marion Hayes, Fitness Factory, Wild Bear Tour*) kèm bảng từ vựng phiên âm IPA có thể bấm nghe từng từ.
+  - *Trang 5 - 14*: Đầy đủ 5 bài đọc to chính thức (*Faraway Spa, Holden High School, Keynote Speaker Dr. Maria Sanchez, Fitness Factory, Wild Bear Tour*) kèm bảng từ vựng phiên âm IPA có thể bấm nghe từng từ.
   - *Trang 15 - 17*: Giới thiệu mô tả tranh, Bảng Rubric ETS tiêu chuẩn điểm 0-3 và yêu cầu 5-7 câu.
   - *Trang 18 - 27*: Đầy đủ 4 bức tranh (*Classroom, Bookstore, Extra 1: Painting house, Extra 2: Park office workers*) với đủ 2 bước: Bước 1 Liệt kê từ khóa & Bước 2 Đặt câu hoàn chỉnh.
   - *Trang 28 - 29*: Yêu cầu trả lời câu hỏi và Bảng Rubric ETS tiêu chuẩn điểm 0-3.
