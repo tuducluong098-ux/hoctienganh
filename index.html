@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HỌC TIẾNG ANH 2 TRIỆU 3 💸 | Luyện Thi Chuẩn Đầu Ra</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            love: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              500: '#f43f5e',
+              600: '#e11d48',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .animate-pulse-subtle { animation: pulse-subtle 2.5s infinite; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+  <div id="app" class="flex-1 flex flex-col">
+
+    <!-- TOP MOTIVATION BANNER -->
+    <header class="bg-gradient-to-r from-rose-500 via-pink-500 to-indigo-600 text-white shadow-md sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center space-x-3">
+          <div class="bg-white/20 p-2 rounded-xl backdrop-blur-sm flex items-center justify-center">
+            <span class="text-2xl">💸</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-extrabold text-lg md:text-xl tracking-tight">HỌC TIẾNG ANH 2 TRIỆU 3</h1>
+              <span class="bg-yellow-400 text-slate-900 text-xs px-2.5 py-0.5 rounded-full font-bold shadow-sm animate-pulse-subtle">
+                TARGET: ĐẬU LẦN 1
+              </span>
+            </div>
+            <p class="text-xs md:text-sm text-pink-100 font-medium">
+              ❤️ Nhắc nhở từ người thương: <span class="text-yellow-200 font-bold underline">"Học đi em rớt tốn tiền =))"</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- PROGRESS & SAVINGS COUNTER -->
+        <div class="flex items-center gap-4 bg-white/10 px-3 py-1.5 rounded-xl backdrop-blur-sm border border-white/15">
+          <div class="text-right">
+            <div class="text-[11px] text-pink-100 font-medium">Đã hoàn thành</div>
+            <div class="text-sm font-bold text-white">{{ completedCount }}/{{ totalExercises }} bài ({{ progressPercent }}%)</div>
+          </div>
+          <div class="w-10 h-10 rounded-full border-4 border-yellow-300 flex items-center justify-center bg-black/20 font-extrabold text-xs">
+            {{ progressPercent }}%
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN TABS NAVIGATION -->
+      <nav class="bg-slate-900/40 backdrop-blur-md border-t border-white/10 px-4">
+        <div class="max-w-7xl mx-auto flex space-x-1 md:space-x-3 overflow-x-auto py-2 custom-scrollbar">
+          <button 
+            @click="activeTab = 'speaking'" 
+            :class="activeTab === 'speaking' ? 'bg-white text-indigo-700 font-bold shadow' : 'text-slate-200 hover:bg-white/10'"
+            class="px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition whitespace-nowrap">
+            <span>🗣️</span> <strong>Luyện Speaking (Q1 - 11)</strong>
+          </button>
+
+          <button 
+            @click="activeTab = 'writing'" 
+            :class="activeTab === 'writing' ? 'bg-white text-indigo-700 font-bold shadow' : 'text-slate-200 hover:bg-white/10'"
+            class="px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition whitespace-nowrap">
+            <span>✍️</span> <strong>Luyện Writing (Part 1 - 3)</strong>
+          </button>
+
+          <button 
+            @click="activeTab = 'mock'" 
+            :class="activeTab === 'mock' ? 'bg-white text-indigo-700 font-bold shadow' : 'text-slate-200 hover:bg-white/10'"
+            class="px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition whitespace-nowrap">
+            <span>⏱️</span> <strong>Phòng Thi Thử Chuẩn Giờ</strong>
+          </button>
+
+          <button 
+            @click="activeTab = 'cheatsheet'" 
+            :class="activeTab === 'cheatsheet' ? 'bg-white text-indigo-700 font-bold shadow' : 'text-slate-200 hover:bg-white/10'"
+            class="px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition whitespace-nowrap">
+            <span>💡</span> <strong>Bí Kíp Điểm Cao & Thang Điểm</strong>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+
+      <!-- =============================================================== -->
+      <!-- TAB 1: SPEAKING SECTION -->
+      <!-- =============================================================== -->
+      <section v-if="activeTab === 'speaking'" class="space-y-6">
+        <!-- Section Intro -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">ETS TOEIC SPEAKING</span>
+              <span class="text-xs text-slate-500 font-medium">11 Câu hỏi • Chuẩn đầu ra nội bộ</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800 mt-1">Luyện Nói Từng Dạng Bài (Có Phát Âm Mẫu & Bấm Giờ)</h2>
+            <p class="text-sm text-slate-600">Bấm nút "🔊 Nghe đọc mẫu" để nghe giọng người Mỹ chuẩn. Chú ý ngắt nghỉ, trọng âm và phụ âm cuối.</p>
+          </div>
+          <!-- Subpart selector pills -->
+          <div class="flex flex-wrap gap-1.5 bg-slate-100 p-1.5 rounded-xl">
+            <button 
+              v-for="sub in speakingSubparts" 
+              :key="sub.id"
+              @click="currentSpeakingSub = sub.id"
+              :class="currentSpeakingSub === sub.id ? 'bg-indigo-600 text-white font-semibold shadow-sm' : 'text-slate-600 hover:bg-slate-200'"
+              class="px-3 py-1.5 rounded-lg text-xs transition">
+              {{ sub.name }}
+            </button>
+          </div>
+        </div>
+
+        <!-- 1.1: SPEAKING QUESTIONS 1-2: READ A TEXT ALOUD -->
+        <div v-if="currentSpeakingSub === 'q12'" class="space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left: List of passages -->
+            <div class="lg:col-span-1 space-y-3">
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Danh sách 5 bài đọc mẫu</div>
+              <div 
+                v-for="(p, index) in speakingQ12Passages" 
+                :key="p.id"
+                @click="selectedQ12Index = index"
+                :class="selectedQ12Index === index ? 'border-indigo-600 bg-indigo-50/70 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300'"
+                class="p-4 rounded-xl border transition cursor-pointer relative">
+                <div class="flex items-center justify-between">
+                  <h4 class="font-bold text-sm text-slate-800">{{ p.title }}</h4>
+                  <span v-if="isCompleted('spk_q12_' + p.id)" class="text-emerald-500 text-xs font-bold flex items-center gap-1">
+                    ✓ Đã ôn
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ p.text }}</p>
+                <div class="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+                  <span>{{ p.vocab.length }} từ quan trọng</span>
+                  <span class="text-indigo-600 font-medium">Bấm để luyện →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Active Passage Detail -->
+            <div class="lg:col-span-2 space-y-4">
+              <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                  <div>
+                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Part 1: Câu 1 - 2</span>
+                    <h3 class="text-lg font-bold text-slate-800 mt-1">{{ currentPassage.title }}</h3>
+                  </div>
+                  <!-- Audio & Timer Controls -->
+                  <div class="flex items-center gap-2">
+                    <button 
+                      @click="speakText(currentPassage.text)"
+                      class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+                      <span>🔊</span> Nghe Cả Đoạn (US)
+                    </button>
+                    <button 
+                      v-if="speechSynthesis.speaking" 
+                      @click="stopSpeech"
+                      class="px-2.5 py-2 bg-rose-100 text-rose-700 rounded-xl text-xs font-bold">
+                      Dừng
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Text box with highlighted keywords -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200/90 text-slate-700 text-base md:text-lg leading-relaxed font-normal">
+                  <span 
+                    v-for="(wordObj, wIdx) in renderPassageWithHighlights(currentPassage)" 
+                    :key="wIdx"
+                    :class="wordObj.isKeyword ? 'text-rose-600 font-bold underline decoration-rose-300 decoration-2 cursor-pointer hover:bg-rose-100 rounded px-0.5' : ''"
+                    @click="wordObj.isKeyword ? speakWord(wordObj.cleanWord) : null"
+                    :title="wordObj.isKeyword ? 'Bấm để nghe phát âm: ' + wordObj.cleanWord : ''">
+                    {{ wordObj.text }}
+                  </span>
+                </div>
+
+                <!-- Countdown Practice Box -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-xl shadow-inner">
+                      {{ timerSeconds }}s
+                    </div>
+                    <div>
+                      <div class="text-xs font-bold text-amber-900 uppercase">Đồng hồ luyện phản xạ thi thật</div>
+                      <div class="text-xs text-amber-700">{{ timerModeLabel }}</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button 
+                      @click="startPrepTimer(45, 'Chuẩn bị đọc (45s)')" 
+                      class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition">
+                      ⏱️ 45s Chuẩn Bị
+                    </button>
+                    <button 
+                      @click="startPrepTimer(45, 'Bắt đầu đọc to (45s)!')" 
+                      class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition">
+                      🎙️ 45s Đọc Thật
+                    </button>
+                    <button 
+                      @click="resetTimer" 
+                      class="px-2.5 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold">
+                      Reset
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Vocabulary with IPA Grid -->
+                <div>
+                  <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+                    Từ vựng & Phiên âm IPA quan trọng (Bấm vào loa để nghe chuẩn từng từ)
+                  </h4>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                    <div 
+                      v-for="v in currentPassage.vocab" 
+                      :key="v.word"
+                      @click="speakWord(v.word)"
+                      class="p-2.5 rounded-lg border border-slate-200 bg-white hover:border-indigo-400 hover:shadow-sm transition cursor-pointer flex items-center justify-between group">
+                      <div>
+                        <div class="font-bold text-sm text-slate-800 group-hover:text-indigo-600">{{ v.word }}</div>
+                        <div class="text-xs font-mono text-indigo-500 font-semibold">{{ v.ipa }}</div>
+                      </div>
+                      <span class="text-slate-300 group-hover:text-indigo-600 text-sm">🔊</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mark completed button -->
+                <div class="pt-3 border-t border-slate-100 flex justify-end">
+                  <button 
+                    @click="toggleComplete('spk_q12_' + currentPassage.id)" 
+                    :class="isCompleted('spk_q12_' + currentPassage.id) ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-slate-800 text-white hover:bg-slate-900'"
+                    class="px-4 py-2 rounded-xl text-xs font-bold border transition flex items-center gap-2">
+                    <span>{{ isCompleted('spk_q12_' + currentPassage.id) ? '✓ Đã hoàn thành bài này' : 'Đánh dấu đã luyện xong' }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.2: SPEAKING QUESTIONS 3-4: DESCRIBE PICTURES -->
+        <div v-if="currentSpeakingSub === 'q34'" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div 
+              v-for="(pic, idx) in speakingQ34Data" 
+              :key="pic.id" 
+              class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-4 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">{{ pic.tag }}</span>
+                  <span v-if="isCompleted('spk_q34_' + pic.id)" class="text-xs text-emerald-600 font-bold">✓ Đã ôn</span>
+                </div>
+                <h3 class="font-bold text-slate-800 text-base mb-1">{{ pic.title }}</h3>
+                <p class="text-xs text-slate-500 mb-3">{{ pic.description_hint }}</p>
+
+                <!-- Keywords List -->
+                <div class="bg-indigo-50/60 p-3 rounded-xl border border-indigo-100 mb-3">
+                  <div class="text-xs font-bold text-indigo-900 mb-1.5">🔑 5 Từ khóa chuẩn bị nói:</div>
+                  <div class="flex flex-wrap gap-1.5">
+                    <span 
+                      v-for="kw in pic.keywords" 
+                      :key="kw"
+                      class="bg-white text-indigo-700 text-xs px-2 py-1 rounded-md border border-indigo-200 font-medium">
+                      {{ kw }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Step by step model answer -->
+                <div class="space-y-2">
+                  <div class="text-xs font-bold text-slate-500 uppercase">Bài mẫu đạt điểm tối đa (5-7 câu):</div>
+                  <div class="space-y-1.5 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs md:text-sm text-slate-700">
+                    <p v-for="(sen, sIdx) in pic.modelSentences" :key="sIdx" class="leading-relaxed">
+                      <strong class="text-indigo-600">{{ sen.label }}:</strong> {{ sen.text }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action button -->
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                <button 
+                  @click="speakText(pic.modelSentences.map(s => s.text).join(' '))"
+                  class="text-xs text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1">
+                  <span>🔊</span> Nghe bài mẫu
+                </button>
+                <button 
+                  @click="toggleComplete('spk_q34_' + pic.id)"
+                  :class="isCompleted('spk_q34_' + pic.id) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
+                  class="px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                  {{ isCompleted('spk_q34_' + pic.id) ? '✓ Đã thuộc' : 'Đánh dấu đã thuộc' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.3: SPEAKING QUESTIONS 5-7: RESPOND TO QUESTIONS -->
+        <div v-if="currentSpeakingSub === 'q57'" class="space-y-6">
+          <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 text-xs text-indigo-900 flex items-center justify-between">
+            <div>
+              <strong>📌 Chiến thuật trả lời Q5-7:</strong> Trả lời ngay trọng tâm (1-2 câu). Đối với câu 7, bắt buộc nêu thêm lý do hoặc ví dụ liên hệ bản thân để ăn trọn 3 điểm.
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div 
+              v-for="q in speakingQ57Data" 
+              :key="q.id"
+              class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">{{ q.questionNo }}</span>
+                  <button @click="speakText(q.question)" class="text-xs text-indigo-600 font-bold flex items-center gap-1">
+                    <span>🔊</span> Nghe câu hỏi
+                  </button>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base mb-3">{{ q.question }}</h4>
+
+                <!-- Formula -->
+                <div class="text-xs font-semibold text-slate-500 mb-1">Mẫu cấu trúc:</div>
+                <div class="bg-slate-100 p-2.5 rounded-lg text-xs font-mono text-slate-700 mb-3 border border-slate-200">
+                  {{ q.formula }}
+                </div>
+
+                <!-- Examples -->
+                <div class="space-y-2">
+                  <div class="text-xs font-bold text-slate-600">Câu trả lời mẫu gợi ý:</div>
+                  <div 
+                    v-for="(ans, aIdx) in q.samples" 
+                    :key="aIdx"
+                    class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs md:text-sm text-slate-700 relative group">
+                    <p class="leading-relaxed">{{ ans }}</p>
+                    <button 
+                      @click="speakText(ans)" 
+                      class="text-indigo-600 text-xs font-bold mt-1.5 flex items-center gap-1 hover:underline">
+                      <span>🔊</span> Nghe phát âm câu này
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-3 border-t border-slate-100 flex justify-end">
+                <button 
+                  @click="toggleComplete('spk_q57_' + q.id)"
+                  :class="isCompleted('spk_q57_' + q.id) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
+                  class="px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                  {{ isCompleted('spk_q57_' + q.id) ? '✓ Đã thuộc' : 'Đánh dấu đã thuộc' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.4: SPEAKING QUESTIONS 8-10: INFORMATION PROVIDED -->
+        <div v-if="currentSpeakingSub === 'q810'" class="space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left: Document / Schedule -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="flex gap-2">
+                <button 
+                  @click="selectedScheduleTab = 1" 
+                  :class="selectedScheduleTab === 1 ? 'bg-slate-800 text-white' : 'bg-white text-slate-700 border'"
+                  class="px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                  📄 Đề 1: The Ad Academy Seminar
+                </button>
+                <button 
+                  @click="selectedScheduleTab = 2" 
+                  :class="selectedScheduleTab === 2 ? 'bg-slate-800 text-white' : 'bg-white text-slate-700 border'"
+                  class="px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                  📄 Đề 2: Schedule Robert Miller
+                </button>
+              </div>
+
+              <!-- Document Box -->
+              <div v-if="selectedScheduleTab === 1" class="bg-amber-50/50 border-2 border-dashed border-amber-300 rounded-2xl p-5 text-slate-800 font-sans shadow-sm">
+                <div class="text-center border-b border-amber-200 pb-3 mb-3">
+                  <div class="italic text-xs font-semibold text-slate-500">The Ad Academy</div>
+                  <h3 class="font-extrabold text-sm md:text-base text-slate-900 uppercase">SMALL-BUSINESS ADVERTISING SEMINAR</h3>
+                  <div class="text-xs font-medium text-slate-600">Monday, June 30</div>
+                </div>
+                <div class="space-y-2 text-xs md:text-sm">
+                  <div class="flex justify-between"><strong>8:00 A.M.</strong> <span>Defining the Size of Your Market</span></div>
+                  <div class="flex justify-between"><strong>8:45 A.M.</strong> <span>Defining Your Business Image</span></div>
+                  <div class="flex justify-between"><strong>10:00 A.M.</strong> <span>Types of Advertising</span></div>
+                  <div class="flex justify-between"><strong>11:30 A.M.</strong> <span>Lunch</span></div>
+                  <div>
+                    <div class="font-bold mt-2">1:00 – 3:00 P.M. Workshops (choose one):</div>
+                    <ul class="list-disc ml-5 text-slate-600 mt-1 space-y-0.5">
+                      <li>Wholesale Products</li>
+                      <li>Retail Goods</li>
+                      <li>Services</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="border-t border-amber-200 mt-4 pt-2 text-xs text-slate-600 italic">
+                  Price: $70 per person (group rates available). Please call 123-4567 to register.
+                </div>
+              </div>
+
+              <!-- Document 2 -->
+              <div v-if="selectedScheduleTab === 2" class="bg-sky-50/50 border-2 border-dashed border-sky-300 rounded-2xl p-5 text-slate-800 font-sans shadow-sm">
+                <div class="border-b border-sky-200 pb-3 mb-3">
+                  <h3 class="font-extrabold text-base text-slate-900">Schedule for Robert Miller</h3>
+                  <div class="text-xs font-semibold text-slate-600">Assistant Manager, Davis Corporate Insurance</div>
+                  <div class="text-xs text-sky-700 font-bold mt-0.5">Thursday, February 6</div>
+                </div>
+                <div class="space-y-2 text-xs md:text-sm text-slate-700">
+                  <div class="flex justify-between"><strong>8:30 – 10:00 A.M.</strong> <span>Welcome reception for new interns (conference room)</span></div>
+                  <div class="flex justify-between"><strong>10:45 A.M. – noon</strong> <span>Phone conf: John Smith, Myers Inc.</span></div>
+                  <div class="flex justify-between"><strong>Noon – 1:00 P.M.</strong> <span>Lunch with Emma Brown, Director (The Forest Restaurant)</span></div>
+                  <div class="flex justify-between"><strong>1:00 – 2:30 P.M.</strong> <span>Office work: Finish progress report</span></div>
+                  <div class="flex justify-between"><strong>2:30 – 3:00 P.M.</strong> <span>Phone conf: Mary Williams, Johnsons Co.</span></div>
+                  <div class="flex justify-between"><strong>3:00 – 4:00 P.M.</strong> <span>Office work: Review company policy manual</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Questions & Audio Simulation -->
+            <div class="lg:col-span-7 space-y-4">
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Bộ 3 câu hỏi thực chiến theo lịch trình</div>
+              <div 
+                v-for="q in (selectedScheduleTab === 1 ? scheduleQuestions1 : scheduleQuestions2)" 
+                :key="q.num"
+                class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">Question {{ q.num }}</span>
+                  <button @click="speakText(q.prompt)" class="text-xs text-indigo-600 font-bold flex items-center gap-1">
+                    <span>🔊</span> Nghe giọng giám khảo hỏi
+                  </button>
+                </div>
+                <p class="font-bold text-sm text-slate-900">{{ q.prompt }}</p>
+
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs md:text-sm text-slate-700 space-y-1">
+                  <div class="text-xs font-bold text-emerald-700">Câu trả lời mẫu chuẩn:</div>
+                  <p class="text-slate-800 font-medium leading-relaxed">{{ q.answer }}</p>
+                  <button @click="speakText(q.answer)" class="text-indigo-600 text-xs font-bold mt-1 flex items-center gap-1">
+                    <span>🔊</span> Nghe phát âm câu trả lời
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1.5: SPEAKING QUESTION 11: EXPRESS AN OPINION -->
+        <div v-if="currentSpeakingSub === 'q11'" class="space-y-6">
+          <div class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="bg-white/20 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">CÂU HỎI QUAN TRỌNG NHẤT</span>
+              <h3 class="text-xl font-extrabold mt-1">Question 11: Bày Tỏ Quan Điểm (60 Giây)</h3>
+              <p class="text-xs text-purple-100 mt-1">Cấu trúc 4 phần vàng: Mở bài (Ý kiến cá nhân) $\rightarrow$ Thân bài 1 (Lý do + ví dụ) $\rightarrow$ Thân bài 2 (Lý do + ví dụ) $\rightarrow$ Kết bài.</p>
+            </div>
+            <div class="flex gap-2">
+              <button 
+                v-for="(t, tIdx) in opinionTopics" 
+                :key="t.id"
+                @click="selectedTopicIndex = tIdx"
+                :class="selectedTopicIndex === tIdx ? 'bg-white text-indigo-700 font-bold shadow' : 'bg-white/10 hover:bg-white/20 text-white'"
+                class="px-3 py-2 rounded-xl text-xs transition">
+                Chủ đề {{ tIdx + 1 }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Opinion Topic Card -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
+            <div class="border-b border-slate-100 pb-3">
+              <span class="text-xs font-bold text-indigo-600 uppercase">Đề bài thi thật</span>
+              <h4 class="text-lg font-bold text-slate-800 mt-0.5">{{ currentTopic.question }}</h4>
+            </div>
+
+            <!-- View switch: Option A vs Option B -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-500">Chọn hướng trả lời:</span>
+              <button 
+                @click="currentTopicChoice = 'A'"
+                :class="currentTopicChoice === 'A' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                class="px-3.5 py-1.5 rounded-lg text-xs transition">
+                Phương án A: {{ currentTopic.choiceA_title }}
+              </button>
+              <button 
+                @click="currentTopicChoice = 'B'"
+                :class="currentTopicChoice === 'B' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                class="px-3.5 py-1.5 rounded-lg text-xs transition">
+                Phương án B: {{ currentTopic.choiceB_title }}
+              </button>
+            </div>
+
+            <!-- Full Model Speech for Chosen Option -->
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-600 uppercase">Bài phát biểu chuẩn 60s (Từ slide):</span>
+                <button 
+                  @click="speakText(currentTopicChoice === 'A' ? currentTopic.choiceA_speech : currentTopic.choiceB_speech)"
+                  class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm transition">
+                  <span>🔊</span> Nghe bài mẫu chuẩn
+                </button>
+              </div>
+
+              <!-- Outline / Key Points -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs bg-white p-3 rounded-xl border border-slate-200">
+                <div v-for="(point, pIdx) in (currentTopicChoice === 'A' ? currentTopic.choiceA_points : currentTopic.choiceB_points)" :key="pIdx">
+                  <div class="font-bold text-indigo-700">✦ {{ point.heading }}</div>
+                  <ul class="list-disc ml-4 text-slate-600 mt-1 space-y-0.5">
+                    <li v-for="(subP, sIdx) in point.details" :key="sIdx">{{ subP }}</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Full text -->
+              <div class="text-slate-800 text-sm md:text-base leading-relaxed font-normal p-4 bg-white rounded-xl border border-slate-200/90">
+                {{ currentTopicChoice === 'A' ? currentTopic.choiceA_speech : currentTopic.choiceB_speech }}
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+              <span class="text-xs text-slate-500 italic">Mẹo: Học thuộc 1 trong 2 hướng để phản xạ nhanh trong 45s chuẩn bị.</span>
+              <button 
+                @click="toggleComplete('spk_q11_' + currentTopic.id)"
+                :class="isCompleted('spk_q11_' + currentTopic.id) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-800 text-white hover:bg-slate-900'"
+                class="px-4 py-2 rounded-xl text-xs font-bold transition">
+                {{ isCompleted('spk_q11_' + currentTopic.id) ? '✓ Đã thuộc chủ đề này' : 'Đánh dấu đã thuộc' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- TAB 2: WRITING SECTION -->
+      <!-- =============================================================== -->
+      <section v-if="activeTab === 'writing'" class="space-y-6">
+        <!-- Section Intro -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="bg-pink-100 text-pink-700 text-xs px-2.5 py-1 rounded-full font-bold">ETS TOEIC WRITING</span>
+              <span class="text-xs text-slate-500 font-medium">3 Parts • Tổng 28 Điểm (Mục tiêu: Band 3 &ge; 16.8, Band 4 &ge; 21)</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800 mt-1">Luyện Viết Tương Tác & Sửa Câu</h2>
+            <p class="text-sm text-slate-600">Thực hành gõ câu theo tranh, viết email trả lời và làm bài luận 300 từ với bộ đếm từ tự động.</p>
+          </div>
+          <!-- Subpart selector pills -->
+          <div class="flex flex-wrap gap-1.5 bg-slate-100 p-1.5 rounded-xl">
+            <button 
+              v-for="sub in writingSubparts" 
+              :key="sub.id"
+              @click="currentWritingSub = sub.id"
+              :class="currentWritingSub === sub.id ? 'bg-indigo-600 text-white font-semibold shadow-sm' : 'text-slate-600 hover:bg-slate-200'"
+              class="px-3 py-1.5 rounded-lg text-xs transition">
+              {{ sub.name }}
+            </button>
+          </div>
+        </div>
+
+        <!-- 2.1: WRITING PART 1: WRITE A SENTENCE BASED ON PICTURE -->
+        <div v-if="currentWritingSub === 'w1'" class="space-y-6">
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-xs text-emerald-900 flex items-center justify-between">
+            <div>
+              <strong>📌 Yêu cầu Part 1:</strong> Viết ĐÚNG 1 CÂU dựa vào tranh, bắt buộc dùng đủ 2 từ/cụm từ cho sẵn (được phép biến đổi thì, số ít/nhiều). Điểm tối đa khi dùng cấu trúc câu phức/ghép mượt mà.
+            </div>
+            <span class="font-bold text-emerald-800 bg-emerald-200/60 px-2 py-1 rounded">3 điểm / câu</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div 
+              v-for="(wPic, idx) in writingPart1Data" 
+              :key="wPic.id"
+              class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-4 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs font-bold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded">Câu {{ idx + 1 }} / {{ writingPart1Data.length }}</span>
+                  <span v-if="isCompleted('wrt_p1_' + wPic.id)" class="text-xs text-emerald-600 font-bold">✓ Đã làm</span>
+                </div>
+
+                <!-- Scenario Image placeholder/visual clue -->
+                <div class="h-36 bg-gradient-to-br from-slate-100 to-indigo-50/50 rounded-xl border border-slate-200 flex flex-col items-center justify-center p-4 text-center">
+                  <span class="text-3xl mb-1">{{ wPic.icon }}</span>
+                  <div class="text-xs font-bold text-slate-700">{{ wPic.context }}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5">{{ wPic.hint }}</div>
+                </div>
+
+                <!-- Mandatory Words -->
+                <div class="mt-3 flex items-center justify-center gap-2 bg-indigo-50/80 py-2 px-3 rounded-xl border border-indigo-100">
+                  <span class="text-xs font-bold text-slate-500">2 Từ khóa bắt buộc:</span>
+                  <span class="text-sm font-extrabold text-indigo-700 tracking-wide font-mono bg-white px-2.5 py-0.5 rounded border border-indigo-200">{{ wPic.words }}</span>
+                </div>
+
+                <!-- Practice Input Box -->
+                <div class="mt-3 space-y-1.5">
+                  <label class="text-xs font-bold text-slate-600">Thử gõ câu của bạn vào đây:</label>
+                  <input 
+                    type="text" 
+                    v-model="wPic.userAnswer" 
+                    placeholder="Ví dụ: The man is cleaning..."
+                    class="w-full text-xs md:text-sm p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50" />
+                </div>
+
+                <!-- Model Answer Toggle -->
+                <div class="mt-3">
+                  <button 
+                    @click="wPic.showAnswer = !wPic.showAnswer" 
+                    class="text-xs text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1">
+                    <span>{{ wPic.showAnswer ? 'Ẩn đáp án chuẩn' : '💡 Xem đáp án chuẩn từ slide' }}</span>
+                  </button>
+
+                  <div v-if="wPic.showAnswer" class="mt-2 p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs md:text-sm space-y-1.5 animate-fadeIn">
+                    <div class="font-bold text-emerald-900">✨ Câu mẫu chuẩn (Slide):</div>
+                    <div class="text-emerald-800 font-semibold text-sm">"{{ wPic.modelAnswer }}"</div>
+                    <div v-if="wPic.advancedAnswer" class="text-slate-600 text-[11px] pt-1 border-t border-emerald-200/60">
+                      <strong>Cấp độ nâng cao (Band 4):</strong> "{{ wPic.advancedAnswer }}"
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Complete button -->
+              <div class="pt-3 border-t border-slate-100 flex justify-end">
+                <button 
+                  @click="toggleComplete('wrt_p1_' + wPic.id)"
+                  :class="isCompleted('wrt_p1_' + wPic.id) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
+                  class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition">
+                  {{ isCompleted('wrt_p1_' + wPic.id) ? '✓ Đã xong' : 'Đánh dấu hoàn thành' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.2: WRITING PART 2: RESPOND TO WRITTEN REQUEST (EMAIL) -->
+        <div v-if="currentWritingSub === 'w2'" class="space-y-6">
+          <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 text-xs text-indigo-900 flex items-center justify-between">
+            <div>
+              <strong>📌 Yêu cầu Part 2 (10 phút / email):</strong> Đọc kỹ email và trả lời đáp ứng đầy đủ các yêu cầu (thường là: <em>Hỏi 2 câu hỏi</em> + <em>đưa ra 1 yêu cầu</em> hoặc <em>cung cấp 3 thông tin</em>).
+            </div>
+            <span class="font-bold text-indigo-800 bg-indigo-200/60 px-2 py-1 rounded">4 điểm / câu</span>
+          </div>
+
+          <!-- Email tabs -->
+          <div class="flex gap-2">
+            <button 
+              v-for="(email, eIdx) in writingPart2Data" 
+              :key="email.id"
+              @click="selectedEmailIndex = eIdx"
+              :class="selectedEmailIndex === eIdx ? 'bg-indigo-600 text-white font-bold shadow' : 'bg-white text-slate-700 border hover:bg-slate-50'"
+              class="px-4 py-2 rounded-xl text-xs transition">
+              {{ email.title }}
+            </button>
+          </div>
+
+          <!-- Active Email Interface -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <!-- Email Header / Client Mockup -->
+            <div class="bg-slate-800 text-white p-4 flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                <span class="text-xs text-slate-300 font-mono ml-2">Inbox &gt; {{ currentEmail.subject }}</span>
+              </div>
+              <div class="text-xs font-bold text-amber-300">
+                ⏱️ 10 phút làm bài
+              </div>
+            </div>
+
+            <!-- Email Content -->
+            <div class="p-6 border-b border-slate-200 bg-slate-50/50 space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs border-b border-slate-200 pb-3">
+                <div><span class="font-bold text-slate-500">From:</span> <span class="font-medium text-slate-800">{{ currentEmail.from }}</span></div>
+                <div><span class="font-bold text-slate-500">To:</span> <span class="font-medium text-slate-800">{{ currentEmail.to }}</span></div>
+                <div><span class="font-bold text-slate-500">Date:</span> <span class="text-slate-600">{{ currentEmail.date }}</span></div>
+                <div><span class="font-bold text-slate-500">Subject:</span> <span class="font-bold text-slate-800">{{ currentEmail.subject }}</span></div>
+              </div>
+
+              <!-- Message body -->
+              <div class="text-xs md:text-sm text-slate-800 leading-relaxed font-normal whitespace-pre-line p-3 bg-white rounded-xl border border-slate-200">
+                {{ currentEmail.body }}
+              </div>
+
+              <!-- Task Requirements Checklist -->
+              <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 text-xs">
+                <div class="font-bold text-amber-900 mb-1">🎯 Yêu cầu đề bài (Directions):</div>
+                <p class="text-amber-800">{{ currentEmail.directions }}</p>
+              </div>
+            </div>
+
+            <!-- Model Response vs Practice -->
+            <div class="p-6 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-sm text-slate-800">Bài trả lời mẫu đạt trọn vẹn điểm (Slide):</h4>
+                <button 
+                  @click="speakText(currentEmail.modelResponse)" 
+                  class="text-xs text-indigo-600 font-bold flex items-center gap-1 hover:underline">
+                  <span>🔊</span> Nghe giọng đọc email mẫu
+                </button>
+              </div>
+
+              <div class="p-4 bg-indigo-50/40 rounded-xl border border-indigo-200 text-xs md:text-sm text-slate-800 leading-relaxed font-sans whitespace-pre-line">
+                {{ currentEmail.modelResponse }}
+              </div>
+
+              <!-- Checklist -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
+                <div 
+                  v-for="(check, cIdx) in currentEmail.checkpoints" 
+                  :key="cIdx"
+                  class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-700 flex items-start gap-2">
+                  <span class="text-emerald-500 font-bold">✓</span>
+                  <span>{{ check }}</span>
+                </div>
+              </div>
+
+              <div class="pt-2 flex justify-end">
+                <button 
+                  @click="toggleComplete('wrt_p2_' + currentEmail.id)"
+                  :class="isCompleted('wrt_p2_' + currentEmail.id) ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-800 text-white hover:bg-slate-900'"
+                  class="px-4 py-2 rounded-xl text-xs font-bold transition">
+                  {{ isCompleted('wrt_p2_' + currentEmail.id) ? '✓ Đã thuộc mẫu email này' : 'Đánh dấu đã hoàn thành' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.3: WRITING PART 3: OPINION ESSAY (300 WORDS) -->
+        <div v-if="currentWritingSub === 'w3'" class="space-y-6">
+          <div class="bg-purple-50 border border-purple-200 rounded-2xl p-4 text-xs text-purple-900 flex flex-col md:flex-row md:items-center justify-between gap-2">
+            <div>
+              <strong>📌 Yêu cầu Part 3 (30 phút):</strong> Viết một bài luận tối thiểu <strong>300 từ</strong> nêu quan điểm (Đồng ý hoặc Không đồng ý). Đưa ra tối thiểu 2-3 lý do và ví dụ minh họa cụ thể.
+            </div>
+            <span class="font-bold text-purple-800 bg-purple-200/60 px-2.5 py-1 rounded">5 điểm / bài</span>
+          </div>
+
+          <!-- Essay Prompt Banner -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+              <span class="text-xs font-bold text-indigo-600 uppercase">Đề bài thi thử từ tài liệu</span>
+              <h3 class="text-lg md:text-xl font-extrabold text-slate-800 mt-1">
+                "Do you agree or disagree with the following statement? <br/>
+                <span class="text-indigo-600">The internet is more useful than books as a source of information.</span> <br/>
+                Give reasons and examples to support your opinion."
+              </h3>
+            </div>
+
+            <!-- Choose view: Interactive Essay Simulator or Full Model Sample -->
+            <div class="flex flex-wrap gap-2">
+              <button 
+                @click="essayView = 'samples'" 
+                :class="essayView === 'samples' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                class="px-4 py-2 rounded-xl text-xs transition">
+                📚 Xem 2 Bài Luận Mẫu Chuẩn (Đồng Ý & Không Đồng Ý)
+              </button>
+              <button 
+                @click="essayView = 'editor'" 
+                :class="essayView === 'editor' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+                class="px-4 py-2 rounded-xl text-xs transition">
+                ✍️ Trình Giả Lập Viết Bài (Đếm 300 từ & Bấm giờ 30 phút)
+              </button>
+            </div>
+
+            <!-- View 1: 2 Full Samples from Slide -->
+            <div v-if="essayView === 'samples'" class="space-y-4">
+              <div class="flex gap-2">
+                <button 
+                  @click="activeEssayTab = 'agree'" 
+                  :class="activeEssayTab === 'agree' ? 'bg-emerald-600 text-white font-bold' : 'bg-slate-100 text-slate-700'"
+                  class="px-3.5 py-1.5 rounded-lg text-xs transition">
+                  Hướng 1: ĐỒNG Ý (Internet hữu ích hơn Sách)
+                </button>
+                <button 
+                  @click="activeEssayTab = 'disagree'" 
+                  :class="activeEssayTab === 'disagree' ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-100 text-slate-700'"
+                  class="px-3.5 py-1.5 rounded-lg text-xs transition">
+                  Hướng 2: KHÔNG ĐỒNG Ý (Sách vẫn giá trị hơn)
+                </button>
+              </div>
+
+              <!-- Outline breakdown -->
+              <div class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-100">
+                <div class="text-xs font-bold text-indigo-900 mb-1">Dàn ý 4 đoạn đạt chuẩn 300+ từ:</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                  <div class="bg-white p-2.5 rounded-lg border border-indigo-200 font-medium">
+                    <strong class="text-indigo-600">1. Mở bài:</strong> Dẫn dắt + Nêu rõ quan điểm cá nhân.
+                  </div>
+                  <div class="bg-white p-2.5 rounded-lg border border-indigo-200 font-medium">
+                    <strong class="text-indigo-600">2. Thân bài 1:</strong> Luận điểm 1 + Giải thích + Ví dụ.
+                  </div>
+                  <div class="bg-white p-2.5 rounded-lg border border-indigo-200 font-medium">
+                    <strong class="text-indigo-600">3. Thân bài 2:</strong> Luận điểm 2 + Giải thích + Ví dụ.
+                  </div>
+                  <div class="bg-white p-2.5 rounded-lg border border-indigo-200 font-medium">
+                    <strong class="text-indigo-600">4. Kết bài:</strong> Khẳng định lại ý kiến tóm lược.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Full Text Sample -->
+              <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-500 uppercase">
+                    Bài văn hoàn chỉnh ({{ activeEssayTab === 'agree' ? 'Đồng ý' : 'Không đồng ý' }}):
+                  </span>
+                  <button 
+                    @click="speakText(activeEssayTab === 'agree' ? essayAgreementText : essayDisagreementText)"
+                    class="text-xs text-indigo-600 font-bold flex items-center gap-1 hover:underline">
+                    <span>🔊</span> Nghe giọng đọc bài luận
+                  </button>
+                </div>
+
+                <div class="text-slate-800 text-sm md:text-base leading-relaxed font-serif space-y-3 p-4 bg-white rounded-xl border border-slate-200">
+                  <p 
+                    v-for="(para, pIdx) in (activeEssayTab === 'agree' ? essayAgreementParas : essayDisagreementParas)" 
+                    :key="pIdx"
+                    class="indent-4">
+                    {{ para }}
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                  <span class="text-xs text-emerald-700 font-bold">✓ Tổng số từ: ~320 từ (Đạt chuẩn tối thiểu 300 từ)</span>
+                  <button 
+                    @click="toggleComplete('wrt_p3_essay')"
+                    :class="isCompleted('wrt_p3_essay') ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-800 text-white hover:bg-slate-900'"
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition">
+                    {{ isCompleted('wrt_p3_essay') ? '✓ Đã học thuộc bài luận' : 'Đánh dấu đã học' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- View 2: Interactive Essay Editor -->
+            <div v-if="essayView === 'editor'" class="space-y-4 animate-fadeIn">
+              <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-100 p-3 rounded-xl">
+                <!-- Word Counter -->
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-slate-600">Số lượng từ:</span>
+                  <span 
+                    :class="userEssayWordCount >= 300 ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'"
+                    class="px-2.5 py-0.5 rounded-full font-bold text-xs shadow-sm">
+                    {{ userEssayWordCount }} / 300 từ
+                  </span>
+                  <span v-if="userEssayWordCount >= 300" class="text-xs text-emerald-600 font-bold">🎉 Đạt chỉ tiêu!</span>
+                  <span v-else class="text-xs text-slate-500 font-medium">(Còn thiếu {{ 300 - userEssayWordCount }} từ)</span>
+                </div>
+
+                <!-- 30-min timer -->
+                <div class="flex items-center gap-2">
+                  <div class="text-xs font-mono font-bold px-2.5 py-1 rounded bg-slate-800 text-yellow-300">
+                    ⏱️ {{ formatMinutesSeconds(essayTimerSeconds) }}
+                  </div>
+                  <button 
+                    @click="startEssayTimer" 
+                    class="px-2.5 py-1 bg-indigo-600 text-white rounded text-xs font-bold">
+                    Bắt đầu 30 phút
+                  </button>
+                  <button 
+                    @click="resetEssayTimer" 
+                    class="px-2 py-1 bg-slate-200 text-slate-700 rounded text-xs font-medium">
+                    Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- Textarea -->
+              <textarea 
+                v-model="userEssayText"
+                rows="14" 
+                placeholder="Bắt đầu viết bài luận tại đây... Hãy chia rõ 4 đoạn (Mở bài, Thân bài 1, Thân bài 2, Kết luận)."
+                class="w-full p-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm md:text-base leading-relaxed bg-white custom-scrollbar"></textarea>
+
+              <div class="flex justify-between items-center text-xs text-slate-500">
+                <span>Tip: Dùng các từ nối như *First of all, Moreover, For example, In conclusion...* để đạt điểm Coherence & Cohesion cao.</span>
+                <button 
+                  @click="clearEssayDraft" 
+                  class="text-rose-500 hover:underline">
+                  Xóa làm lại
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- TAB 3: MOCK TEST (PHÒNG THI THỬ) -->
+      <!-- =============================================================== -->
+      <section v-if="activeTab === 'mock'" class="space-y-6">
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 shadow-md">
+          <div class="max-w-2xl">
+            <span class="bg-indigo-500/30 text-indigo-300 text-xs px-2.5 py-1 rounded-full font-bold border border-indigo-400/20">ETS SIMULATOR</span>
+            <h2 class="text-2xl font-black mt-2">Phòng Thi Thử Bấm Giờ Y Hệt Thi Thật</h2>
+            <p class="text-sm text-slate-300 mt-1">Luyện tinh thần thép và áp lực thời gian. Hãy chuẩn bị mic và không gian yên tĩnh trước khi bấm bắt đầu.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Speaking Mock Test Card -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">🎙️</span>
+                <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-1 rounded-full font-bold">Thời gian: ~20 phút</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mt-2">Đề Thi Thử TOEIC Speaking</h3>
+              <ul class="text-xs text-slate-600 mt-3 space-y-2">
+                <li class="flex items-center gap-2">✓ <strong>Câu 1-2:</strong> Đọc to văn bản (45s chuẩn bị / 45s đọc)</li>
+                <li class="flex items-center gap-2">✓ <strong>Câu 3-4:</strong> Mô tả 2 bức tranh (45s chuẩn bị / 30s nói)</li>
+                <li class="flex items-center gap-2">✓ <strong>Câu 5-7:</strong> Trả lời 3 câu hỏi phỏng vấn (15s - 30s)</li>
+                <li class="flex items-center gap-2">✓ <strong>Câu 8-10:</strong> Đọc lịch trình & trả lời điện thoại</li>
+                <li class="flex items-center gap-2">✓ <strong>Câu 11:</strong> Bày tỏ quan điểm (45s chuẩn bị / 60s nói)</li>
+              </ul>
+            </div>
+            <button 
+              @click="openMockModal('speaking')"
+              class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-sm transition">
+              Bắt Đầu Thi Thử Speaking ➔
+            </button>
+          </div>
+
+          <!-- Writing Mock Test Card -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="text-2xl">✍️</span>
+                <span class="bg-rose-100 text-rose-700 text-xs px-2.5 py-1 rounded-full font-bold">Thời gian: 60 phút</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mt-2">Đề Thi Thử TOEIC Writing</h3>
+              <ul class="text-xs text-slate-600 mt-3 space-y-2">
+                <li class="flex items-center gap-2">✓ <strong>Part 1 (Q1-5):</strong> Viết 5 câu theo 5 tranh (8 phút)</li>
+                <li class="flex items-center gap-2">✓ <strong>Part 2 (Q6-7):</strong> Trả lời 2 email tình huống (20 phút)</li>
+                <li class="flex items-center gap-2">✓ <strong>Part 3 (Q8):</strong> Viết 1 bài luận &ge; 300 từ (30 phút)</li>
+                <li class="flex items-center gap-2">✓ <strong>Thang điểm:</strong> 28 Điểm (Mục tiêu: Đạt &ge; 16.8 Band 3)</li>
+              </ul>
+            </div>
+            <button 
+              @click="openMockModal('writing')"
+              class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-sm shadow-sm transition">
+              Bắt Đầu Thi Thử Writing ➔
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- TAB 4: CHEAT SHEET & RUBRIC (BÍ KÍP ĐIỂM CAO) -->
+      <!-- =============================================================== -->
+      <section v-if="activeTab === 'cheatsheet'" class="space-y-6">
+        <!-- Rubric Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-indigo-600 uppercase">Chuẩn đầu ra nội bộ</span>
+              <h3 class="text-lg font-bold text-slate-800">Thang Điểm & Điều Kiện Đậu (Writing & Speaking)</h3>
+            </div>
+            <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-bold">28 Điểm Tổng</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-indigo-50/70 border border-indigo-200">
+              <div class="font-extrabold text-indigo-900 text-base">TOEIC Writing Band 3</div>
+              <div class="text-2xl font-black text-indigo-600 my-1">&ge; 16.8 / 28 điểm</div>
+              <p class="text-xs text-indigo-800">Mức điểm yêu cầu chuẩn đầu ra thông thường. Cần làm đúng trọn vẹn Part 1 (15 điểm) và hoàn thành tốt ít nhất 1 email Part 2.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-purple-50/70 border border-purple-200">
+              <div class="font-extrabold text-purple-900 text-base">TOEIC Writing Band 4</div>
+              <div class="text-2xl font-black text-purple-600 my-1">&ge; 21.0 / 28 điểm</div>
+              <p class="text-xs text-purple-800">Mức điểm giỏi / xuất sắc. Cần làm hoàn hảo Part 1, Part 2 và có bài luận Part 3 trôi chảy, mạch lạc &ge; 300 từ.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Essential Templates & Phrases -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Email Templates -->
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <span>✉️</span> Cấu trúc mở & kết Email ăn điểm tuyệt đối
+            </h4>
+            <div class="space-y-2 text-xs text-slate-700">
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Chào hỏi:</strong> <code>Dear Mr./Ms. [Tên],</code> hoặc <code>Dear [Tên Công Ty],</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Cảm ơn & Thể hiện quan tâm:</strong> <br/>
+                <code>Thank you for announcing this program. I am very interested in participating...</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Đặt 2 câu hỏi lịch sự:</strong> <br/>
+                <code>I have two questions before registering. First, [câu hỏi 1]? Second, [câu hỏi 2]?</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Đưa ra yêu cầu:</strong> <br/>
+                <code>Could you please send me a copy of [thông tin]? It would help me a lot.</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Kết thư:</strong> <code>Best regards, [Your Name]</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- Essay Transitional Phrases -->
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <span>🌟</span> Bộ từ nối đắt giá cho bài luận & Speaking Q11
+            </h4>
+            <div class="space-y-2 text-xs text-slate-700">
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Nêu quan điểm:</strong> <br/>
+                <code>Personally, I strongly believe that... / In my opinion, ...</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Đưa luận điểm 1:</strong> <br/>
+                <code>The first reason is that... / First of all, ... / This is because...</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Đưa luận điểm 2 (Bổ sung):</strong> <br/>
+                <code>Moreover, ... / Another important point is that... / Furthermore, ...</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Đưa ví dụ minh họa:</strong> <br/>
+                <code>For example, ... / For instance, ... / To illustrate this, ...</code>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                <strong>Kết luận:</strong> <br/>
+                <code>In conclusion, I believe that [A] is more preferable than [B] because...</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER WITH LOVE & CHEER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto px-4 space-y-2">
+        <p class="font-bold text-slate-700 text-sm">
+          Trang web ôn luyện đặc biệt dành riêng cho bạn gái ❤️ • "Học đi em rớt tốn tiền 2 triệu 3 =))"
+        </p>
+        <p class="text-slate-400">
+          Dữ liệu bám sát 100% đề thi Chuẩn đầu ra nội bộ & Cấu trúc ETS TOEIC Speaking & Writing 2026.
+        </p>
+      </div>
+    </footer>
+
+    <!-- MOCK TEST FULLSCREEN MODAL -->
+    <div v-if="showMockModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 animate-scaleUp">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h3 class="font-bold text-lg text-slate-900">
+            {{ mockType === 'speaking' ? '🎙️ Thi Thử TOEIC Speaking' : '✍️ Thi Thử TOEIC Writing' }}
+          </h3>
+          <button @click="showMockModal = false" class="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
+        </div>
+
+        <div class="space-y-3 text-sm text-slate-700">
+          <p>Hệ thống sẽ chạy liên tục theo đúng thời gian phòng thi chuẩn.</p>
+          <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-xs text-amber-900">
+            💡 <strong>Lời khuyên:</strong> Hãy mở máy ghi âm trên điện thoại song song để tự nghe lại phần nói của mình sau khi hoàn thành.
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t">
+          <button @click="showMockModal = false" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold">
+            Để sau
+          </button>
+          <button @click="startActualMock" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700">
+            Vào Phòng Thi Ngay
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCRIPT DATA & APP LOGIC -->
+  <script>
+    const { createApp, ref, computed, onMounted } = Vue;
+
+    createApp({
+      setup() {
+        const activeTab = ref('speaking');
+        const currentSpeakingSub = ref('q12');
+        const currentWritingSub = ref('w1');
+        const selectedQ12Index = ref(0);
+        const selectedScheduleTab = ref(1);
+        const selectedTopicIndex = ref(0);
+        const currentTopicChoice = ref('A');
+        const selectedEmailIndex = ref(0);
+        const essayView = ref('samples');
+        const activeEssayTab = ref('agree');
+
+        // Progress Tracking (saved to LocalStorage)
+        const completedMap = ref({});
+
+        const loadProgress = () => {
+          try {
+            const saved = localStorage.getItem('hoctienganh_progress');
+            if (saved) completedMap.value = JSON.parse(saved);
+          } catch(e) {}
+        };
+
+        const toggleComplete = (id) => {
+          if (completedMap.value[id]) {
+            delete completedMap.value[id];
+          } else {
+            completedMap.value[id] = true;
+            // Trigger confetti
+            if (typeof confetti === 'function') {
+              confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.7 }
+              });
+            }
+          }
+          localStorage.setItem('hoctienganh_progress', JSON.stringify(completedMap.value));
+        };
+
+        const isCompleted = (id) => !!completedMap.value[id];
+
+        // Total exercises count
+        const totalExercises = 25;
+        const completedCount = computed(() => Object.keys(completedMap.value).length);
+        const progressPercent = computed(() => Math.round((completedCount.value / totalExercises) * 100));
+
+        // Timers
+        const timerSeconds = ref(45);
+        const timerModeLabel = ref('Sẵn sàng');
+        let timerInterval = null;
+
+        const startPrepTimer = (duration, label) => {
+          clearInterval(timerInterval);
+          timerSeconds.value = duration;
+          timerModeLabel.value = label;
+          timerInterval = setInterval(() => {
+            if (timerSeconds.value > 0) {
+              timerSeconds.value--;
+            } else {
+              clearInterval(timerInterval);
+              timerModeLabel.value = 'Hết giờ!';
+            }
+          }, 1000);
+        };
+
+        const resetTimer = () => {
+          clearInterval(timerInterval);
+          timerSeconds.value = 45;
+          timerModeLabel.value = 'Sẵn sàng';
+        };
+
+        // Essay live editor & timer
+        const userEssayText = ref(localStorage.getItem('essay_draft') || '');
+        const essayTimerSeconds = ref(1800); // 30 mins
+        let essayTimerInterval = null;
+
+        const userEssayWordCount = computed(() => {
+          const txt = userEssayText.value.trim();
+          if (!txt) return 0;
+          return txt.split(/\s+/).filter(w => w.length > 0).length;
+        });
+
+        const startEssayTimer = () => {
+          clearInterval(essayTimerInterval);
+          essayTimerInterval = setInterval(() => {
+            if (essayTimerSeconds.value > 0) {
+              essayTimerSeconds.value--;
+            } else {
+              clearInterval(essayTimerInterval);
+              alert("Đã hết 30 phút viết bài luận!");
+            }
+          }, 1000);
+        };
+
+        const resetEssayTimer = () => {
+          clearInterval(essayTimerInterval);
+          essayTimerSeconds.value = 1800;
+        };
+
+        const formatMinutesSeconds = (sec) => {
+          const m = Math.floor(sec / 60);
+          const s = sec % 60;
+          return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        };
+
+        const clearEssayDraft = () => {
+          if (confirm("Em có chắc muốn xóa bản nháp này để viết lại từ đầu không?")) {
+            userEssayText.value = '';
+            localStorage.removeItem('essay_draft');
+          }
+        };
+
+        // Text-to-Speech (Native Web Speech API)
+        const speakText = (text, rate = 0.95) => {
+          if (!('speechSynthesis' in window)) {
+            alert("Trình duyệt không hỗ trợ phát âm giọng nói.");
+            return;
+          }
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'en-US';
+          utterance.rate = rate;
+          // Pick US English voice if available
+          const voices = window.speechSynthesis.getVoices();
+          const usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Zira')));
+          if (usVoice) utterance.voice = usVoice;
+          window.speechSynthesis.speak(utterance);
+        };
+
+        const speakWord = (word) => {
+          speakText(word, 0.85);
+        };
+
+        const stopSpeech = () => {
+          window.speechSynthesis.cancel();
+        };
+
+        // Subpart Tabs
+        const speakingSubparts = [
+          { id: 'q12', name: 'Q1-2: Đọc to đoạn văn' },
+          { id: 'q34', name: 'Q3-4: Mô tả tranh' },
+          { id: 'q57', name: 'Q5-7: Trả lời câu hỏi' },
+          { id: 'q810', name: 'Q8-10: Đọc lịch trình' },
+          { id: 'q11', name: 'Q11: Thể hiện quan điểm' }
+        ];
+
+        const writingSubparts = [
+          { id: 'w1', name: 'Part 1: Viết theo tranh (2 từ)' },
+          { id: 'w2', name: 'Part 2: Viết email phản hồi' },
+          { id: 'w3', name: 'Part 3: Bài luận 300 từ' }
+        ];
+
+        // DATA: SPEAKING QUESTIONS 1-2 (5 Passages from Slide)
+        const speakingQ12Passages = [
+          {
+            id: 1,
+            title: "Question 1: Faraway Spa and Resort",
+            text: "Good day, everyone, and welcome to the Faraway Spa and Resort. We'd like to call your attention to a few important items. Make sure you register at the front desk and pick up your room keys and introductory packets. Next, you will receive a complimentary certificate for dinner at our gourmet restaurant. Dinner will be served at 6 p.m. and 8 p.m. In your room, you will find a robe, towels, and a gift basket of products, such as bath soaps and lotions. Please feel free to contact us if you have forgotten to bring any personal items with you. We hope you find your stay at Faraway Spa and Resort relaxing and enjoyable.",
+            vocab: [
+              { word: "Resort", ipa: "/rɪˈzɔːrt/" },
+              { word: "Attention", ipa: "/əˈtenʃn/" },
+              { word: "Register", ipa: "/ˈredʒɪstər/" },
+              { word: "Introductory", ipa: "/ˌɪntrəˈdʌktəri/" },
+              { word: "Complimentary", ipa: "/ˌkɑːmplɪˈmentri/" },
+              { word: "Certificate", ipa: "/sərˈtɪfɪkət/" },
+              { word: "Gourmet", ipa: "/ˈɡʊrmeɪ/" },
+              { word: "Contact", ipa: "/ˈkɑːntækt/" },
+              { word: "Personal", ipa: "/ˈpɜːrsənl/" },
+              { word: "Enjoyable", ipa: "/ɪnˈdʒɔɪəbl/" }
+            ]
+          },
+          {
+            id: 2,
+            title: "Question 2: Holden High School Graduation",
+            text: "When I was approached about speaking at this Holden High School graduation ceremony, I thought about what advice I could share with you. As a diplomat for over 40 years, I worked on foreign policy, trade deals, and important negotiations. However, the advice I have to share has little to do with politics and everything to do with communication.",
+            vocab: [
+              { word: "Approached", ipa: "/əˈprəʊtʃt/" },
+              { word: "Graduation", ipa: "/ˌɡrædʒuˈeɪʃn/" },
+              { word: "Ceremony", ipa: "/ˈserəməʊni/" },
+              { word: "Share", ipa: "/ʃer/" },
+              { word: "Diplomat", ipa: "/ˈdɪpləmæt/" },
+              { word: "Foreign", ipa: "/ˈfɔːrən/" },
+              { word: "Policy", ipa: "/ˈpɑːləsi/" },
+              { word: "Negotiation", ipa: "/nɪˌɡəʊʃiˈeɪʃn/" },
+              { word: "Politics", ipa: "/ˈpɑːlətɪks/" },
+              { word: "Communication", ipa: "/kəˌmjuːnɪˈkeɪʃn/" }
+            ]
+          },
+          {
+            id: 3,
+            title: "Extra Exercise 1: Keynote Speaker Dr. Sanchez",
+            text: "Ladies and gentlemen, it is my great pleasure to introduce our keynote speaker, Dr. Maria Sanchez. She is an expert in renewable energy and has worked with international organizations to promote sustainable solutions. Her recent research on solar technology has received global recognition. Please give a warm welcome to Dr. Sanchez as she shares her insights on the future of clean energy.",
+            vocab: [
+              { word: "Gentlemen", ipa: "/ˈdʒentlmən/" },
+              { word: "Pleasure", ipa: "/ˈpleʒər/" },
+              { word: "Introduce", ipa: "/ˌɪntrəˈduːs/" },
+              { word: "Renewable", ipa: "/rɪˈnuːəbl/" },
+              { word: "Energy", ipa: "/ˈenərdʒi/" },
+              { word: "Organization", ipa: "/ˌɔːrɡənəˈzeɪʃn/" },
+              { word: "Sustainable", ipa: "/səˈsteɪnəbl/" },
+              { word: "Research", ipa: "/ˈriːsɜːrtʃ/" },
+              { word: "Recognition", ipa: "/ˌrekəɡˈnɪʃn/" },
+              { word: "Insight", ipa: "/ˈɪnsaɪt/" }
+            ]
+          },
+          {
+            id: 4,
+            title: "Extra Exercise 2: Fitness Factory Opening",
+            text: "Fitness Factory is pleased to announce the opening of its Saint Louis branch. Located in the city's business district, this facility features exercise equipment, game courts, and swimming pools. For a limited time only, Fitness Factory is offering a 30-day membership for the low price of thirty-nine dollars. Don't miss this golden opportunity to improve your health!",
+            vocab: [
+              { word: "Fitness", ipa: "/ˈfɪtnəs/" },
+              { word: "Pleased", ipa: "/pliːzd/" },
+              { word: "Announce", ipa: "/əˈnaʊns/" },
+              { word: "Branch", ipa: "/bræntʃ/" },
+              { word: "Business", ipa: "/ˈbɪznəs/" },
+              { word: "Facility", ipa: "/fəˈsɪləti/" },
+              { word: "Equipment", ipa: "/ɪˈkwɪpmənt/" },
+              { word: "Membership", ipa: "/ˈmembərʃɪp/" },
+              { word: "Opportunity", ipa: "/ˌɑːpərˈtuːnəti/" },
+              { word: "Health", ipa: "/helθ/" }
+            ]
+          },
+          {
+            id: 5,
+            title: "Extra Exercise 3: Wild Bear Tour",
+            text: "Welcome to the Wild Bear Tour, an educational adventure. As you know, we've had a snowy winter, so it is important to stay on the trail. Because your safety is our primary concern, the trail has been carefully cleared and maintained. Even so, watch your step, stay with the group, and listen closely to all instructions. Thank you for your cooperation.",
+            vocab: [
+              { word: "Education", ipa: "/ˌedʒuˈkeɪʃn/" },
+              { word: "Adventure", ipa: "/ədˈventʃər/" },
+              { word: "Trail", ipa: "/treɪl/" },
+              { word: "Safety", ipa: "/ˈseɪfti/" },
+              { word: "Primary", ipa: "/ˈpraɪmeri/" },
+              { word: "Concern", ipa: "/kənˈsɜːrn/" },
+              { word: "Cleared", ipa: "/klɪrd/" },
+              { word: "Maintained", ipa: "/meɪnˈteɪnd/" },
+              { word: "Instruction", ipa: "/ɪnˈstrʌkʃn/" },
+              { word: "Cooperation", ipa: "/kəʊˌɑːpəˈreɪʃn/" }
+            ]
+          }
+        ];
+
+        const currentPassage = computed(() => speakingQ12Passages[selectedQ12Index.value]);
+
+        const renderPassageWithHighlights = (p) => {
+          const vocabWords = p.vocab.map(v => v.word.toLowerCase());
+          const words = p.text.split(' ');
+          return words.map(w => {
+            const clean = w.replace(/[^a-zA-Z]/g, '').toLowerCase();
+            const isKw = vocabWords.some(vw => clean === vw.toLowerCase() || clean.startsWith(vw.toLowerCase()));
+            return {
+              text: w + ' ',
+              cleanWord: clean,
+              isKeyword: isKw
+            };
+          });
+        };
+
+        // DATA: SPEAKING QUESTIONS 3-4 (Describe Pictures)
+        const speakingQ34Data = [
+          {
+            id: 1,
+            tag: "Question 3 (Slide 18-19)",
+            title: "Tranh 1: Lớp học Sinh học (Classroom)",
+            description_hint: "Thầy giáo đứng chỉ bảng điện tử, học sinh chăm chú lắng nghe trong lớp.",
+            keywords: ["a classroom", "students and a teacher", "biology", "desks, chairs, pens", "focused / interested / pay attention"],
+            modelSentences: [
+              { label: "Bối cảnh", text: "This picture is taken in a classroom." },
+              { label: "Nhân vật", text: "There are some students in the picture, they seem to be in primary school. There is also a teacher." },
+              { label: "Hành động", text: "The students seem to be studying biology." },
+              { label: "Đồ vật", text: "In the room, there are a lot of desks and chairs. There are also some pens on the desks." },
+              { label: "Cảm xúc", text: "The students seem to be focused and interested in the lesson. They are paying attention to the teacher." }
+            ]
+          },
+          {
+            id: 2,
+            tag: "Question 4 (Slide 20-21)",
+            title: "Tranh 2: Hiệu sách & Khách mua (Bookstore)",
+            description_hint: "Khách hàng mặc áo khoác ấm đang chọn sách trên kệ trong tiệm sách.",
+            keywords: ["inside a bookstore", "shoppers", "books on the shelves", "coats and jackets", "relaxed / have a good time"],
+            modelSentences: [
+              { label: "Bối cảnh", text: "This picture is taken inside a bookstore." },
+              { label: "Nhân vật", text: "There are several shoppers in the picture, they seem to be shopping for books." },
+              { label: "Đồ vật", text: "There are many books on the shelves. The books are about different topics." },
+              { label: "Trang phục", text: "The shoppers are wearing coats and jackets. The weather may be cold." },
+              { label: "Cảm xúc", text: "The shoppers look relaxed. They are having a good time." }
+            ]
+          },
+          {
+            id: 3,
+            tag: "Extra 1 (Slide 22-24)",
+            title: "Tranh 3: Cặp đôi sơn nhà mới (Painting House)",
+            description_hint: "Một người nam và một người nữ đang cùng nhau lăn sơn tường màu xanh ngọc.",
+            keywords: ["in a new house", "a man and a woman", "painting and decorating", "comfortable and casual clothes", "talk / smile / spend quality time"],
+            modelSentences: [
+              { label: "Bối cảnh", text: "This picture is taken in a new house with light turquoise walls." },
+              { label: "Nhân vật", text: "There is a man and a woman. They may be a couple or just close friends." },
+              { label: "Hành động", text: "They are painting and decorating the house in the morning or the afternoon." },
+              { label: "Trang phục", text: "They are wearing comfortable and casual clothes." },
+              { label: "Cảm xúc", text: "They seem to be spending quality time together. They are smiling and talking with each other." }
+            ]
+          },
+          {
+            id: 4,
+            tag: "Extra 2 (Slide 25-27)",
+            title: "Tranh 4: Hai nữ nhân viên công sở ở công viên (Park)",
+            description_hint: "Một người ngồi đọc báo trên ghế đá, một người mang cà phê tới trò chuyện vui vẻ.",
+            keywords: ["in a park", "office workers", "smart and elegant clothes", "bought coffee / reading a newspaper", "in a good mood / talking and smiling"],
+            modelSentences: [
+              { label: "Bối cảnh", text: "This picture is taken in a park on a sunny and warm day." },
+              { label: "Nhân vật", text: "There are two female office workers. They may be colleagues." },
+              { label: "Trang phục", text: "They are wearing smart and elegant clothes for work. One is wearing a pantsuit and the other is wearing a skirt suit." },
+              { label: "Hành động", text: "The woman with a skirt suit bought coffee, and the other was reading a newspaper." },
+              { label: "Cảm xúc", text: "They seem to be in a good mood. They are talking and smiling at each other." }
+            ]
+          }
+        ];
+
+        // DATA: SPEAKING QUESTIONS 5-7
+        const speakingQ57Data = [
+          {
+            id: 1,
+            questionNo: "Question 5 (Phim ảnh)",
+            question: "What's your favorite type of movie and why do you like it?",
+            formula: "My favorite type of movie is [type] because [reason]...",
+            samples: [
+              "My favorite type of movie is horror because it is thrilling and exciting. It offers me an escape from my daily life.",
+              "My favorite type of movie is romance because it is comforting. I always feel hopeful about love and life after watching romantic movies."
+            ]
+          },
+          {
+            id: 2,
+            questionNo: "Question 6 (Mua sắm)",
+            question: "What's your favorite place to buy clothing?",
+            formula: "My favorite place to buy clothing is [place] because [reason]...",
+            samples: [
+              "My favorite place to buy clothing is a shopping mall because it has a variety of shops, so I can shop for clothes from many different brands.",
+              "My favorite place to buy clothing is a local concept store because the goods are carefully chosen and I can also participate in workshops or visit beautiful cafés."
+            ]
+          },
+          {
+            id: 3,
+            questionNo: "Question 7 (Nhà hàng - Nêu cụ thể 3 ý)",
+            question: "Describe your favorite restaurant.",
+            formula: "My favorite restaurant is [name] in [location]... This is because [service/food]... Also, [unique point]...",
+            samples: [
+              "My favorite restaurant is Pizza 4P's in District 1, Ho Chi Minh City. This is because it has great service. The waiters and waitresses are always kind and friendly to me whenever I come to the restaurant. Also, the food here is delicious. There is a wide variety of dishes and new ones are introduced every month. I never get bored when I'm in this restaurant.",
+              "My favorite restaurant is KFC in Ho Chi Minh City. This is because this brand has many branches. I can always find a KFC store wherever I am in the city. In my opinion, this is really convenient. Also, the food is affordable and served quickly. I never have to wait too long or pay too much for any dishes, so KFC is a great choice when I need a quick and cheap meal."
+            ]
+          },
+          {
+            id: 4,
+            questionNo: "Extra Q5 (Phương tiện di chuyển)",
+            question: "What kind of transportation do you take most often? Why?",
+            formula: "I often [verb] because [reason]...",
+            samples: [
+              "I often ride my motorbike because it is the most convenient mode of transportation in my city. I can avoid traffic jams and it is also easier to find parking with a motorbike.",
+              "I often take the bus because it is the cheapest mode of transportation in my city. I can go almost anywhere without having to spend over 10,000 VND."
+            ]
+          },
+          {
+            id: 5,
+            questionNo: "Extra Q6 (Thời gian đi làm)",
+            question: "How long is your commute to work every day?",
+            formula: "It often takes me [time] to go to work every day because [reason]...",
+            samples: [
+              "It often takes me 30 minutes to go to work every day because my house is really far from my workplace and I usually get stuck in traffic as well.",
+              "It often takes me 5 minutes to go to work every day because my house is not far from where I work, so I don't need to spend a lot of time travelling."
+            ]
+          },
+          {
+            id: 6,
+            questionNo: "Extra Q7 (Phương tiện công cộng tốt nhất)",
+            question: "Describe the best method of public transportation in your city.",
+            formula: "The best method of public transportation in my city is [name]... This is because [reason]... This is why I think that [name] are the best mode of transportation to [benefit]...",
+            samples: [
+              "The best method of public transportation in my city is a bus. This is because there are many frequent and direct bus routes around Ho Chi Minh City. Bus stations are also located in all districts, so you can probably travel anywhere by bus. This is why I think that buses are the best mode of transportation to travel with convenience and flexibility.",
+              "The best method of public transportation in my city is a water bus. This is because it offers a great way to experience the city from a different perspective along the Saigon River. Passengers can enjoy fresh air and stunning views while avoiding traffic jams. This is why I think that water buses are the best mode of transportation to enjoy the beauty of Saigon in a relaxing setting."
+            ]
+          }
+        ];
+
+        // DATA: SPEAKING QUESTIONS 8-10
+        const scheduleQuestions1 = [
+          {
+            num: 8,
+            prompt: "Could you tell me how much it costs to attend?",
+            answer: "Yes, of course. It costs 70 dollars per person to attend the small-business advertising seminar."
+          },
+          {
+            num: 9,
+            prompt: "There are more than ten workshops to choose from, right?",
+            answer: "No, there aren't. Actually, there are only 3 workshops to choose from, including Wholesale Products, Retail Goods, and Services."
+          },
+          {
+            num: 10,
+            prompt: "Could you please tell me what topics are going to be discussed in the morning?",
+            answer: "Yes, certainly! The topics that are going to be discussed in the morning are: Defining the Size of Your Market at 8:00 A.M., Defining Your Business Image at 8:45 A.M., and Types of Advertising at 10:00 A.M."
+          }
+        ];
+
+        const scheduleQuestions2 = [
+          {
+            num: 8,
+            prompt: "What time will the welcome reception for the new interns start, and where will it be held?",
+            answer: "The welcome reception for the new interns will start at 8:30 A.M. Moreover, it will be held at the conference room."
+          },
+          {
+            num: 9,
+            prompt: "I'm having lunch with Emma Brown, the company director, at Betty's Café, right?",
+            answer: "No, you're not. Instead, you're having lunch with Emma Brown, the company director, at The Forest Restaurant."
+          },
+          {
+            num: 10,
+            prompt: "Can you give me all the details for all the phone conferences I have today?",
+            answer: "You'll have 2 phone conferences today. The first one will be from 10:45 A.M. to noon. You'll meet with John Smith, from Myers Incorporated. The next one will be from 2:30 to 3:00 P.M. You'll meet with Mary Williams, from Johnsons Company."
+          }
+        ];
+
+        // DATA: SPEAKING QUESTION 11 (3 Debate Topics)
+        const opinionTopics = [
+          {
+            id: 1,
+            question: "Would you rather live in a big city or a small town? Why?",
+            choiceA_title: "A Big City (Thành phố lớn)",
+            choiceA_points: [
+              { heading: "Develop my career", details: ["Many international companies and large organizations", "Improve communication skills and work with people from different countries"] },
+              { heading: "More enjoyable", details: ["Many things to do (shopping, dining, events)", "Makes life more exciting and less boring"] }
+            ],
+            choiceA_speech: "Personally, I would rather live in a big city. The reason I feel this way is that it can allow me to develop my career. This is because big cities usually have many international companies and large organizations, so I can find a job that will give me valuable experience more easily. For example, if I work in a multinational company, I can improve my communication skills and have the chance to work with people from different countries. Moreover, living in a big city is more enjoyable. There are always many things to do, such as shopping, dining out, or attending events. This makes life more exciting and less boring compared to a small town. Therefore, I think living in a big city is more preferable compared to living in a small town because it is better for my career and is more enjoyable.",
+            choiceB_title: "A Small Town (Thị trấn nhỏ)",
+            choiceB_points: [
+              { heading: "Better quality of life", details: ["Healthier living environment, lower pollution and crowdedness", "Positive effect on physical and mental health"] },
+              { heading: "Stronger sense of community", details: ["Know each other well and willing to help neighbors", "Easier to build close and meaningful relationships"] }
+            ],
+            choiceB_speech: "Personally, I would rather live in a small town. The reason I feel this way is that small towns have a better quality of life in general. This is because small towns have a healthier living environment, with lower levels of pollution and crowdedness. This has a positive effect on both physical and mental health because people can breathe cleaner air and experience less stress in their daily lives. Moreover, small towns often have a stronger sense of community. People tend to know each other well and are more willing to help their neighbors. As a result, it is easier to build close and meaningful relationships. Therefore, I think living in small town is more preferable compared to living in a big city, since it offers a more peaceful, healthy, and fulfilling way of life."
+          },
+          {
+            id: 2,
+            question: "Do you prefer cooking and eating your meals at home or eating out at a restaurant? Why?",
+            choiceA_title: "Cooking at home (Nấu ăn tại nhà)",
+            choiceA_points: [
+              { heading: "Help me to stay healthy", details: ["Full control over the ingredients (reduce oil, sugar, salt)", "Maintain a balanced diet and avoid processed meals"] },
+              { heading: "Allow me to save money", details: ["Costs much less, buy in bulk", "Restaurant meal costs 50,000 VND but home meal costs half of that"] }
+            ],
+            choiceA_speech: "Personally, I would rather cook and eat at home. The reason I feel this way is that it helps me to stay healthy. This is because when I prepare meals at home, I have full control over the ingredients. I can reduce oil, sugar, and salt to my liking, and choose fresh, nutritious foods. This makes it easier for me to maintain a balanced diet and avoid overly processed meals often found in restaurants or takeout. Moreover, home cooking allows me to save money. Eating out regularly can get expensive. In contrast, cooking at home usually costs much less because I can buy ingredients in bulk and prepare multiple meals. For example, a meal at a restaurant can cost 50,000 VND, but a home-cooked meal can cost just a half of that. Therefore, I think cooking and eating at home is more preferable compared to eating at a restaurant, since it is healthier and saves me money.",
+            choiceB_title: "Eating out (Ăn ở nhà hàng)",
+            choiceB_points: [
+              { heading: "Save time and effort", details: ["No shopping, cooking, or cleaning up", "Helpful for people with busy schedules"] },
+              { heading: "Enjoy wider variety of food", details: ["Dishes that are difficult to cook at home", "Enjoy authentic flavors made by professional chefs"] }
+            ],
+            choiceB_speech: "Personally, I would rather eat out at a restaurant. The reason I feel this way is that it saves time and effort. This is because when I eat at a restaurant, I don't have to spend time shopping for ingredients, cooking, or cleaning up afterward. This is especially helpful for people with busy schedules who want a convenient and relaxing meal. Moreover, I can enjoy a wider variety of food. This is because restaurants offer many different dishes that may be difficult or time-consuming to prepare at home. For example, I can try French cuisine through dishes made by professional chefs. This allows me to enjoy authentic flavors that I may not be able to recreate on my own. Therefore, I think dining out is more preferable compared to preparing meals at home, since it is convenient and offers more variety."
+          },
+          {
+            id: 3,
+            question: "Do you prefer shopping online or going to the store? Why?",
+            choiceA_title: "Shopping Online (Mua sắm trực tuyến)",
+            choiceA_points: [
+              { heading: "Convenient and time-saving", details: ["Shop anytime and anywhere without travelling", "Save a lot of time and energy after a long day"] },
+              { heading: "Offer a wider variety of products", details: ["Access to different brands and styles", "Compare options, read customer reviews, choose best price"] }
+            ],
+            choiceA_speech: "Personally, I would rather shop online. The reason I feel this way is that it is much more convenient and time-saving. I can shop anytime and anywhere without needing to travel to a physical store. This saves me a lot of time and energy, especially after a long day at work or school. Moreover, online shopping offers a wider variety of products. Many e-commerce websites provide access to different brands and styles that may not be available in local stores, so I can easily compare options and choose the best product for my needs. For instance, when buying clothes, I can look at many designs, read customer reviews, and select the one with the best quality and price. Therefore, I think shopping online is more preferable compared to shopping at stores, because it is more convenient and efficient.",
+            choiceB_title: "Going to the store (Đến cửa hàng trực tiếp)",
+            choiceB_points: [
+              { heading: "Avoid problems", details: ["See and try products before purchasing", "Check quality, size, and color directly"] },
+              { heading: "Get the product immediately", details: ["Don't have to wait days for delivery", "Urgent needs like a birthday gift can be bought right away"] }
+            ],
+            choiceB_speech: "Personally, I would rather go to the store. The reason I feel this way is that I can avoid problems like receiving the wrong item or something that doesn't meet my expectations when I shop at stores. This is because I can see and try the products before making a purchase. This helps me make better decisions because I can check the quality, size, and color directly. Moreover, in-store shopping allows me to get the product immediately. Unlike online shopping, I don't have to wait for delivery, which can sometimes take several days. This is especially useful when I need something urgently. For instance, if I need a gift for a friend's birthday, I can go to a store and buy it right away. Therefore, I think going to the store is more preferable compared to shopping online, because it is more convenient and reliable."
+          }
+        ];
+
+        const currentTopic = computed(() => opinionTopics[selectedTopicIndex.value]);
+
+        // DATA: WRITING PART 1 (10 Items from Slide)
+        const writingPart1Data = ref([
+          {
+            id: 1,
+            icon: "👨‍🍳",
+            context: "Một đầu bếp nam đang lau chùi bàn bếp inox",
+            hint: "Dùng thì hiện tại tiếp diễn với động từ 'clean'",
+            words: "man / clean",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The man is cleaning the counter.",
+            advancedAnswer: "While working in the kitchen, the man is thoroughly cleaning the counter."
+          },
+          {
+            id: 2,
+            icon: "👩‍💼",
+            context: "Người phụ nữ đang lau cánh tủ bếp kính",
+            hint: "Dùng từ 'cabinet' (tủ)",
+            words: "woman / clean",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The woman is cleaning the cabinet.",
+            advancedAnswer: "The woman wearing yellow gloves is cleaning the glass cabinet."
+          },
+          {
+            id: 3,
+            icon: "🍽️",
+            context: "Người phục vụ nam mang món ăn ra cho khách tại nhà hàng",
+            hint: "Từ khóa: meal / serve",
+            words: "meal / serve",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The waiter is serving meals to the customers.",
+            advancedAnswer: "The friendly waiter is serving hot meals to the couple at the table."
+          },
+          {
+            id: 4,
+            icon: "🍸",
+            context: "Bartender tại quầy bar đang rót/đưa đồ uống cho khách",
+            hint: "Từ khóa: drink / serve",
+            words: "drink / serve",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The bartender is serving drinks to the customers.",
+            advancedAnswer: "Smiling warmly, the bartender is serving drinks to the guests at the counter."
+          },
+          {
+            id: 5,
+            icon: "🚲",
+            context: "Hàng loạt xe đạp dựng cạnh tòa nhà xây bằng đá",
+            hint: "Dùng thể bị động 'are parked'",
+            words: "park / building",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The bikes are parked next to the building.",
+            advancedAnswer: "A row of bicycles are parked neatly next to the stone building."
+          },
+          {
+            id: 6,
+            icon: "🚗",
+            context: "Dãy ô tô đỗ dọc theo lề đường",
+            hint: "Dùng 'are parked along the street'",
+            words: "park / street",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The cars are parked along the street.",
+            advancedAnswer: "Several cars are parked along the edge of the street under the trees."
+          },
+          {
+            id: 7,
+            icon: "📖",
+            context: "Cặp đôi đang xem thực đơn trước khi gọi món với nhân viên",
+            hint: "Dùng liên từ 'after' kết hợp V-ing",
+            words: "after / order",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "They will order food after looking at the menu.",
+            advancedAnswer: "The customers will order their dinner after reading the menu carefully."
+          },
+          {
+            id: 8,
+            icon: "🙏",
+            context: "Gia đình nắm tay nhau cầu nguyện trước bàn ăn",
+            hint: "Dùng liên từ 'after praying'",
+            words: "after / eat",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "They will eat after praying.",
+            advancedAnswer: "The whole family will eat their meal after they finish praying together."
+          },
+          {
+            id: 9,
+            icon: "👩‍👧",
+            context: "Mẹ hướng dẫn con gái cách làm bánh",
+            hint: "Cấu trúc: show someone how to do something",
+            words: "show / how",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The woman is showing her daughter how to bake a cake.",
+            advancedAnswer: "The mother is cheerfully showing her young daughter how to mix ingredients."
+          },
+          {
+            id: 10,
+            icon: "👨‍👦",
+            context: "Người cha đang chỉ con trai cách sửa xe hơi",
+            hint: "Cấu trúc: show someone how to fix a car",
+            words: "show / how",
+            userAnswer: "",
+            showAnswer: false,
+            modelAnswer: "The man is showing his son how to fix a car.",
+            advancedAnswer: "The man is showing his son how to inspect and repair the car engine."
+          }
+        ]);
+
+        // DATA: WRITING PART 2 (3 Emails from Slide)
+        const writingPart2Data = [
+          {
+            id: 1,
+            title: "Practice 1: New Employee Training Program",
+            from: "Global Tech",
+            to: "All employees",
+            date: "March 5, 10:00 A.M.",
+            subject: "New Employee Training Program",
+            body: "Dear Team,\n\nWe are excited to announce the launch of a new training program designed to improve our employees' skills in digital marketing. The program will include online modules and live workshops. Please respond to this email to register for the program. We believe this program will be beneficial to your career development.\n\nBest regards,\nGlobal Tech",
+            directions: "Respond to the e-mail as if you are an employee. In your e-mail, express your interest in the program and ask TWO questions.",
+            modelResponse: "Dear Global Tech,\n\nThank you for announcing this new training program. I am very interested in participating as I believe this is a wonderful opportunity to enhance my skills.\n\nI have two questions before registering. First, how long will the program take to complete? Second, will the live workshops be held during or outside of regular working hours?\n\nThank you, and I look forward to the training.\n\nBest regards,\n[Your Name]",
+            checkpoints: [
+              "Lời chào Dear Global Tech và cảm ơn",
+              "Bày tỏ sự quan tâm (express interest)",
+              "Đặt đúng 2 câu hỏi (First, ...? Second, ...?)"
+            ]
+          },
+          {
+            id: 2,
+            title: "Practice 2: Apartment for Rent",
+            from: "James Cohen",
+            to: "Briana Nelson",
+            date: "April 13, 1:11 P.M.",
+            subject: "Apartment for rent",
+            body: "Dear Ms. Nelson,\n\nI'm interested in the apartment you have for rent. Can you tell me how big it is, and if it has any yard? Also, what is the neighborhood like, in term of nearby stores and safety? I am free any day next week to come and visit, so let me know when is a good time for you.\n\nThank you.",
+            directions: "Respond to the e-mail as if you are Briana Nelson. In your e-mail, provide THREE pieces of information.",
+            modelResponse: "Dear Mr. Cohen,\n\nThank you for your interest. Here is the information you asked for:\n\nFirst, the apartment is 850 square feet with two bedrooms. There is no yard, but there is a small garden.\n\nSecond, the neighborhood is safe and has a supermarket and pharmacy nearby.\n\nThird, you can visit the apartment next Tuesday or Thursday afternoon. Please let me know which day is better.\n\nBest regards,\nBriana Nelson",
+            checkpoints: [
+              "Thông tin 1: Kích thước căn hộ & sân vườn",
+              "Thông tin 2: Khu vực an ninh & cửa hàng tiện ích",
+              "Thông tin 3: Thời gian cụ thể để sang xem nhà"
+            ]
+          },
+          {
+            id: 3,
+            title: "Practice 3: Welcome to New Department",
+            from: "P. Spata",
+            to: "A. Means",
+            date: "November 9, 4:08 P.M.",
+            subject: "Welcome",
+            body: "Welcome!\n\nI'm happy to have you in our department. Please tell me if there is anything I can do to make your transition here more comfortable. And let me know if you have any questions about working in our office.\n\nBest regards,\nP. Spata",
+            directions: "Respond to the e-mail as if you are A. Means. In your e-mail, ask TWO questions about working in the new office and make ONE request.",
+            modelResponse: "Dear P. Spata,\n\nThank you for the warm welcome! I'm excited to join the team.\n\nI do have a couple of questions about working in the office:\n1. Are there any team lunches or events I should know about?\n2. Who should I contact if I need IT support?\n\nAlso, could you please send me a copy of the office layout? It would help me get familiar with the space.\n\nLooking forward to your guidance!\n\nBest regards,\nA. Means",
+            checkpoints: [
+              "Lời cảm ơn vì đã chào đón nồng nhiệt",
+              "Hỏi đủ 2 câu hỏi (team event & IT support)",
+              "Đưa ra đúng 1 yêu cầu (send copy of office layout)"
+            ]
+          }
+        ];
+
+        const currentEmail = computed(() => writingPart2Data[selectedEmailIndex.value]);
+
+        // DATA: WRITING PART 3 (Essay Agreement & Disagreement from Slide)
+        const essayAgreementParas = [
+          "In the past, books were the main way people learned new things. Today, however, the internet has become very popular for finding information. I strongly believe that the internet is more useful than books. This is because it is quicker, offers more choices, and is more convenient for most people.",
+          "The first reason is that the internet gives us information much faster. When we need an answer to a question, we can type it into a search engine and get results immediately. For example, if I want to know the latest news about my favourite football team, I can check a sports website in seconds. A book cannot give me such up-to-date information. This speed makes the internet very helpful for everyday life.",
+          "Another important point is that the internet provides a wider variety of information. Books are usually limited to one subject or one writer's view, but the internet has endless topics and opinions. For instance, if I want to learn how to cook a new dish, I can find many recipes, cooking videos, and tips from different chefs online. A single cookbook would only offer a few options. This variety allows me to choose what works best for me.",
+          "Finally, the internet is much easier to use and carry around. We can access it from our phones, tablets, or computers at any time. For example, when I am travelling, I can search for train times or hotel information without carrying heavy guidebooks. Books are often large and take up space, but the internet is always with us. This convenience makes it a practical choice for finding information on the go.",
+          "In conclusion, I believe the internet is more useful than books because it is faster, offers more variety, and is easier to use. Books are still valuable for some purposes, but for most people, the internet is the better option. It helps us learn and solve problems quickly in our busy lives."
+        ];
+
+        const essayDisagreementParas = [
+          "The internet has become a popular tool for finding information, but I strongly believe that books remain more useful. Although the internet is fast and convenient, books offer greater reliability, deeper understanding, and a more focused learning experience.",
+          "First of all, books are much more reliable than the internet. Anyone can publish information online, and it is often difficult to know if it is true. For example, when I research a historical event, I can trust a well-known history book written by an expert. On the internet, however, I might find many different stories, and some of them may be incorrect. Books go through a careful editing and review process, which makes their content more trustworthy.",
+          "Secondly, books help us understand topics more deeply. The internet often gives us short articles or quick answers, but books provide detailed explanations and full context. For instance, if I want to learn about climate change, a book will explain the science step by step, with clear chapters and logical order. Online sources, on the other hand, may give only small pieces of information that are not connected. Reading a book from beginning to end allows me to build a complete picture of a subject.",
+          "Finally, books allow for better concentration and focus. When I read a book, there are no pop-up ads, links, or notifications to distract me. I can sit quietly and think about what I am reading. For example, when I study for an important exam, I prefer using textbooks because I can read without interruptions. The internet is full of distractions that make it hard to stay focused, and this can reduce the quality of learning.",
+          "In conclusion, while the internet is useful for quick facts, books are still more valuable for reliable, thorough, and focused information. They offer trusted knowledge, help us understand complex ideas, and create a peaceful learning environment. For these reasons, I believe that books will always be a superior source of information."
+        ];
+
+        const essayAgreementText = essayAgreementParas.join(' ');
+        const essayDisagreementText = essayDisagreementParas.join(' ');
+
+        // Mock test modal
+        const showMockModal = ref(false);
+        const mockType = ref('speaking');
+
+        const openMockModal = (type) => {
+          mockType.value = type;
+          showMockModal.value = true;
+        };
+
+        const startActualMock = () => {
+          showMockModal.value = false;
+          if (mockType.value === 'speaking') {
+            activeTab.value = 'speaking';
+            currentSpeakingSub.value = 'q12';
+            startPrepTimer(45, 'Phần thi Speaking bắt đầu: 45s chuẩn bị câu 1!');
+          } else {
+            activeTab.value = 'writing';
+            currentWritingSub.value = 'w1';
+            alert("Bắt đầu phần thi Writing: 8 phút làm 5 câu Part 1!");
+          }
+        };
+
+        // Save essay draft on change
+        Vue.watch(userEssayText, (newVal) => {
+          localStorage.setItem('essay_draft', newVal);
+        });
+
+        onMounted(() => {
+          loadProgress();
+          if (window.lucide) {
+            window.lucide.createIcons();
+          }
+        });
+
+        return {
+          activeTab,
+          currentSpeakingSub,
+          currentWritingSub,
+          selectedQ12Index,
+          currentPassage,
+          speakingQ12Passages,
+          renderPassageWithHighlights,
+          speakingSubparts,
+          writingSubparts,
+          speakingQ34Data,
+          speakingQ57Data,
+          selectedScheduleTab,
+          scheduleQuestions1,
+          scheduleQuestions2,
+          opinionTopics,
+          selectedTopicIndex,
+          currentTopic,
+          currentTopicChoice,
+          writingPart1Data,
+          writingPart2Data,
+          selectedEmailIndex,
+          currentEmail,
+          essayView,
+          activeEssayTab,
+          essayAgreementParas,
+          essayDisagreementParas,
+          essayAgreementText,
+          essayDisagreementText,
+          userEssayText,
+          userEssayWordCount,
+          essayTimerSeconds,
+          startEssayTimer,
+          resetEssayTimer,
+          formatMinutesSeconds,
+          clearEssayDraft,
+          timerSeconds,
+          timerModeLabel,
+          startPrepTimer,
+          resetTimer,
+          speakText,
+          speakWord,
+          stopSpeech,
+          toggleComplete,
+          isCompleted,
+          completedCount,
+          totalExercises,
+          progressPercent,
+          showMockModal,
+          mockType,
+          openMockModal,
+          startActualMock
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
