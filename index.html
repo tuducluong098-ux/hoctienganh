@@ -267,25 +267,27 @@
           </div>
 
           <!-- ORIGINAL SLIDE VIEWER (100% GỐC TỪ FILE BÀI GIẢNG PDF) -->
-          <div v-if="slideViewMode === 'split' || slideViewMode === 'image'" class="relative border-b border-slate-300 bg-slate-950 p-2 sm:p-4 flex flex-col items-center justify-center">
-            <div class="w-full flex items-center justify-between mb-2 px-2 text-xs text-slate-400">
+          <div v-if="!slideViewMode || slideViewMode === 'split' || slideViewMode === 'image'" class="relative border-b border-slate-300 bg-slate-900 p-2 sm:p-4 flex flex-col items-center justify-center">
+            <div class="w-full flex items-center justify-between mb-2 px-2 text-xs text-slate-300">
               <span class="font-bold flex items-center gap-1.5 text-indigo-300">
                 <span>🖼️</span> Slide Gốc #{{ currentSlide.page }} (Ảnh Chụp Trực Tiếp 100% Từ File Giáo Trình Của Em)
               </span>
-              <a :href="currentSlide.slideImage" target="_blank" class="hover:text-white underline text-[11px] flex items-center gap-1 text-slate-300">
-                <span>Phóng to ảnh ↗</span>
+              <a :href="currentSlide.slideImage" target="_blank" class="hover:text-white underline text-[11px] flex items-center gap-1 text-slate-200 bg-white/10 px-2.5 py-1 rounded-md transition">
+                <span>🔍 Phóng to ảnh gốc ↗</span>
               </a>
             </div>
-            <img 
-              :src="currentSlide.slideImage" 
-              :alt="currentSlide.title"
-              class="max-h-[500px] w-auto max-w-full rounded-lg object-contain shadow-2xl border border-slate-800"
-              loading="lazy"
-            />
+            <div class="w-full flex justify-center bg-black/40 rounded-xl p-2 border border-white/10 shadow-inner">
+              <img 
+                :src="currentSlide.slideImage" 
+                :alt="currentSlide.title"
+                class="max-h-[520px] w-auto max-w-full rounded-lg object-contain shadow-2xl"
+                loading="eager"
+              />
+            </div>
           </div>
 
           <!-- SLIDE BODY: INTERACTIVE BREAKDOWN & STUDY TOOLS -->
-          <div v-if="slideViewMode === 'split' || slideViewMode === 'detail'" class="p-6 md:p-8 space-y-6">
+          <div v-if="!slideViewMode || slideViewMode === 'split' || slideViewMode === 'detail'" class="p-6 md:p-8 space-y-6">
             
             <!-- SLIDE TITLE -->
             <h3 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">
@@ -1620,6 +1622,7 @@
           activeTab,
           slideSet,
           currentSlideNum,
+          slideViewMode,
           maxSlideNum,
           currentSlide,
           showSlideGrid,
