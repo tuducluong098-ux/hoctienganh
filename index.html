@@ -723,141 +723,291 @@
           </button>
         </div>
 
-        <!-- PART 1: 10 PICTURE ITEMS (ẢNH TÁCH CẮT SẮC NÉT FULL HD & TỪ KHÓA TO RÕ RÀNG) -->
-        <div v-if="currentWritingSub === 'w1'" class="space-y-6">
+        <!-- PART 1: 10 PICTURE ITEMS (INTERACTIVE QUIZ - CHẤM ĐIỂM TỰ ĐỘNG KHI NHẤN ENTER) -->
+        <div v-if="currentWritingSub === 'w1'" class="space-y-4">
           
-          <!-- HINT & VIEW TOGGLE BANNER -->
-          <div class="p-4 md:p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200 flex flex-wrap items-center justify-between gap-3 shadow-xs">
-            <div class="space-y-1">
-              <div class="text-sm md:text-base font-bold text-amber-900 flex items-center gap-2">
-                <span>💡</span>
-                <span>Mẹo Đạt Điểm Tuyệt Đối Part 1 (8 Phút / 5 Tranh):</span>
-              </div>
-              <p class="text-xs md:text-sm text-amber-800 leading-relaxed">
-                Viết <strong>đúng 1 câu hoàn chỉnh</strong> chứa cả 2 từ khóa cho sẵn. Có thể chia thì động từ (hiện tại tiếp diễn, tương lai...) hoặc số ít/số nhiều.
-              </p>
+          <!-- QUIZ HEADER & NAVIGATION BAR (VỪA VẶN MÀN HÌNH LAPTOP) -->
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+              <span class="text-xs font-bold text-slate-500 whitespace-nowrap pl-1">Chọn Tranh:</span>
+              <button 
+                v-for="(item, idx) in writingPart1Data" 
+                :key="item.id"
+                @click="currentWritingPart1Idx = idx; writingPart1ViewMode = 'single'"
+                :class="[
+                  currentWritingPart1Idx === idx && writingPart1ViewMode === 'single' ? 'bg-rose-600 text-white font-black shadow-xs ring-2 ring-rose-300' : 'bg-slate-100 hover:bg-slate-200 text-slate-700',
+                  item.isSubmitted ? 'border-b-2 border-emerald-500 font-bold' : ''
+                ]"
+                class="px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center gap-1">
+                <span>Tranh {{ item.id }}</span>
+                <span v-if="item.isSubmitted" class="text-[10px] text-emerald-400 font-bold">({{ item.score }})</span>
+              </button>
             </div>
 
-            <div class="flex items-center gap-2 bg-white/80 p-1.5 rounded-xl border border-amber-200">
-              <span class="text-xs font-bold text-slate-600 pl-1">Chế độ xem:</span>
-              <button 
-                @click="writingPart1ViewMode = 'single'"
-                :class="writingPart1ViewMode === 'single' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-slate-600 hover:bg-slate-100'"
-                class="px-3 py-1 rounded-lg text-xs transition">
-                🖼️ Tranh Lớn Rõ Nét (Khuyên dùng)
-              </button>
-              <button 
-                @click="writingPart1ViewMode = 'grid'"
-                :class="writingPart1ViewMode === 'grid' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-slate-600 hover:bg-slate-100'"
-                class="px-3 py-1 rounded-lg text-xs transition">
-                🪟 Lưới 2 Cột
-              </button>
+            <!-- SCORE & VIEW TOGGLE -->
+            <div class="flex items-center gap-3">
+              <div class="bg-rose-50 px-3 py-1 rounded-xl border border-rose-200 text-xs font-bold text-rose-800 flex items-center gap-2">
+                <span>Đã làm: {{ completedWritingPart1Count }}/10</span>
+                <span class="text-slate-300">|</span>
+                <span>Điểm TB: {{ avgWritingPart1Score }}/10 ⭐</span>
+              </div>
+
+              <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+                <button 
+                  @click="writingPart1ViewMode = 'single'"
+                  :class="writingPart1ViewMode === 'single' ? 'bg-white text-rose-700 font-bold shadow-xs' : 'text-slate-600'"
+                  class="px-2.5 py-1 rounded-lg text-xs transition">
+                  🎯 1 Tranh Vừa Màn Hình
+                </button>
+                <button 
+                  @click="writingPart1ViewMode = 'all'"
+                  :class="writingPart1ViewMode === 'all' ? 'bg-white text-rose-700 font-bold shadow-xs' : 'text-slate-600'"
+                  class="px-2.5 py-1 rounded-lg text-xs transition">
+                  📑 Toàn Bộ 10 Tranh
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- CARDS CONTAINER -->
-          <div :class="writingPart1ViewMode === 'single' ? 'max-w-4xl mx-auto space-y-8' : 'grid grid-cols-1 lg:grid-cols-2 gap-6'">
+          <!-- SINGLE CARD MODE (THIẾT KẾ SIDE-BY-SIDE VỪA KHÍT MÀN HÌNH LAPTOP KHÔNG CẦN CUỘN) -->
+          <div v-if="writingPart1ViewMode === 'single'" class="bg-white p-5 md:p-6 rounded-3xl border border-slate-200 shadow-sm">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              
+              <!-- LEFT COLUMN: IMAGE DISPLAY (VỪA VẶN 260px - 280px) -->
+              <div class="md:col-span-5 flex flex-col items-center">
+                <div 
+                  @click="openLightbox(currentWritingPart1Item.image, 'Tranh ' + currentWritingPart1Item.id + ': ' + currentWritingPart1Item.words)"
+                  class="group relative w-full h-56 md:h-64 bg-slate-950 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-300 p-1 shadow-inner cursor-zoom-in">
+                  <img 
+                    :src="currentWritingPart1Item.image" 
+                    :alt="currentWritingPart1Item.words" 
+                    class="max-h-full max-w-full object-contain rounded-xl transition duration-300 group-hover:scale-[1.02]" 
+                  />
+                  <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg text-[11px] font-bold pointer-events-none flex items-center gap-1">
+                    <span>🔍 Bấm để phóng to</span>
+                  </div>
+                </div>
+                <div class="mt-2 text-xs md:text-sm text-slate-500 font-medium text-center">
+                  {{ currentWritingPart1Item.icon }} {{ currentWritingPart1Item.context }}
+                </div>
+              </div>
+
+              <!-- RIGHT COLUMN: INTERACTIVE QUIZ & SCORING -->
+              <div class="md:col-span-7 space-y-3.5">
+                
+                <!-- TITLE & KEYWORDS -->
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 bg-rose-600 text-white rounded-full text-xs font-black tracking-wide">
+                      Tranh {{ currentWritingPart1Item.id }} / 10
+                    </span>
+                    <span class="text-xs text-slate-400 font-medium">Part 1: Viết 1 câu chứa 2 từ</span>
+                  </div>
+                  <span class="text-xs text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-lg border border-rose-200 font-medium">
+                    💡 {{ currentWritingPart1Item.hint }}
+                  </span>
+                </div>
+
+                <!-- 2 KEYWORDS BADGE (TO, RÕ RÀNG) -->
+                <div class="p-3 bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl border-2 border-rose-200 flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-rose-800">2 Từ khóa bắt buộc:</span>
+                  <span class="px-4 py-1.5 bg-rose-600 text-white font-mono font-black text-lg md:text-xl rounded-xl shadow-xs tracking-wider">
+                    {{ currentWritingPart1Item.words }}
+                  </span>
+                </div>
+
+                <!-- INPUT BOX (NO SPOILER PLACEHOLDER!) -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs md:text-sm font-bold text-slate-700">
+                    ✍️ Gõ câu tiếng Anh của em chứa cả 2 từ khóa:
+                  </label>
+                  <div class="relative">
+                    <input 
+                      type="text" 
+                      v-model="currentWritingPart1Item.userAnswer" 
+                      @keydown.enter.prevent="submitWritingPart1(currentWritingPart1Item)"
+                      :disabled="currentWritingPart1Item.isSubmitted"
+                      placeholder="Gõ câu trả lời rồi nhấn Enter..."
+                      class="w-full text-base md:text-lg p-3.5 pr-28 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-rose-500 font-sans text-slate-900 transition shadow-inner disabled:bg-slate-50 disabled:text-slate-600">
+                    
+                    <button 
+                      v-if="!currentWritingPart1Item.isSubmitted"
+                      @click="submitWritingPart1(currentWritingPart1Item)"
+                      class="absolute right-2 top-2 bottom-2 px-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                      <span>Nộp bài (↵)</span>
+                    </button>
+                    <button 
+                      v-else
+                      @click="resetWritingItem(currentWritingPart1Item)"
+                      class="absolute right-2 top-2 bottom-2 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-bold transition">
+                      🔄 Gõ lại
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between text-[11px] text-slate-400">
+                    <span>💡 Nhấn phím <strong>Enter</strong> trên bàn phím để hệ thống tự động kiểm tra & chấm điểm!</span>
+                    <button 
+                      v-if="!currentWritingPart1Item.isSubmitted"
+                      @click="currentWritingPart1Item.showAnswer = !currentWritingPart1Item.showAnswer" 
+                      class="text-slate-400 hover:text-rose-600 underline">
+                      {{ currentWritingPart1Item.showAnswer ? 'Ẩn đáp án' : 'Bỏ qua & Xem đáp án' }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- FEEDBACK & SCORE RESULT (ONLY AFTER SUBMIT OR REVEAL) -->
+                <div v-if="currentWritingPart1Item.showAnswer" class="space-y-2.5 pt-1 animate-fadeIn">
+                  
+                  <!-- SCORE BANNER -->
+                  <div 
+                    v-if="currentWritingPart1Item.isSubmitted"
+                    :class="currentWritingPart1Item.score >= 8 ? 'bg-emerald-50 border-emerald-300 text-emerald-950' : 'bg-amber-50 border-amber-300 text-amber-950'"
+                    class="p-3.5 rounded-2xl border-2 space-y-1.5 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-sm md:text-base">{{ currentWritingPart1Item.feedbackMessage }}</span>
+                      <span 
+                        :class="currentWritingPart1Item.score >= 8 ? 'bg-emerald-600' : 'bg-amber-500'"
+                        class="px-3 py-1 rounded-full text-white text-xs font-black shadow-xs">
+                        {{ currentWritingPart1Item.score }}/10 Điểm
+                      </span>
+                    </div>
+
+                    <!-- KEYWORD CHECKLIST -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span 
+                        v-for="(c, cIdx) in currentWritingPart1Item.keywordChecks" 
+                        :key="cIdx"
+                        :class="c.found ? 'bg-emerald-200 text-emerald-900 border-emerald-300' : 'bg-rose-200 text-rose-900 border-rose-300'"
+                        class="px-2.5 py-0.5 rounded-md text-xs font-bold border">
+                        {{ c.found ? '✓ Đã có từ: ' : '✗ Thiếu từ: ' }}<strong>{{ c.word }}</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- REVEALED MODEL ANSWERS -->
+                  <div class="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200 text-xs md:text-sm text-emerald-950 space-y-0.5">
+                    <div class="font-bold text-emerald-700 text-xs uppercase flex items-center gap-1">
+                      <span>✓</span> Đáp Án Chuẩn Giáo Trình ETS:
+                    </div>
+                    <div class="font-semibold text-slate-900 text-sm md:text-base">
+                      {{ currentWritingPart1Item.modelAnswer }}
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-indigo-50/80 rounded-xl border border-indigo-200 text-xs md:text-sm text-indigo-950 space-y-0.5">
+                    <div class="font-bold text-indigo-700 text-xs uppercase flex items-center gap-1">
+                      <span>⭐</span> Câu Mở Rộng Nâng Cao:
+                    </div>
+                    <div class="font-medium text-slate-800 text-sm md:text-base">
+                      {{ currentWritingPart1Item.advancedAnswer }}
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- STEPPER FOOTER -->
+                <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                  <button 
+                    @click="prevWritingPart1" 
+                    :disabled="currentWritingPart1Idx === 0" 
+                    :class="currentWritingPart1Idx === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-slate-100'"
+                    class="px-4 py-2 rounded-xl border border-slate-200 text-xs md:text-sm font-bold text-slate-700 transition flex items-center gap-1.5">
+                    <span>◀ Tranh Trước</span>
+                  </button>
+
+                  <span class="text-xs text-slate-400 font-semibold">
+                    Tranh {{ currentWritingPart1Idx + 1 }} / {{ writingPart1Data.length }}
+                  </span>
+
+                  <button 
+                    @click="nextWritingPart1" 
+                    :disabled="currentWritingPart1Idx === writingPart1Data.length - 1" 
+                    :class="currentWritingPart1Idx === writingPart1Data.length - 1 ? 'opacity-30 cursor-not-allowed' : 'bg-rose-600 hover:bg-rose-700 text-white'"
+                    class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-xs">
+                    <span>Tranh Tiếp Theo ▶</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- ALL CARDS VIEW MODE (HIỂN THỊ TẤT CẢ 10 CÂU THEO LƯỚI SIDE-BY-SIDE VỪA MẮT) -->
+          <div v-if="writingPart1ViewMode === 'all'" class="space-y-6">
             <div 
               v-for="item in writingPart1Data" 
               :key="item.id"
-              class="bg-white p-6 md:p-7 rounded-3xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition">
+              class="bg-white p-5 md:p-6 rounded-3xl border border-slate-200 shadow-sm md:grid md:grid-cols-12 gap-6 items-start">
               
-              <!-- CARD HEADER -->
-              <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                  <span class="text-3xl">{{ item.icon }}</span>
-                  <div>
-                    <h4 class="font-black text-lg md:text-xl text-slate-900 tracking-tight">
-                      Tranh {{ item.id }} / 10
-                    </h4>
-                    <span class="text-xs md:text-sm text-slate-500 font-medium">{{ item.context }}</span>
-                  </div>
-                </div>
-                <button 
+              <!-- LEFT -->
+              <div class="md:col-span-5 flex flex-col items-center">
+                <div 
                   @click="openLightbox(item.image, 'Tranh ' + item.id + ': ' + item.words)"
-                  class="px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-200">
-                  <span>🔍 Phóng to ảnh</span>
-                </button>
-              </div>
-
-              <!-- KEYWORDS HIGHLIGHT BADGE (TO - RÕ - DỄ NHÌN) -->
-              <div class="p-4 bg-rose-50/80 rounded-2xl border-2 border-rose-200/80 flex flex-wrap items-center justify-between gap-2">
-                <div class="space-y-0.5">
-                  <div class="text-[11px] md:text-xs font-black uppercase tracking-wider text-rose-800">
-                    2 Từ Khóa Bắt Buộc Trong Câu:
-                  </div>
-                  <div class="text-xl md:text-2xl font-black text-rose-700 font-mono tracking-wide">
-                    {{ item.words }}
-                  </div>
+                  class="group relative w-full h-52 bg-slate-950 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-300 p-1 shadow-inner cursor-zoom-in">
+                  <img :src="item.image" :alt="item.words" class="max-h-full max-w-full object-contain rounded-xl transition duration-300 group-hover:scale-[1.02]" />
+                  <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold">🔍 Phóng to</div>
                 </div>
-                <div class="text-xs md:text-sm text-rose-900 bg-white/80 px-3 py-1 rounded-xl border border-rose-200 font-medium">
-                  💡 Gợi ý: {{ item.hint }}
+                <div class="mt-2 text-xs text-slate-500 font-medium text-center">
+                  {{ item.icon }} {{ item.context }}
                 </div>
               </div>
 
-              <!-- HIGH-RES CROPPED IMAGE DISPLAY -->
-              <div 
-                v-if="item.image" 
-                @click="openLightbox(item.image, 'Tranh ' + item.id + ': ' + item.words)"
-                class="group relative rounded-2xl overflow-hidden border-2 border-slate-200 bg-slate-950 flex justify-center p-2 cursor-zoom-in shadow-inner">
-                <img 
-                  :src="item.image" 
-                  :alt="item.words" 
-                  :class="writingPart1ViewMode === 'single' ? 'max-h-80 md:max-h-96' : 'max-h-64'"
-                  class="w-auto max-w-full object-contain rounded-xl transition duration-300 group-hover:scale-[1.01]" 
-                />
-                <div class="absolute bottom-3 right-3 bg-black/75 backdrop-blur-sm text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg group-hover:bg-rose-600 transition">
-                  <span>🔍 Bấm để xem kích thước lớn</span>
-                </div>
-              </div>
-
-              <!-- USER ANSWER INPUT -->
-              <div class="space-y-1.5">
-                <label class="block text-xs md:text-sm font-bold text-slate-700">
-                  ✍️ Gõ câu trả lời của em vào đây (chứa đủ 2 từ khóa):
-                </label>
-                <input 
-                  type="text" 
-                  v-model="item.userAnswer" 
-                  :placeholder="'Ví dụ: The man is cleaning the counter...'"
-                  class="w-full text-base md:text-lg p-3.5 md:p-4 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-200 font-sans transition text-slate-800 shadow-inner">
-              </div>
-
-              <!-- TOGGLE ANSWER & STATS -->
-              <div class="flex items-center justify-between pt-1">
-                <button 
-                  @click="item.showAnswer = !item.showAnswer"
-                  class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-xs">
-                  <span>{{ item.showAnswer ? '🙈 Ẩn đáp án mẫu' : '👁️ Xem đáp án mẫu & phân tích' }}</span>
-                </button>
-                <span v-if="item.userAnswer.length > 0" class="text-xs text-slate-500 font-mono">
-                  Độ dài câu: {{ item.userAnswer.length }} ký tự
-                </span>
-              </div>
-
-              <!-- MODEL ANSWERS (TO, RÕ, DỄ HỌC THUỘC) -->
-              <div v-if="item.showAnswer" class="space-y-3 pt-3 border-t border-slate-200">
-                <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-950 space-y-1">
-                  <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1">
-                    <span>✓</span> Đáp Án Chuẩn Giáo Trình ETS:
-                  </div>
-                  <div class="text-base md:text-lg font-bold leading-relaxed">
-                    {{ item.modelAnswer }}
-                  </div>
+              <!-- RIGHT -->
+              <div class="md:col-span-7 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-0.5 bg-rose-600 text-white rounded-full text-xs font-black">Tranh {{ item.id }} / 10</span>
+                  <span class="text-xs text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 font-medium">💡 {{ item.hint }}</span>
                 </div>
 
-                <div class="p-4 bg-indigo-50 rounded-2xl border border-indigo-200 text-indigo-950 space-y-1">
-                  <div class="text-xs font-bold uppercase tracking-wider text-indigo-700 flex items-center gap-1">
-                    <span>⭐</span> Câu Mở Rộng Ăn Điểm Cao (Advanced):
+                <div class="p-2.5 bg-rose-50/80 rounded-xl border border-rose-200 flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase text-rose-800">Từ khóa:</span>
+                  <span class="px-3 py-1 bg-rose-600 text-white font-mono font-black text-base rounded-lg">{{ item.words }}</span>
+                </div>
+
+                <div class="space-y-1">
+                  <div class="relative">
+                    <input 
+                      type="text" 
+                      v-model="item.userAnswer" 
+                      @keydown.enter.prevent="submitWritingPart1(item)"
+                      :disabled="item.isSubmitted"
+                      placeholder="Gõ câu trả lời rồi nhấn Enter..."
+                      class="w-full text-base p-3 pr-24 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-rose-500 font-sans transition">
+                    <button 
+                      v-if="!item.isSubmitted"
+                      @click="submitWritingPart1(item)"
+                      class="absolute right-1.5 top-1.5 bottom-1.5 px-3 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold">
+                      Nộp (↵)
+                    </button>
+                    <button 
+                      v-else
+                      @click="resetWritingItem(item)"
+                      class="absolute right-1.5 top-1.5 bottom-1.5 px-2.5 bg-slate-200 text-slate-700 rounded-lg text-xs font-bold">
+                      🔄 Gõ lại
+                    </button>
                   </div>
-                  <div class="text-base md:text-lg font-medium leading-relaxed">
-                    {{ item.advancedAnswer }}
+                  <div class="text-[11px] text-slate-400">Nhấn Enter để chấm điểm</div>
+                </div>
+
+                <!-- FEEDBACK -->
+                <div v-if="item.showAnswer" class="space-y-2 pt-1 animate-fadeIn">
+                  <div v-if="item.isSubmitted" :class="item.score >= 8 ? 'bg-emerald-50 border-emerald-300 text-emerald-950' : 'bg-amber-50 border-amber-300 text-amber-950'" class="p-3 rounded-xl border-2 space-y-1">
+                    <div class="flex items-center justify-between font-bold text-sm">
+                      <span>{{ item.feedbackMessage }}</span>
+                      <span class="px-2 py-0.5 rounded-full text-white text-xs" :class="item.score >= 8 ? 'bg-emerald-600' : 'bg-amber-500'">{{ item.score }}/10</span>
+                    </div>
+                  </div>
+                  <div class="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200 text-xs">
+                    <span class="font-bold text-emerald-800">Đáp án chuẩn:</span> {{ item.modelAnswer }}
+                  </div>
+                  <div class="p-2.5 bg-indigo-50 rounded-lg border border-indigo-200 text-xs">
+                    <span class="font-bold text-indigo-800">Nâng cao:</span> {{ item.advancedAnswer }}
                   </div>
                 </div>
-              </div>
 
+              </div>
             </div>
           </div>
+
         </div>
 
         <!-- PART 2: 3 EMAILS -->
@@ -1745,16 +1895,16 @@
 
         // DATA: WRITING PART 1 (10 Items from Slide)
         const writingPart1Data = ref([
-          { id: 1, image: "assets/images/writing_pic_1.jpg", icon: "👨‍🍳", context: "Một đầu bếp nam đang lau chùi bàn bếp inox", hint: "Dùng thì hiện tại tiếp diễn với động từ 'clean'", words: "man / clean", userAnswer: "", showAnswer: false, modelAnswer: "The man is cleaning the counter.", advancedAnswer: "While working in the kitchen, the man is thoroughly cleaning the counter." },
-          { id: 2, image: "assets/images/writing_pic_2.jpg", icon: "👩‍💼", context: "Người phụ nữ đang lau cánh tủ bếp kính", hint: "Dùng từ 'cabinet' (tủ)", words: "woman / clean", userAnswer: "", showAnswer: false, modelAnswer: "The woman is cleaning the cabinet.", advancedAnswer: "The woman wearing yellow gloves is cleaning the glass cabinet." },
-          { id: 3, image: "assets/images/writing_pic_3.jpg", icon: "🍽️", context: "Người phục vụ mang món ăn ra cho khách tại nhà hàng", hint: "Từ khóa: meal / serve (phục vụ bữa ăn)", words: "meal / serve", userAnswer: "", showAnswer: false, modelAnswer: "The waiter is serving meals to the customers.", advancedAnswer: "The friendly waiter is serving hot meals to the couple at the table." },
-          { id: 4, image: "assets/images/writing_pic_4.jpg", icon: "🍸", context: "Bartender tại quầy bar đang rót/đưa đồ uống cho khách", hint: "Từ khóa: drink / serve (phục vụ đồ uống)", words: "drink / serve", userAnswer: "", showAnswer: false, modelAnswer: "The bartender is serving drinks to the customers.", advancedAnswer: "Smiling warmly, the bartender is serving drinks to the guests at the counter." },
-          { id: 5, image: "assets/images/writing_pic_5.jpg", icon: "🚲", context: "Hàng loạt xe đạp dựng cạnh tòa nhà xây bằng đá", hint: "Dùng thể bị động 'are parked'", words: "park / building", userAnswer: "", showAnswer: false, modelAnswer: "The bikes are parked next to the building.", advancedAnswer: "A row of bicycles are parked neatly next to the stone building." },
-          { id: 6, image: "assets/images/writing_pic_6.jpg", icon: "🚗", context: "Dãy ô tô đỗ dọc theo lề đường", hint: "Dùng 'are parked along the street'", words: "park / street", userAnswer: "", showAnswer: false, modelAnswer: "The cars are parked along the street.", advancedAnswer: "Several cars are parked along the edge of the street under the trees." },
-          { id: 7, image: "assets/images/writing_pic_7.jpg", icon: "📖", context: "Cặp đôi đang xem thực đơn trước khi gọi món với nhân viên", hint: "Dùng liên từ 'after' kết hợp V-ing", words: "after / order", userAnswer: "", showAnswer: false, modelAnswer: "They will order food after looking at the menu.", advancedAnswer: "The customers will order their dinner after reading the menu carefully." },
-          { id: 8, image: "assets/images/writing_pic_8.jpg", icon: "🙏", context: "Gia đình nắm tay nhau cầu nguyện trước bàn ăn", hint: "Dùng liên từ 'after praying'", words: "after / eat", userAnswer: "", showAnswer: false, modelAnswer: "They will eat after praying.", advancedAnswer: "The whole family will eat their meal after they finish praying together." },
-          { id: 9, image: "assets/images/writing_pic_9.jpg", icon: "👩‍👧", context: "Mẹ hướng dẫn con gái cách làm bánh", hint: "Cấu trúc: show someone how to bake a cake", words: "show / how", userAnswer: "", showAnswer: false, modelAnswer: "The woman is showing her daughter how to bake a cake.", advancedAnswer: "The mother is cheerfully showing her young daughter how to mix ingredients." },
-          { id: 10, image: "assets/images/writing_pic_10.jpg", icon: "👨‍👦", context: "Người cha đang chỉ con trai cách sửa xe hơi", hint: "Cấu trúc: show someone how to fix a car", words: "show / how", userAnswer: "", showAnswer: false, modelAnswer: "The man is showing his son how to fix a car.", advancedAnswer: "The man is showing his son how to inspect and repair the car engine." }
+          { id: 1, image: "assets/images/writing_pic_1.jpg", icon: "👨‍🍳", context: "Một đầu bếp nam đang lau chùi bàn bếp inox", hint: "Dùng thì hiện tại tiếp diễn với động từ 'clean'", words: "man / clean", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The man is cleaning the counter.", advancedAnswer: "While working in the kitchen, the man is thoroughly cleaning the counter." },
+          { id: 2, image: "assets/images/writing_pic_2.jpg", icon: "👩‍💼", context: "Người phụ nữ đang lau cánh tủ bếp kính", hint: "Dùng từ 'cabinet' (tủ)", words: "woman / clean", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The woman is cleaning the cabinet.", advancedAnswer: "The woman wearing yellow gloves is cleaning the glass cabinet." },
+          { id: 3, image: "assets/images/writing_pic_3.jpg", icon: "🍽️", context: "Người phục vụ mang món ăn ra cho khách tại nhà hàng", hint: "Từ khóa: meal / serve (phục vụ bữa ăn)", words: "meal / serve", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The waiter is serving meals to the customers.", advancedAnswer: "The friendly waiter is serving hot meals to the couple at the table." },
+          { id: 4, image: "assets/images/writing_pic_4.jpg", icon: "🍸", context: "Bartender tại quầy bar đang rót/đưa đồ uống cho khách", hint: "Từ khóa: drink / serve (phục vụ đồ uống)", words: "drink / serve", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The bartender is serving drinks to the customers.", advancedAnswer: "Smiling warmly, the bartender is serving drinks to the guests at the counter." },
+          { id: 5, image: "assets/images/writing_pic_5.jpg", icon: "🚲", context: "Hàng loạt xe đạp dựng cạnh tòa nhà xây bằng đá", hint: "Dùng thể bị động 'are parked'", words: "park / building", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The bikes are parked next to the building.", advancedAnswer: "A row of bicycles are parked neatly next to the stone building." },
+          { id: 6, image: "assets/images/writing_pic_6.jpg", icon: "🚗", context: "Dãy ô tô đỗ dọc theo lề đường", hint: "Dùng 'are parked along the street'", words: "park / street", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The cars are parked along the street.", advancedAnswer: "Several cars are parked along the edge of the street under the trees." },
+          { id: 7, image: "assets/images/writing_pic_7.jpg", icon: "📖", context: "Cặp đôi đang xem thực đơn trước khi gọi món với nhân viên", hint: "Dùng liên từ 'after' kết hợp V-ing", words: "after / order", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "They will order food after looking at the menu.", advancedAnswer: "The customers will order their dinner after reading the menu carefully." },
+          { id: 8, image: "assets/images/writing_pic_8.jpg", icon: "🙏", context: "Gia đình nắm tay nhau cầu nguyện trước bàn ăn", hint: "Dùng liên từ 'after praying'", words: "after / eat", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "They will eat after praying.", advancedAnswer: "The whole family will eat their meal after they finish praying together." },
+          { id: 9, image: "assets/images/writing_pic_9.jpg", icon: "👩‍👧", context: "Mẹ hướng dẫn con gái cách làm bánh", hint: "Cấu trúc: show someone how to bake a cake", words: "show / how", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The woman is showing her daughter how to bake a cake.", advancedAnswer: "The mother is cheerfully showing her young daughter how to mix ingredients." },
+          { id: 10, image: "assets/images/writing_pic_10.jpg", icon: "👨‍👦", context: "Người cha đang chỉ con trai cách sửa xe hơi", hint: "Cấu trúc: show someone how to fix a car", words: "show / how", userAnswer: "", isSubmitted: false, showAnswer: false, score: null, feedbackMessage: "", keywordChecks: [], modelAnswer: "The man is showing his son how to fix a car.", advancedAnswer: "The man is showing his son how to inspect and repair the car engine." }
         ]);
 
         // DATA: WRITING PART 2 (3 Emails from Slide)
@@ -1844,8 +1994,140 @@
           lightboxZoom.value = Math.max(0.6, Math.min(3, +(lightboxZoom.value + delta).toFixed(2)));
         }
 
-        // WRITING PART 1 VIEW MODE (grid vs single)
-        const writingPart1ViewMode = ref('single'); // 'single' (large full cards) or 'grid' (2 cols)
+        // WRITING PART 1 INTERACTIVE QUIZ & NAVIGATION
+        const writingPart1ViewMode = ref('single'); // 'single' (1 câu vừa vặn) or 'all' (cả 10 câu)
+        const currentWritingPart1Idx = ref(0);
+
+        const currentWritingPart1Item = computed(() => {
+          return writingPart1Data.value[currentWritingPart1Idx.value] || writingPart1Data.value[0];
+        });
+
+        const completedWritingPart1Count = computed(() => {
+          return writingPart1Data.value.filter(i => i.isSubmitted).length;
+        });
+
+        const avgWritingPart1Score = computed(() => {
+          const submitted = writingPart1Data.value.filter(i => i.isSubmitted && i.score !== null);
+          if (submitted.length === 0) return '0.0';
+          const sum = submitted.reduce((acc, curr) => acc + curr.score, 0);
+          return (sum / submitted.length).toFixed(1);
+        });
+
+        function submitWritingPart1(item) {
+          if (!item.userAnswer || item.userAnswer.trim().length === 0) {
+            alert('Em hãy gõ câu trả lời vào ô trước khi nộp bài nhé! ❤️');
+            return;
+          }
+          const rawText = item.userAnswer.trim();
+          const cleanText = rawText.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+          const tokens = cleanText.split(/\s+/).filter(Boolean);
+
+          const words = item.words.split('/').map(function(w) { return w.trim().toLowerCase(); });
+          const checks = [];
+          let foundCount = 0;
+
+          words.forEach(function(w) {
+            let hasWord = false;
+            if (w === 'man') {
+              hasWord = tokens.includes('man') || tokens.includes('men');
+            } else if (w === 'woman') {
+              hasWord = tokens.includes('woman') || tokens.includes('women');
+            } else if (w === 'clean') {
+              hasWord = tokens.some(function(t) { return t.startsWith('clean'); });
+            } else if (w === 'serve') {
+              hasWord = tokens.some(function(t) { return t.startsWith('serv'); });
+            } else if (w === 'park') {
+              hasWord = tokens.some(function(t) { return t.startsWith('park'); });
+            } else if (w === 'building') {
+              hasWord = tokens.some(function(t) { return t.startsWith('build'); });
+            } else if (w === 'street') {
+              hasWord = tokens.some(function(t) { return t.startsWith('street'); });
+            } else if (w === 'after') {
+              hasWord = tokens.includes('after');
+            } else if (w === 'order') {
+              hasWord = tokens.some(function(t) { return t.startsWith('order'); });
+            } else if (w === 'eat') {
+              hasWord = tokens.some(function(t) { return ['eat', 'eats', 'ate', 'eating', 'eaten'].includes(t); });
+            } else if (w === 'show') {
+              hasWord = tokens.some(function(t) { return t.startsWith('show'); });
+            } else if (w === 'how') {
+              hasWord = tokens.includes('how');
+            } else if (w === 'meal') {
+              hasWord = tokens.some(function(t) { return t.startsWith('meal'); });
+            } else if (w === 'drink') {
+              hasWord = tokens.some(function(t) { return t.startsWith('drink'); });
+            } else {
+              hasWord = tokens.some(function(t) { return t.includes(w); });
+            }
+
+            checks.push({ word: w, found: hasWord });
+            if (hasWord) foundCount++;
+          });
+
+          let score = 0;
+          if (foundCount === 2) {
+            score += 7;
+          } else if (foundCount === 1) {
+            score += 4;
+          } else {
+            score += 1;
+          }
+
+          const isCapitalized = /^[A-Z]/.test(rawText);
+          if (isCapitalized) score += 1;
+
+          const hasPunctuation = /[.?!]$/.test(rawText);
+          if (hasPunctuation) score += 1;
+
+          const wordCount = rawText.split(/\s+/).filter(Boolean).length;
+          if (wordCount >= 4) score += 1;
+
+          score = Math.min(10, Math.max(1, score));
+
+          item.score = score;
+          item.keywordChecks = checks;
+          item.isSubmitted = true;
+          item.showAnswer = true;
+
+          if (score === 10) {
+            item.feedbackMessage = '🎉 10/10 - Hoàn hảo! Đầy đủ 2 từ khóa và chuẩn ngữ pháp ETS!';
+            try {
+              if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+            } catch(e) {}
+          } else if (score >= 8) {
+            let note = '';
+            if (!isCapitalized) note += ' (Nhớ viết hoa chữ đầu câu)';
+            if (!hasPunctuation) note += ' (Nhớ thêm dấu chấm câu)';
+            item.feedbackMessage = '⭐ ' + score + '/10 - Rất tốt! Đã đủ 2 từ khóa.' + note;
+          } else if (foundCount === 1) {
+            const missing = checks.filter(function(c) { return !c.found; }).map(function(c) { return '"' + c.word + '"'; }).join(', ');
+            item.feedbackMessage = '⚠️ ' + score + '/10 - Cố lên em! Thiếu từ khóa ' + missing + ' trong câu.';
+          } else {
+            const missingWords = words.map(function(w) { return '"' + w + '"'; }).join(', ');
+            item.feedbackMessage = '❌ ' + score + '/10 - Chưa đạt! Cần chứa cả 2 từ ' + missingWords + '.';
+          }
+        }
+
+        function resetWritingItem(item) {
+          item.isSubmitted = false;
+          item.showAnswer = false;
+          item.score = null;
+          item.feedbackMessage = '';
+          item.keywordChecks = [];
+          item.userAnswer = '';
+        }
+
+        function nextWritingPart1() {
+          if (currentWritingPart1Idx.value < writingPart1Data.value.length - 1) {
+            currentWritingPart1Idx.value++;
+          }
+        }
+
+        function prevWritingPart1() {
+          if (currentWritingPart1Idx.value > 0) {
+            currentWritingPart1Idx.value--;
+          }
+        }
 
         return {
           activeTab,
@@ -1908,7 +2190,15 @@
           openLightbox,
           closeLightbox,
           zoomLightbox,
-          writingPart1ViewMode
+          writingPart1ViewMode,
+          currentWritingPart1Idx,
+          currentWritingPart1Item,
+          completedWritingPart1Count,
+          avgWritingPart1Score,
+          submitWritingPart1,
+          resetWritingItem,
+          nextWritingPart1,
+          prevWritingPart1
         };
       }
     }).mount('#app');
