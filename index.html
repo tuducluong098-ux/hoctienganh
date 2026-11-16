@@ -418,9 +418,9 @@
                 v-for="(p, pIdx) in speakingQ12Passages" 
                 :key="p.id"
                 @click="selectedQ12Index = pIdx"
-                :class="selectedQ12Index === pIdx ? 'bg-indigo-100 text-indigo-700 font-bold border-indigo-300' : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border-slate-200'"
-                class="px-3 py-1.5 rounded-lg text-xs border font-medium whitespace-nowrap transition">
-                Bài {{ pIdx + 1 }}
+                :class="selectedQ12Index === pIdx ? 'bg-indigo-600 text-white font-bold shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition">
+                {{ p.badge }}
               </button>
             </div>
 
@@ -445,6 +445,11 @@
 
           <!-- PASSAGE DISPLAY -->
           <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <!-- EMBEDDED SLIDE IMAGE GỐC -->
+            <div v-if="currentPassage.slideImage" class="bg-slate-900 rounded-xl overflow-hidden border border-slate-300 flex justify-center p-2">
+              <img :src="currentPassage.slideImage" :alt="currentPassage.title" class="max-h-60 w-auto object-contain rounded" />
+            </div>
+
             <div class="flex items-center justify-between">
               <h3 class="text-lg font-bold text-slate-800">{{ currentPassage.title }}</h3>
               <button 
@@ -1239,80 +1244,115 @@
           { id: 'w3', name: 'Part 3: Bài luận 300 từ' }
         ];
 
-        // DATA: SPEAKING QUESTIONS 1-2 (Warm-up + 5 Passages)
+                // DATA: SPEAKING QUESTIONS 1-2 (6 Passages Chuẩn 100% Slide)
         const speakingQ12Passages = [
           {
             id: 0,
-            title: "Question Sample: Summer Festival (Khởi động)",
+            badge: "Khởi động: Summer Festival",
+            title: "Question Sample: Summer Festival (Slide 3)",
+            slideImage: "assets/slides/speaking_slide_3.jpg",
             text: "The city’s annual summer festival will take place next Saturday and Sunday. There will be activities that are fun for the whole family. You can try a variety of food, hear different kinds of music, and enjoy games for all ages. Tickets cost fifteen dollars at the gate. However, if you buy your ticket in advance, you will get a ten percent discount. Tickets are available at many local stores, as well as at City Hall. Don’t miss this fun event!",
             vocab: [
-              { word: "Annual", ipa: "/ˈænjuəl/" },
-              { word: "Festival", ipa: "/ˈfestɪvl/" },
-              { word: "Variety", ipa: "/vəˈraɪəti/" },
-              { word: "Advance", ipa: "/ədˈvæns/" },
-              { word: "Discount", ipa: "/ˈdɪskaʊnt/" }
+              { word: "Annual", ipa: "/ˈænjuəl/", meaning: "Hàng năm" },
+              { word: "Festival", ipa: "/ˈfestɪvl/", meaning: "Lễ hội" },
+              { word: "Variety", ipa: "/vəˈraɪəti/", meaning: "Sự đa dạng" },
+              { word: "Discount", ipa: "/ˈdɪskaʊnt/", meaning: "Giảm giá" },
+              { word: "Available", ipa: "/əˈveɪləbl/", meaning: "Có sẵn" }
             ]
           },
           {
             id: 1,
-            title: "Bài 1: Faraway Spa and Resort (Slide 5-6)",
-            text: "Good day, everyone, and welcome to the Faraway Spa and Resort. We’d like to call your attention to a few changes in today’s schedule. The yoga session will now begin at 10:00 AM instead of 9:30 AM in the Garden Pavilion. In addition, the afternoon massage appointments have been moved to the second-floor wellness rooms. Please stop by the front desk if you have any questions or need to make adjustments to your booking. We hope you have a relaxing stay with us.",
+            badge: "Bài 1: Faraway Spa",
+            title: "Question 1: Faraway Spa and Resort (Slide 5-6)",
+            slideImage: "assets/slides/speaking_slide_6.jpg",
+            text: "Good day, everyone, and welcome to the Faraway Spa and Resort. We’d like to call your attention to a few important items. Make sure you register at the front desk and pick up your room keys and introductory packets. Next, you will receive a complimentary certificate for dinner at our gourmet restaurant. Dinner will be served at 6 p.m. and 8 p.m. In your room, you will find a robe, towels, and a gift basket of products, such as bath soaps and lotions. Please feel free to contact us if you have forgotten to bring any personal items with you. We hope you find your stay at Faraway Spa and Resort relaxing and enjoyable.",
             vocab: [
-              { word: "Resort", ipa: "/rɪˈzɔːrt/" },
-              { word: "Attention", ipa: "/əˈtenʃn/" },
-              { word: "Register", ipa: "/ˈredʒɪstər/" },
-              { word: "Complimentary", ipa: "/ˌkɑːmplɪˈmentri/" },
-              { word: "Certificate", ipa: "/sərˈtɪfɪkət/" },
-              { word: "Gourmet", ipa: "/ˈɡʊrmeɪ/" },
-              { word: "Enjoyable", ipa: "/ɪnˈdʒɔɪəbl/" }
+              { word: "Resort", ipa: "/rɪˈzɔːrt/", meaning: "Khu nghỉ dưỡng" },
+              { word: "Attention", ipa: "/əˈtenʃn/", meaning: "Sự chú ý" },
+              { word: "Register", ipa: "/ˈredʒɪstər/", meaning: "Đăng ký" },
+              { word: "Introductory", ipa: "/ˌɪntrəˈdʌktəri/", meaning: "Giới thiệu" },
+              { word: "Complimentary", ipa: "/ˌkɑːmplɪˈmentri/", meaning: "Miễn phí" },
+              { word: "Certificate", ipa: "/sərˈtɪfɪkət/", meaning: "Phiếu quà tặng" },
+              { word: "Gourmet", ipa: "/ˈɡʊrmeɪ/", meaning: "Ẩm thực cao cấp" },
+              { word: "Contact", ipa: "/ˈkɑːntækt/", meaning: "Liên hệ" },
+              { word: "Personal", ipa: "/ˈpɜːrsənl/", meaning: "Cá nhân" },
+              { word: "Enjoyable", ipa: "/ɪnˈdʒɔɪəbl/", meaning: "Thú vị" }
             ]
           },
           {
             id: 2,
-            title: "Bài 2: Holden High School Graduation (Slide 7-8)",
-            text: "When I was approached about speaking at this Holden High School graduation ceremony, I thought about what advice I could offer. Life after high school will bring new challenges, opportunities, and responsibilities. Some of you will continue your education, while others will enter the workforce or travel. Whatever path you choose, remember that hard work and perseverance are key to your success. Congratulations to the graduating class, and best wishes for your future.",
+            badge: "Bài 2: Holden High School",
+            title: "Question 2: Holden High School Graduation (Slide 7-8)",
+            slideImage: "assets/slides/speaking_slide_8.jpg",
+            text: "When I was approached about speaking at this Holden High School graduation ceremony, I thought about what advice I could share with you. As a diplomat for over 40 years, I worked on foreign policy, trade deals, and important negotiations. However, the advice I have to share has little to do with politics and everything to do with communication.",
             vocab: [
-              { word: "Approached", ipa: "/əˈprəʊtʃt/" },
-              { word: "Graduation", ipa: "/ˌɡrædʒuˈeɪʃn/" },
-              { word: "Ceremony", ipa: "/ˈserəməʊni/" },
-              { word: "Diplomat", ipa: "/ˈdɪpləmæt/" },
-              { word: "Perseverance", ipa: "/ˌpɜːrsəˈvɪrəns/" }
+              { word: "Approached", ipa: "/əˈprəʊtʃt/", meaning: "Được ngỏ lời" },
+              { word: "Graduation", ipa: "/ˌɡrædʒuˈeɪʃn/", meaning: "Tốt nghiệp" },
+              { word: "Ceremony", ipa: "/ˈserəməʊni/", meaning: "Buổi lễ" },
+              { word: "Share", ipa: "/ʃer/", meaning: "Chia sẻ" },
+              { word: "Diplomat", ipa: "/ˈdɪpləmæt/", meaning: "Nhà ngoại giao" },
+              { word: "Foreign", ipa: "/ˈfɔːrən/", meaning: "Nước ngoài" },
+              { word: "Policy", ipa: "/ˈpɑːləsi/", meaning: "Chính sách" },
+              { word: "Negotiation", ipa: "/nɪˌɡoʊʃiˈeɪʃn/", meaning: "Đàm phán" },
+              { word: "Politics", ipa: "/ˈpɑːlətɪks/", meaning: "Chính trị" },
+              { word: "Communication", ipa: "/kəmjuːnɪˈkeɪʃn/", meaning: "Giao tiếp" }
             ]
           },
           {
             id: 3,
-            title: "Bài 3: Dr. Marion Hayes Keynote Speaker (Slide 9-10)",
-            text: "Ladies and gentlemen, it is my great pleasure to introduce our keynote speaker, Dr. Marion Hayes. Dr. Hayes is an award-winning scientist who has dedicated over twenty years to environmental research. Today, she will speak about sustainable solutions for modern cities, focusing on energy conservation, waste reduction, and green transportation. Please join me in giving a warm welcome to Dr. Hayes.",
+            badge: "Luyện thêm 1: Dr. Maria Sanchez",
+            title: "Extra Exercise 1: Dr. Maria Sanchez (Slide 9-10)",
+            slideImage: "assets/slides/speaking_slide_10.jpg",
+            text: "Ladies and gentlemen, it is my great pleasure to introduce our keynote speaker, Dr. Maria Sanchez. She is an expert in renewable energy and has worked with international organizations to promote sustainable solutions. Her recent research on solar technology has received global recognition. Please give a warm welcome to Dr. Sanchez as she shares her insights on the future of clean energy.",
             vocab: [
-              { word: "Gentlemen", ipa: "/ˈdʒentlmən/" },
-              { word: "Pleasure", ipa: "/ˈpleʒər/" },
-              { word: "Keynote", ipa: "/ˈkiːnoʊt/" },
-              { word: "Dedicated", ipa: "/ˈdedɪkeɪtɪd/" },
-              { word: "Sustainable", ipa: "/səˈsteɪnəbl/" }
+              { word: "Gentlemen", ipa: "/ˈdʒentlmən/", meaning: "Các quý ông" },
+              { word: "Pleasure", ipa: "/ˈpleʒər/", meaning: "Niềm vinh hạnh" },
+              { word: "Introduce", ipa: "/ˌɪntrəˈduːs/", meaning: "Giới thiệu" },
+              { word: "Renewable", ipa: "/rɪˈnuːəbl/", meaning: "Năng lượng tái tạo" },
+              { word: "Energy", ipa: "/ˈenərdʒi/", meaning: "Năng lượng" },
+              { word: "Organization", ipa: "/ˌɔːrɡənəˈzeɪʃn/", meaning: "Tổ chức quốc tế" },
+              { word: "Sustainable", ipa: "/səˈsteɪnəbl/", meaning: "Bền vững" },
+              { word: "Research", ipa: "/ˈriːsɜːrtʃ/", meaning: "Nghiên cứu" },
+              { word: "Recognition", ipa: "/ˌrekəɡˈnɪʃn/", meaning: "Sự công nhận" },
+              { word: "Insight", ipa: "/ˈɪnsaɪt/", meaning: "Sự thấu hiểu, góc nhìn" }
             ]
           },
           {
             id: 4,
-            title: "Bài 4: Fitness Factory Opening (Slide 11-12)",
-            text: "Fitness Factory is pleased to announce the opening of its Saint Louis branch. Located in the heart of downtown, our state-of-the-art facility offers cardio machines, free weights, and group exercise classes. Our certified personal trainers are available to help you meet your fitness goals. Sign up for a membership this week and receive a fifty percent discount on your first month. Visit our website at www.fitnessfactory.com for more details.",
+            badge: "Luyện thêm 2: Fitness Factory",
+            title: "Extra Exercise 2: Fitness Factory (Slide 11-12)",
+            slideImage: "assets/slides/speaking_slide_12.jpg",
+            text: "Fitness Factory is pleased to announce the opening of its Saint Louis branch. Located in the city’s business district, this facility features exercise equipment, game courts, and swimming pools. For a limited time only, Fitness Factory is offering a 30-day membership for the low price of thirty-nine dollars. Don’t miss this golden opportunity to improve your health!",
             vocab: [
-              { word: "Fitness", ipa: "/ˈfɪtnəs/" },
-              { word: "Pleased", ipa: "/pliːzd/" },
-              { word: "Facility", ipa: "/fəˈsɪləti/" },
-              { word: "Cardio", ipa: "/ˈkɑːrdioʊ/" },
-              { word: "Certified", ipa: "/ˈsɜːrtɪfaɪd/" }
+              { word: "Fitness", ipa: "/ˈfɪtnəs/", meaning: "Sức khỏe, thể hình" },
+              { word: "Pleased", ipa: "/pliːzd/", meaning: "Hân hạnh (-ed đọc /d/)" },
+              { word: "Announce", ipa: "/əˈnaʊns/", meaning: "Thông báo" },
+              { word: "Branch", ipa: "/bræntʃ/", meaning: "Chi nhánh" },
+              { word: "Business", ipa: "/ˈbɪznəs/", meaning: "Khu thương mại" },
+              { word: "Facility", ipa: "/fəˈsɪləti/", meaning: "Cơ sở vật chất" },
+              { word: "Equipment", ipa: "/ɪˈkwɪpmənt/", meaning: "Trang thiết bị" },
+              { word: "Membership", ipa: "/ˈmembərʃɪp/", meaning: "Gói thành viên" },
+              { word: "Opportunity", ipa: "/ˌɑːpərˈtuːnəti/", meaning: "Cơ hội vàng" },
+              { word: "Health", ipa: "/helθ/", meaning: "Sức khỏe" }
             ]
           },
           {
             id: 5,
-            title: "Bài 5: Wild Bear Tour (Slide 13-14)",
-            text: "Welcome to the Wild Bear Tour, an educational adventure. As you know, we’ve had a snowy winter, which means the bears are very active. During the tour, you will see bears fishing in the river, foraging for berries, and caring for their cubs. Please remember to stay behind the safety fences at all times and keep your voices low so you don't startle the wildlife. Binoculars and cameras are encouraged. Enjoy your time with the bears!",
+            badge: "Luyện thêm 3: Wild Bear Tour",
+            title: "Extra Exercise 3: Wild Bear Tour (Slide 13-14)",
+            slideImage: "assets/slides/speaking_slide_14.jpg",
+            text: "Welcome to the Wild Bear Tour, an educational adventure. As you know, we’ve had a snowy winter, so it is important to stay on the trail. Because your safety is our primary concern, the trail has been carefully cleared and maintained. Even so, watch your step, stay with the group, and listen closely to all instructions. Thank you for your cooperation.",
             vocab: [
-              { word: "Education", ipa: "/ˌedʒuˈkeɪʃn/" },
-              { word: "Adventure", ipa: "/ədˈventʃər/" },
-              { word: "Foraging", ipa: "/ˈfɔːrɪdʒɪŋ/" },
-              { word: "Binoculars", ipa: "/bɪˈnɑːkjələrz/" },
-              { word: "Startle", ipa: "/ˈstɑːrtl/" }
+              { word: "Education", ipa: "/ˌedʒukeɪʃn/", meaning: "Giáo dục" },
+              { word: "Adventure", ipa: "/ədˈventʃər/", meaning: "Cuộc phiêu lưu" },
+              { word: "Trail", ipa: "/treɪl/", meaning: "Đường mòn" },
+              { word: "Safety", ipa: "/ˈseɪfti/", meaning: "Sự an toàn" },
+              { word: "Primary", ipa: "/ˈpraɪmeri/", meaning: "Hàng đầu" },
+              { word: "Concern", ipa: "/kənˈsɜːrn/", meaning: "Mối bận tâm" },
+              { word: "Cleared", ipa: "/klɪrd/", meaning: "Đã dọn tuyết" },
+              { word: "Maintained", ipa: "/meɪnˈteɪnd/", meaning: "Đã bảo trì" },
+              { word: "Instruction", ipa: "/ɪnˈstrʌkʃn/", meaning: "Hướng dẫn" },
+              { word: "Cooperation", ipa: "/koʊˌɑːpəˈreɪʃn/", meaning: "Sự hợp tác" }
             ]
           }
         ];
