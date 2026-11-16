@@ -278,7 +278,7 @@
             </div>
             <div class="w-full flex justify-center bg-black/40 rounded-xl p-2 border border-white/10 shadow-inner">
               <img 
-                :src="currentSlide.slideImage" 
+                :src="currentSlide.slideImage" @click="openLightbox(currentSlide.slideImage, 'Slide Gốc #' + currentSlide.page + ': ' + currentSlide.title)" class="max-h-[560px] w-auto max-w-full rounded-lg object-contain shadow-2xl cursor-zoom-in" 
                 :alt="currentSlide.title"
                 class="max-h-[520px] w-auto max-w-full rounded-lg object-contain shadow-2xl"
                 loading="eager"
@@ -307,7 +307,7 @@
                   <span>{{ isSpeaking ? '🔊 Đang đọc...' : '🔊 Nghe Đọc Mẫu (TTS)' }}</span>
                 </button>
               </div>
-              <p class="text-base text-slate-800 leading-relaxed font-serif">
+              <p class="text-lg md:text-xl text-slate-900 leading-relaxed font-serif">
                 {{ currentSlide.englishToRead }}
               </p>
             </div>
@@ -322,8 +322,8 @@
                   @click="speakText(v.word)"
                   class="p-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl border border-slate-200 hover:border-indigo-200 cursor-pointer transition flex items-center justify-between">
                   <div>
-                    <div class="font-bold text-slate-800 text-sm">{{ v.word }}</div>
-                    <div class="text-xs font-mono text-indigo-600">{{ v.ipa }}</div>
+                    <div class="font-bold text-slate-900 text-base">{{ v.word }}</div>
+                    <div class="text-sm font-mono text-indigo-700 font-semibold">{{ v.ipa }}</div>
                     <div v-if="v.meaning" class="text-[11px] text-slate-500">{{ v.meaning }}</div>
                   </div>
                   <span class="text-slate-400 text-xs">🔊</span>
@@ -447,7 +447,7 @@
           <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <!-- EMBEDDED SLIDE IMAGE GỐC -->
             <div v-if="currentPassage.slideImage" class="bg-slate-900 rounded-xl overflow-hidden border border-slate-300 flex justify-center p-2">
-              <img :src="currentPassage.slideImage" :alt="currentPassage.title" class="max-h-60 w-auto object-contain rounded" />
+              <img :src="currentPassage.slideImage" :alt="currentPassage.title" @click="openLightbox(currentPassage.slideImage, currentPassage.title)" class="max-h-80 w-auto object-contain rounded cursor-zoom-in" />
             </div>
 
             <div class="flex items-center justify-between">
@@ -459,7 +459,7 @@
               </button>
             </div>
 
-            <p class="text-base text-slate-800 leading-relaxed font-serif p-4 bg-slate-50 rounded-xl border border-slate-100">
+            <p class="text-xl md:text-2xl text-slate-900 leading-loose font-serif p-6 md:p-8 bg-amber-50/50 rounded-2xl border-2 border-amber-200/70 shadow-sm tracking-wide">
               {{ currentPassage.text }}
             </p>
 
@@ -472,8 +472,8 @@
                   :key="vIdx"
                   @click="speakText(v.word)"
                   class="p-2 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-lg cursor-pointer transition text-center">
-                  <div class="font-bold text-slate-800 text-xs">{{ v.word }}</div>
-                  <div class="text-[11px] font-mono text-indigo-600">{{ v.ipa }}</div>
+                  <div class="font-bold text-slate-900 text-sm md:text-base">{{ v.word }}</div>
+                  <div class="text-xs md:text-sm font-mono text-purple-700 font-semibold">{{ v.ipa }}</div>
                 </div>
               </div>
             </div>
@@ -497,9 +497,9 @@
               </div>
 
               <div v-if="pic.image" class="w-full bg-slate-900 rounded-xl overflow-hidden border border-slate-200 flex justify-center p-1">
-                <img :src="pic.image" :alt="pic.title" class="max-h-52 w-auto object-contain rounded" />
+                <img :src="pic.image" :alt="pic.title" @click="openLightbox(pic.image, pic.title)" class="max-h-80 md:max-h-96 w-auto object-contain rounded cursor-zoom-in" />
               </div>
-              <h4 class="font-bold text-base text-slate-800">{{ pic.title }}</h4>
+              <h4 class="font-bold text-lg md:text-xl text-slate-900">{{ pic.title }}</h4>
               <p class="text-xs text-slate-500">💡 {{ pic.description_hint }}</p>
 
               <!-- KEYWORDS -->
@@ -514,7 +514,7 @@
 
               <!-- MODEL SENTENCES -->
               <div class="space-y-1.5">
-                <div v-for="(s, sIdx) in pic.modelSentences" :key="sIdx" class="text-xs p-2 bg-slate-50/70 rounded border border-slate-100 flex items-start justify-between gap-2">
+                <div v-for="(s, sIdx) in pic.modelSentences" :key="sIdx" class="text-sm md:text-base p-3 bg-slate-50/80 rounded-xl border border-slate-200 flex items-start justify-between gap-2">
                   <div>
                     <span class="font-bold text-indigo-600">[{{ s.label }}]:</span>
                     <span class="text-slate-800 ml-1">{{ s.text }}</span>
@@ -540,14 +540,14 @@
                 </button>
               </div>
 
-              <h4 class="font-bold text-sm text-slate-800">{{ q.question }}</h4>
+              <h4 class="font-bold text-base md:text-lg text-slate-900">{{ q.question }}</h4>
               
-              <div class="p-2.5 bg-slate-50 rounded-lg text-xs font-mono text-indigo-900 border border-slate-100">
+              <div class="p-3 bg-indigo-50/60 rounded-xl text-sm md:text-base font-mono text-indigo-950 font-semibold border border-indigo-100">
                 Khung: {{ q.formula }}
               </div>
 
               <div class="space-y-2">
-                <div v-for="(sample, smpIdx) in q.samples" :key="smpIdx" class="p-2.5 bg-white rounded-lg border border-slate-200 text-xs text-slate-800 leading-relaxed">
+                <div v-for="(sample, smpIdx) in q.samples" :key="smpIdx" class="p-3.5 bg-white rounded-xl border border-slate-200 text-sm md:text-base text-slate-800 leading-relaxed">
                   <div class="text-[10px] font-bold text-slate-400 uppercase mb-0.5">Mẫu {{ smpIdx + 1 }}:</div>
                   {{ sample }}
                 </div>
@@ -581,13 +581,13 @@
                 <span class="bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded text-[11px]">Slide 42 Gốc</span>
               </div>
               <div class="bg-slate-900 rounded-xl p-2 flex justify-center border border-indigo-200">
-                <img src="assets/images/speaking_p42_1.png" alt="Advertising Seminar Schedule" class="max-h-64 w-auto object-contain rounded" />
+                <img src="assets/images/speaking_p42_1.png" alt="Advertising Seminar Schedule" @click="openLightbox('assets/images/speaking_p42_1.png', 'Lịch Trình: The Ad Academy Seminar (Slide 42)')" class="max-h-80 md:max-h-96 w-auto object-contain rounded cursor-zoom-in" />
               </div>
             </div>
             <div class="space-y-3">
-              <div v-for="sq in scheduleQuestions1" :key="sq.num" class="p-4 bg-white rounded-xl border border-slate-200 shadow-xs space-y-2 text-xs">
-                <div class="font-bold text-slate-800 text-sm">Câu {{ sq.num }}: "{{ sq.prompt }}"</div>
-                <div class="font-medium text-emerald-700 bg-emerald-50 p-2.5 rounded-lg flex items-center justify-between">
+              <div v-for="sq in scheduleQuestions1" :key="sq.num" class="p-4 bg-white rounded-xl border border-slate-200 shadow-xs space-y-2.5 text-sm md:text-base">
+                <div class="font-bold text-slate-900 text-base md:text-lg">Câu {{ sq.num }}: "{{ sq.prompt }}"</div>
+                <div class="font-semibold text-emerald-950 bg-emerald-50/80 p-3.5 rounded-xl border border-emerald-200 flex items-center justify-between text-base leading-relaxed">
                   <span>{{ sq.answer }}</span>
                   <button @click="speakText(sq.answer)" class="text-slate-400 hover:text-emerald-700 shrink-0 ml-2">🔊</button>
                 </div>
@@ -603,7 +603,7 @@
                 <span class="bg-emerald-200 text-emerald-800 px-2 py-0.5 rounded text-[11px]">Slide 46 Gốc</span>
               </div>
               <div class="bg-slate-900 rounded-xl p-2 flex justify-center border border-emerald-200">
-                <img src="assets/images/speaking_p46_1.png" alt="Robert Miller Schedule" class="max-h-64 w-auto object-contain rounded" />
+                <img src="assets/images/speaking_p46_1.png" alt="Robert Miller Schedule" @click="openLightbox('assets/images/speaking_p46_1.png', 'Lịch Trình: Robert Miller (Slide 46)')" class="max-h-80 md:max-h-96 w-auto object-contain rounded cursor-zoom-in" />
               </div>
             </div>
             <div class="space-y-3">
@@ -634,7 +634,7 @@
           <div v-if="currentTopic" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
             <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-200">
               <div class="text-xs font-bold text-indigo-600 uppercase mb-1">Đề bài Question 11:</div>
-              <h4 class="text-lg font-black text-slate-800">{{ currentTopic.question }}</h4>
+              <h4 class="text-xl md:text-2xl font-black text-slate-900 leading-snug">{{ currentTopic.question }}</h4>
             </div>
 
             <!-- CHOICE TOGGLE (A vs B) -->
@@ -676,7 +676,7 @@
                     🔊 Nghe Mẫu
                   </button>
                 </div>
-                <p class="text-xs text-slate-800 leading-relaxed font-serif">
+                <p class="text-base md:text-lg text-slate-900 leading-relaxed font-serif">
                   {{ currentTopicChoice === 'A' ? currentTopic.choiceA_speech : currentTopic.choiceB_speech }}
                 </p>
               </div>
@@ -703,60 +703,139 @@
           </button>
         </div>
 
-        <!-- PART 1: 10 PICTURE ITEMS -->
-        <div v-if="currentWritingSub === 'w1'" class="space-y-4">
-          <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900">
-            <strong>Mẹo Part 1:</strong> Viết đúng 1 câu chứa cả 2 từ đã cho. Có thể thay đổi thì động từ hoặc số ít/nhiều. Hãy gõ thử vào ô bên dưới và đối chiếu!
+        <!-- PART 1: 10 PICTURE ITEMS (ẢNH TÁCH CẮT SẮC NÉT FULL HD & TỪ KHÓA TO RÕ RÀNG) -->
+        <div v-if="currentWritingSub === 'w1'" class="space-y-6">
+          
+          <!-- HINT & VIEW TOGGLE BANNER -->
+          <div class="p-4 md:p-5 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+            <div class="space-y-1">
+              <div class="text-sm md:text-base font-bold text-amber-900 flex items-center gap-2">
+                <span>💡</span>
+                <span>Mẹo Đạt Điểm Tuyệt Đối Part 1 (8 Phút / 5 Tranh):</span>
+              </div>
+              <p class="text-xs md:text-sm text-amber-800 leading-relaxed">
+                Viết <strong>đúng 1 câu hoàn chỉnh</strong> chứa cả 2 từ khóa cho sẵn. Có thể chia thì động từ (hiện tại tiếp diễn, tương lai...) hoặc số ít/số nhiều.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2 bg-white/80 p-1.5 rounded-xl border border-amber-200">
+              <span class="text-xs font-bold text-slate-600 pl-1">Chế độ xem:</span>
+              <button 
+                @click="writingPart1ViewMode = 'single'"
+                :class="writingPart1ViewMode === 'single' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-slate-600 hover:bg-slate-100'"
+                class="px-3 py-1 rounded-lg text-xs transition">
+                🖼️ Tranh Lớn Rõ Nét (Khuyên dùng)
+              </button>
+              <button 
+                @click="writingPart1ViewMode = 'grid'"
+                :class="writingPart1ViewMode === 'grid' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-slate-600 hover:bg-slate-100'"
+                class="px-3 py-1 rounded-lg text-xs transition">
+                🪟 Lưới 2 Cột
+              </button>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- CARDS CONTAINER -->
+          <div :class="writingPart1ViewMode === 'single' ? 'max-w-4xl mx-auto space-y-8' : 'grid grid-cols-1 lg:grid-cols-2 gap-6'">
             <div 
               v-for="item in writingPart1Data" 
               :key="item.id"
-              class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="text-2xl">{{ item.icon }}</span>
-                  <span class="font-extrabold text-sm text-slate-800">Tranh {{ item.id }}: {{ item.words }}</span>
+              class="bg-white p-6 md:p-7 rounded-3xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition">
+              
+              <!-- CARD HEADER -->
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-3xl">{{ item.icon }}</span>
+                  <div>
+                    <h4 class="font-black text-lg md:text-xl text-slate-900 tracking-tight">
+                      Tranh {{ item.id }} / 10
+                    </h4>
+                    <span class="text-xs md:text-sm text-slate-500 font-medium">{{ item.context }}</span>
+                  </div>
                 </div>
-                <span class="text-xs text-slate-400">{{ item.context }}</span>
+                <button 
+                  @click="openLightbox(item.image, 'Tranh ' + item.id + ': ' + item.words)"
+                  class="px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-200">
+                  <span>🔍 Phóng to ảnh</span>
+                </button>
               </div>
 
-              <!-- IMAGE DISPLAY -->
-              <div v-if="item.image" class="rounded-xl overflow-hidden border border-slate-200 bg-slate-950 flex justify-center p-1">
-                <img :src="item.image" :alt="item.words" class="max-h-44 w-auto object-contain rounded" />
+              <!-- KEYWORDS HIGHLIGHT BADGE (TO - RÕ - DỄ NHÌN) -->
+              <div class="p-4 bg-rose-50/80 rounded-2xl border-2 border-rose-200/80 flex flex-wrap items-center justify-between gap-2">
+                <div class="space-y-0.5">
+                  <div class="text-[11px] md:text-xs font-black uppercase tracking-wider text-rose-800">
+                    2 Từ Khóa Bắt Buộc Trong Câu:
+                  </div>
+                  <div class="text-xl md:text-2xl font-black text-rose-700 font-mono tracking-wide">
+                    {{ item.words }}
+                  </div>
+                </div>
+                <div class="text-xs md:text-sm text-rose-900 bg-white/80 px-3 py-1 rounded-xl border border-rose-200 font-medium">
+                  💡 Gợi ý: {{ item.hint }}
+                </div>
               </div>
 
-              <!-- INPUT BOX -->
-              <div>
+              <!-- HIGH-RES CROPPED IMAGE DISPLAY -->
+              <div 
+                v-if="item.image" 
+                @click="openLightbox(item.image, 'Tranh ' + item.id + ': ' + item.words)"
+                class="group relative rounded-2xl overflow-hidden border-2 border-slate-200 bg-slate-950 flex justify-center p-2 cursor-zoom-in shadow-inner">
+                <img 
+                  :src="item.image" 
+                  :alt="item.words" 
+                  :class="writingPart1ViewMode === 'single' ? 'max-h-80 md:max-h-96' : 'max-h-64'"
+                  class="w-auto max-w-full object-contain rounded-xl transition duration-300 group-hover:scale-[1.01]" 
+                />
+                <div class="absolute bottom-3 right-3 bg-black/75 backdrop-blur-sm text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg group-hover:bg-rose-600 transition">
+                  <span>🔍 Bấm để xem kích thước lớn</span>
+                </div>
+              </div>
+
+              <!-- USER ANSWER INPUT -->
+              <div class="space-y-1.5">
+                <label class="block text-xs md:text-sm font-bold text-slate-700">
+                  ✍️ Gõ câu trả lời của em vào đây (chứa đủ 2 từ khóa):
+                </label>
                 <input 
                   type="text" 
                   v-model="item.userAnswer" 
-                  :placeholder="'Gõ 1 câu chứa 2 từ: ' + item.words"
-                  class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:outline-none focus:border-rose-500 font-mono">
+                  :placeholder="'Ví dụ: The man is cleaning the counter...'"
+                  class="w-full text-base md:text-lg p-3.5 md:p-4 rounded-xl border-2 border-slate-300 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-200 font-sans transition text-slate-800 shadow-inner">
               </div>
 
-              <!-- TOGGLE ANSWER BUTTON -->
-              <div class="flex items-center justify-between">
+              <!-- TOGGLE ANSWER & STATS -->
+              <div class="flex items-center justify-between pt-1">
                 <button 
                   @click="item.showAnswer = !item.showAnswer"
-                  class="text-xs text-rose-600 hover:text-rose-800 font-bold">
-                  {{ item.showAnswer ? 'Ẩn đáp án mẫu' : 'Xem đáp án mẫu' }}
+                  class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 shadow-xs">
+                  <span>{{ item.showAnswer ? '🙈 Ẩn đáp án mẫu' : '👁️ Xem đáp án mẫu & phân tích' }}</span>
                 </button>
-                <span v-if="item.userAnswer.length > 0" class="text-[11px] text-slate-400 font-mono">
-                  {{ item.userAnswer.length }} ký tự
+                <span v-if="item.userAnswer.length > 0" class="text-xs text-slate-500 font-mono">
+                  Độ dài câu: {{ item.userAnswer.length }} ký tự
                 </span>
               </div>
 
-              <!-- MODEL ANSWERS -->
-              <div v-if="item.showAnswer" class="space-y-2 pt-2 border-t border-slate-100 text-xs">
-                <div class="p-2 bg-emerald-50 rounded text-emerald-900">
-                  <span class="font-bold">Chuẩn giáo trình:</span> {{ item.modelAnswer }}
+              <!-- MODEL ANSWERS (TO, RÕ, DỄ HỌC THUỘC) -->
+              <div v-if="item.showAnswer" class="space-y-3 pt-3 border-t border-slate-200">
+                <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-950 space-y-1">
+                  <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1">
+                    <span>✓</span> Đáp Án Chuẩn Giáo Trình ETS:
+                  </div>
+                  <div class="text-base md:text-lg font-bold leading-relaxed">
+                    {{ item.modelAnswer }}
+                  </div>
                 </div>
-                <div class="p-2 bg-slate-50 rounded text-slate-700">
-                  <span class="font-bold text-indigo-600">Nâng cao:</span> {{ item.advancedAnswer }}
+
+                <div class="p-4 bg-indigo-50 rounded-2xl border border-indigo-200 text-indigo-950 space-y-1">
+                  <div class="text-xs font-bold uppercase tracking-wider text-indigo-700 flex items-center gap-1">
+                    <span>⭐</span> Câu Mở Rộng Ăn Điểm Cao (Advanced):
+                  </div>
+                  <div class="text-base md:text-lg font-medium leading-relaxed">
+                    {{ item.advancedAnswer }}
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -778,7 +857,7 @@
             <!-- INCOMING EMAIL -->
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
               <div class="text-xs font-bold uppercase text-slate-400">Thư Nhận Được (Incoming Email):</div>
-              <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-mono text-xs whitespace-pre-line text-slate-800">
+              <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 font-sans text-sm md:text-base whitespace-pre-line text-slate-900 leading-relaxed">
                 {{ currentEmail.body }}
               </div>
               <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900">
@@ -792,7 +871,7 @@
                 <span class="text-xs font-bold uppercase text-emerald-700">Thư Phản Hồi Mẫu Chuẩn ETS:</span>
                 <span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">10 Phút</span>
               </div>
-              <div class="p-4 bg-emerald-50/40 rounded-xl border border-emerald-200 font-mono text-xs whitespace-pre-line text-slate-800 leading-relaxed">
+              <div class="p-5 bg-emerald-50/60 rounded-2xl border-2 border-emerald-200 font-sans text-sm md:text-base whitespace-pre-line text-slate-950 font-medium leading-relaxed">
                 {{ currentEmail.modelResponse }}
               </div>
               <div class="space-y-1">
@@ -811,7 +890,7 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="space-y-1">
                 <span class="px-2.5 py-0.5 bg-rose-100 text-rose-800 rounded font-bold text-xs uppercase">Part 3: Opinion Essay (Slide 29-31)</span>
-                <h3 class="text-base font-bold text-slate-900">
+                <h3 class="text-lg md:text-xl font-black text-slate-900 leading-relaxed">
                   "Do you agree or disagree with the following statement?<br>
                   The internet is more useful than books as a source of information. Give reasons and examples."
                 </h3>
@@ -875,7 +954,7 @@
                 </button>
               </div>
 
-              <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm font-serif leading-relaxed text-slate-800 space-y-3">
+              <div class="p-6 md:p-8 bg-slate-50 rounded-2xl border border-slate-200 text-base md:text-lg font-serif leading-loose text-slate-900 space-y-4">
                 <div v-if="activeEssayTab === 'agree'">
                   <p v-for="(p, pIdx) in essayAgreementParas" :key="pIdx" class="mb-2">
                     {{ p }}
@@ -1035,6 +1114,59 @@
       </div>
     </footer>
 
+    <!-- GLOBAL IMAGE LIGHTBOX MODAL (PHÓNG TO CỰC NÉT) -->
+    <div 
+      v-if="activeLightboxImg" 
+      class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col justify-between p-3 md:p-6 transition-all"
+      @click.self="closeLightbox">
+      
+      <!-- TOP BAR -->
+      <div class="flex items-center justify-between text-white pb-3 border-b border-white/20">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔍</span>
+          <span class="font-bold text-sm md:text-base text-slate-100 truncate max-w-md">{{ activeLightboxTitle }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button 
+            @click="zoomLightbox(-0.25)" 
+            class="px-3 py-1.5 bg-white/10 hover:bg-white/25 rounded-lg text-xs md:text-sm font-bold transition">
+            ➖ Thu nhỏ
+          </button>
+          <span class="font-mono text-xs md:text-sm text-yellow-300 font-bold px-2">{{ Math.round(lightboxZoom * 100) }}%</span>
+          <button 
+            @click="zoomLightbox(0.25)" 
+            class="px-3 py-1.5 bg-white/10 hover:bg-white/25 rounded-lg text-xs md:text-sm font-bold transition">
+            ➕ Phóng to
+          </button>
+          <button 
+            @click="lightboxZoom = 1" 
+            class="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-xs transition">
+            ↺ 100%
+          </button>
+          <button 
+            @click="closeLightbox" 
+            class="ml-2 px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs md:text-sm font-bold transition shadow-lg">
+            ✕ Đóng (Esc)
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN IMAGE DISPLAY -->
+      <div class="flex-1 flex items-center justify-center overflow-auto p-2" @click.self="closeLightbox">
+        <img 
+          :src="activeLightboxImg" 
+          :alt="activeLightboxTitle" 
+          :style="{ transform: 'scale(' + lightboxZoom + ')', transition: 'transform 0.15s ease-out' }"
+          class="max-h-[82vh] max-w-[95vw] object-contain rounded-xl shadow-2xl select-none" 
+        />
+      </div>
+
+      <!-- BOTTOM BAR HINT -->
+      <div class="text-center text-xs text-slate-400 pt-2 border-t border-white/10">
+        💡 Bấm ra ngoài hoặc ấn nút <strong>✕ Đóng</strong> (phím <strong>Esc</strong>) để quay lại • Dùng nút <strong>➕ Phóng to</strong> để nhìn từng chi tiết nhỏ
+      </div>
+    </div>
+
   </div>
 
   <!-- SCRIPT DATA & APP LOGIC -->
@@ -1121,6 +1253,13 @@
         };
 
         // Keyboard navigation for slides
+        // ESC KEY FOR LIGHTBOX
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && activeLightboxImg.value) {
+            closeLightbox();
+          }
+        });
+
         window.addEventListener('keydown', (e) => {
           if (activeTab.value === 'slides') {
             if (e.key === 'ArrowRight') nextSlide();
@@ -1580,16 +1719,16 @@
 
         // DATA: WRITING PART 1 (10 Items from Slide)
         const writingPart1Data = ref([
-          { id: 1, image: "assets/slides/writing_slide_3.jpg", icon: "👨‍🍳", context: "Một đầu bếp nam đang lau chùi bàn bếp inox", hint: "Dùng thì hiện tại tiếp diễn với động từ 'clean'", words: "man / clean", userAnswer: "", showAnswer: false, modelAnswer: "The man is cleaning the counter.", advancedAnswer: "While working in the kitchen, the man is thoroughly cleaning the counter." },
-          { id: 2, image: "assets/slides/writing_slide_5.jpg", icon: "👩‍💼", context: "Người phụ nữ đang lau cánh tủ bếp kính", hint: "Dùng từ 'cabinet' (tủ)", words: "woman / clean", userAnswer: "", showAnswer: false, modelAnswer: "The woman is cleaning the cabinet.", advancedAnswer: "The woman wearing yellow gloves is cleaning the glass cabinet." },
-          { id: 3, image: "assets/slides/writing_slide_7.jpg", icon: "🍽️", context: "Người phục vụ mang món ăn ra cho khách tại nhà hàng", hint: "Từ khóa: meal / serve (phục vụ bữa ăn)", words: "meal / serve", userAnswer: "", showAnswer: false, modelAnswer: "The waiter is serving meals to the customers.", advancedAnswer: "The friendly waiter is serving hot meals to the couple at the table." },
-          { id: 4, image: "assets/slides/writing_slide_9.jpg", icon: "🍸", context: "Bartender tại quầy bar đang rót/đưa đồ uống cho khách", hint: "Từ khóa: drink / serve (phục vụ đồ uống)", words: "drink / serve", userAnswer: "", showAnswer: false, modelAnswer: "The bartender is serving drinks to the customers.", advancedAnswer: "Smiling warmly, the bartender is serving drinks to the guests at the counter." },
-          { id: 5, image: "assets/slides/writing_slide_11.jpg", icon: "🚲", context: "Hàng loạt xe đạp dựng cạnh tòa nhà xây bằng đá", hint: "Dùng thể bị động 'are parked'", words: "park / building", userAnswer: "", showAnswer: false, modelAnswer: "The bikes are parked next to the building.", advancedAnswer: "A row of bicycles are parked neatly next to the stone building." },
-          { id: 6, image: "assets/slides/writing_slide_13.jpg", icon: "🚗", context: "Dãy ô tô đỗ dọc theo lề đường", hint: "Dùng 'are parked along the street'", words: "park / street", userAnswer: "", showAnswer: false, modelAnswer: "The cars are parked along the street.", advancedAnswer: "Several cars are parked along the edge of the street under the trees." },
-          { id: 7, image: "assets/slides/writing_slide_15.jpg", icon: "📖", context: "Cặp đôi đang xem thực đơn trước khi gọi món với nhân viên", hint: "Dùng liên từ 'after' kết hợp V-ing", words: "after / order", userAnswer: "", showAnswer: false, modelAnswer: "They will order food after looking at the menu.", advancedAnswer: "The customers will order their dinner after reading the menu carefully." },
-          { id: 8, image: "assets/slides/writing_slide_17.jpg", icon: "🙏", context: "Gia đình nắm tay nhau cầu nguyện trước bàn ăn", hint: "Dùng liên từ 'after praying'", words: "after / eat", userAnswer: "", showAnswer: false, modelAnswer: "They will eat after praying.", advancedAnswer: "The whole family will eat their meal after they finish praying together." },
-          { id: 9, image: "assets/slides/writing_slide_19.jpg", icon: "👩‍👧", context: "Mẹ hướng dẫn con gái cách làm bánh", hint: "Cấu trúc: show someone how to bake a cake", words: "show / how", userAnswer: "", showAnswer: false, modelAnswer: "The woman is showing her daughter how to bake a cake.", advancedAnswer: "The mother is cheerfully showing her young daughter how to mix ingredients." },
-          { id: 10, image: "assets/slides/writing_slide_21.jpg", icon: "👨‍👦", context: "Người cha đang chỉ con trai cách sửa xe hơi", hint: "Cấu trúc: show someone how to fix a car", words: "show / how", userAnswer: "", showAnswer: false, modelAnswer: "The man is showing his son how to fix a car.", advancedAnswer: "The man is showing his son how to inspect and repair the car engine." }
+          { id: 1, image: "assets/images/writing_pic_1.jpg", icon: "👨‍🍳", context: "Một đầu bếp nam đang lau chùi bàn bếp inox", hint: "Dùng thì hiện tại tiếp diễn với động từ 'clean'", words: "man / clean", userAnswer: "", showAnswer: false, modelAnswer: "The man is cleaning the counter.", advancedAnswer: "While working in the kitchen, the man is thoroughly cleaning the counter." },
+          { id: 2, image: "assets/images/writing_pic_2.jpg", icon: "👩‍💼", context: "Người phụ nữ đang lau cánh tủ bếp kính", hint: "Dùng từ 'cabinet' (tủ)", words: "woman / clean", userAnswer: "", showAnswer: false, modelAnswer: "The woman is cleaning the cabinet.", advancedAnswer: "The woman wearing yellow gloves is cleaning the glass cabinet." },
+          { id: 3, image: "assets/images/writing_pic_3.jpg", icon: "🍽️", context: "Người phục vụ mang món ăn ra cho khách tại nhà hàng", hint: "Từ khóa: meal / serve (phục vụ bữa ăn)", words: "meal / serve", userAnswer: "", showAnswer: false, modelAnswer: "The waiter is serving meals to the customers.", advancedAnswer: "The friendly waiter is serving hot meals to the couple at the table." },
+          { id: 4, image: "assets/images/writing_pic_4.jpg", icon: "🍸", context: "Bartender tại quầy bar đang rót/đưa đồ uống cho khách", hint: "Từ khóa: drink / serve (phục vụ đồ uống)", words: "drink / serve", userAnswer: "", showAnswer: false, modelAnswer: "The bartender is serving drinks to the customers.", advancedAnswer: "Smiling warmly, the bartender is serving drinks to the guests at the counter." },
+          { id: 5, image: "assets/images/writing_pic_5.jpg", icon: "🚲", context: "Hàng loạt xe đạp dựng cạnh tòa nhà xây bằng đá", hint: "Dùng thể bị động 'are parked'", words: "park / building", userAnswer: "", showAnswer: false, modelAnswer: "The bikes are parked next to the building.", advancedAnswer: "A row of bicycles are parked neatly next to the stone building." },
+          { id: 6, image: "assets/images/writing_pic_6.jpg", icon: "🚗", context: "Dãy ô tô đỗ dọc theo lề đường", hint: "Dùng 'are parked along the street'", words: "park / street", userAnswer: "", showAnswer: false, modelAnswer: "The cars are parked along the street.", advancedAnswer: "Several cars are parked along the edge of the street under the trees." },
+          { id: 7, image: "assets/images/writing_pic_7.jpg", icon: "📖", context: "Cặp đôi đang xem thực đơn trước khi gọi món với nhân viên", hint: "Dùng liên từ 'after' kết hợp V-ing", words: "after / order", userAnswer: "", showAnswer: false, modelAnswer: "They will order food after looking at the menu.", advancedAnswer: "The customers will order their dinner after reading the menu carefully." },
+          { id: 8, image: "assets/images/writing_pic_8.jpg", icon: "🙏", context: "Gia đình nắm tay nhau cầu nguyện trước bàn ăn", hint: "Dùng liên từ 'after praying'", words: "after / eat", userAnswer: "", showAnswer: false, modelAnswer: "They will eat after praying.", advancedAnswer: "The whole family will eat their meal after they finish praying together." },
+          { id: 9, image: "assets/images/writing_pic_9.jpg", icon: "👩‍👧", context: "Mẹ hướng dẫn con gái cách làm bánh", hint: "Cấu trúc: show someone how to bake a cake", words: "show / how", userAnswer: "", showAnswer: false, modelAnswer: "The woman is showing her daughter how to bake a cake.", advancedAnswer: "The mother is cheerfully showing her young daughter how to mix ingredients." },
+          { id: 10, image: "assets/images/writing_pic_10.jpg", icon: "👨‍👦", context: "Người cha đang chỉ con trai cách sửa xe hơi", hint: "Cấu trúc: show someone how to fix a car", words: "show / how", userAnswer: "", showAnswer: false, modelAnswer: "The man is showing his son how to fix a car.", advancedAnswer: "The man is showing his son how to inspect and repair the car engine." }
         ]);
 
         // DATA: WRITING PART 2 (3 Emails from Slide)
@@ -1658,6 +1797,30 @@
           loadProgress();
         });
 
+        
+        // LIGHTBOX MODAL STATE
+        const activeLightboxImg = ref(null);
+        const activeLightboxTitle = ref('');
+        const lightboxZoom = ref(1);
+
+        function openLightbox(src, title) {
+          activeLightboxImg.value = src;
+          activeLightboxTitle.value = title || 'Phóng to hình ảnh';
+          lightboxZoom.value = 1;
+        }
+
+        function closeLightbox() {
+          activeLightboxImg.value = null;
+          lightboxZoom.value = 1;
+        }
+
+        function zoomLightbox(delta) {
+          lightboxZoom.value = Math.max(0.6, Math.min(3, +(lightboxZoom.value + delta).toFixed(2)));
+        }
+
+        // WRITING PART 1 VIEW MODE (grid vs single)
+        const writingPart1ViewMode = ref('single'); // 'single' (large full cards) or 'grid' (2 cols)
+
         return {
           activeTab,
           slideSet,
@@ -1712,7 +1875,14 @@
           progressPercent,
           toggleComplete,
           isCompleted,
-          startMockTest
+          startMockTest,
+          activeLightboxImg,
+          activeLightboxTitle,
+          lightboxZoom,
+          openLightbox,
+          closeLightbox,
+          zoomLightbox,
+          writingPart1ViewMode
         };
       }
     }).mount('#app');
